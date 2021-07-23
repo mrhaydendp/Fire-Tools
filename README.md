@@ -2,10 +2,11 @@
 **Warning These scripts are not reversible and will require a factory reset to undo changes!**
 
 ## Features
-- Removing stock apps
+- Removing stock apps (deboating)
 - Install Google Services
 - Custom Launchers
-- Disabling Ota Updates
+- FOSS Apps
+- Disabling OTA Updates
 
 ## Fire Tablet Prep
 ### Enable Unkown Sources
@@ -40,6 +41,6 @@ cd Fire-Tools && sudo ./Debloat.sh
 Things you should know:
 - You are allowed to fork this script and make your own for your use cases
 - Google Apps are taken from [NikGapps](https://nikgapps.com/) and are updated monthly
-- This will disable all amazon apps except `Clock`, `Calendar`, `Calculator`, `Settings`, `Keyboard`, and `Search`
+- This will disable all amazon apps except `Clock`, `Calendar`, `Calculator`, `Settings`, and `Keyboard`
 - This should not void your warranty but, if unsure factory reset your device before sending it in.
 - Although this is my tool, **I am not responsible for anything that may go wrong using this script.**
