@@ -8,6 +8,8 @@
 - FOSS Apps
 - Disabling OTA Updates
 
+![Fire-Tools](/Screenshots/Fire-Tools.png)
+
 ## Fire Tablet Prep
 ### Enable Unkown Sources
 Open `Settings` and got to `Security and Lockscreen` and scroll down and enable unknown sources
