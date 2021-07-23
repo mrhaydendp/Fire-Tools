@@ -35,7 +35,7 @@ For Linux & Mac clone the repo using git and run Fire-Tools.sh
 ```
 wget https://github.com/mrhaydendp/Fire-Tools/releases/download/Test/Fire-Tools.tar.xz
 tar -xf Fire-Tools.tar.xz
-cd Fire-Tools && sudo ./Fire-Tools.sh
+cd Fire-Tools && ./Fire-Tools.sh
 ```
 
 ## Notes
