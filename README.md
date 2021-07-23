@@ -34,7 +34,7 @@ Then you can install adb through this command `brew cask install android-platfor
 For Linux & Mac clone the repo using git and run Fire-Tools.sh
 ```
 wget https://github.com/mrhaydendp/Fire-Tools/releases/download/Test/Fire-Tools.tar.xz
-tar -xf *.tar.gz
+tar -xf Fire-Tools.tar.xz
 cd Fire-Tools && sudo ./Fire-Tools.sh
 ```
 
