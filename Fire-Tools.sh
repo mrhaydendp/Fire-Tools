@@ -1,4 +1,4 @@
-#bin/sh
+#!/bin/bash
 
 opt=$(zenity --list --title=Fire-Tools --width=800 --height=500 --column=Option --column=Tool Debloat 'Removes Amazon Apps' \
  'Google-Services' 'Installs Google services and Play Store' 'Change-Launcher' 'Disables fire launcher and replaces it with Nova Launcher' \
@@ -6,7 +6,7 @@ opt=$(zenity --list --title=Fire-Tools --width=800 --height=500 --column=Option 
 
 if [ $opt = 'Debloat' ]
 then
-    echo 'Debloating Fire OS'
+    (
     adb uninstall -k --user 0 amazon.alexa.tablet
     adb uninstall -k --user 0 com.amazon.device.backup
     adb uninstall -k --user 0 com.amazon.device.backup.sdk.internal.library
@@ -62,34 +62,39 @@ then
     adb uninstall -k --user 0 com.here.odnp.service
     adb uninstall -k --user 0 com.kingsoft.office.amz
     adb uninstall -k --user 0 org.mopria.printplugin
+    ) | zenity --progress --title='Debloating Fire OS'
     exec ./Fire-Tools.sh
 
 elif [ $opt = 'Google-Services' ]
 then
-    echo 'Install Google Services'
+    (
     adb install Gapps/*.apk
+    ) | zenity --progress --title='Install Google Services'
     exec ./Fire-Tools.sh
 
 elif [ $opt = 'Change-Launcher' ]
 then
-    echo 'Setting Nova as default launcher'
+    (
     adb install Nova.apk
     adb shell pm disable-user --user 0 com.amazon.firelauncher
+    ) | zenity --progress --title='Setting Nova Launcher As Default'
     exec ./Fire-Tools.sh
 
 elif [ $opt = 'Foss' ]
 then
-    echo 'Installing F-Droid, Brave, Lawnchair, and Newpipe'
+    (
     adb install Foss/*.apk
+    ) | zenity --progress --title='Installing FOSS Apps'
     exec ./Fire-Tools.sh
 
 elif [ $opt = 'Disable-OTA' ]
 then
-    echo 'Disabling OTA Updates'
+    (
     adb uninstall -k --user 0 com.amazon.device.software.ota
     adb uninstall -k --user 0 com.amazon.settings.systemupdates
     adb uninstall -k --user 0 com.amazon.kindle.otter.oobe.forced.ota
+    ) | zenity --progress --title='Disabling OTA Updates'
     exec ./Fire-Tools.sh
 else
-    echo Bye!
+    clear
 fi
