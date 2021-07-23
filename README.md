@@ -1,5 +1,8 @@
 # Fire-Tools
-**Warning These scripts are not reversible and will require a factory reset to undo changes!**
+
+Scripts for debloating and Installing Google Play Services to Fire Tablets + More!
+
+![Fire-Tools](https://github.com/mrhaydendp/Fire-Tools/blob/main/Screenshots/Fire%20Tools.png)
 
 ## Features
 - Removing stock apps (deboating)
@@ -7,8 +10,6 @@
 - Custom Launchers
 - FOSS Apps
 - Disabling OTA Updates
-
-![Fire-Tools](https://github.com/mrhaydendp/Fire-Tools/blob/main/Screenshots/Fire%20Tools.png)
 
 ## Fire Tablet Prep
 ### Enable Unkown Sources
