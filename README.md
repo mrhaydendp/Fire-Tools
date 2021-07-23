@@ -32,7 +32,7 @@ If you are on Mac OS you need install brew through this command
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-Then you can install adb through this command `brew cask install android-platform-tool` and wget `brew install wget`
+Then you can install adb and through this command `brew cask install android-platform-tool` and the dependencies through this one `brew install wget zenity`
 
 ## Linux
 Install wget and ADB
