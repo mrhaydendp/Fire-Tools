@@ -28,19 +28,20 @@ If you are on Mac OS you need install brew through this command
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-Then you can install adb through this command `brew cask install android-platform-tool`
+Then you can install adb through this command `brew cask install android-platform-tool` and wget `brew install wget`
 
 ## Instructions
-For Linux & Mac clone the repo using git and run Debloat.sh
+For Linux & Mac clone the repo using git and run Fire-Tools.sh
 ```
-git clone https://www.github.com/mrhaydendp/Fire-Tools.git
-cd Fire-Tools && sudo ./Debloat.sh
+wget https://github.com/mrhaydendp/Fire-Tools/releases/download/Test/Fire-Tools.tar.xz
+tar -xf *.tar.gz
+cd Fire-Tools && sudo ./Fire-Tools.sh
 ```
 
 ## Notes
 Things you should know:
 - You are allowed to fork this script and make your own for your use cases
-- Google Apps are taken from [NikGapps](https://nikgapps.com/) and are updated monthly
+- Google Apps are taken from [ApkMirror](https://www.apkmirror.com/) and are updated monthly
 - This will disable all amazon apps except `Clock`, `Calendar`, `Calculator`, `Settings`, and `Keyboard`
 - This should not void your warranty but, if unsure factory reset your device before sending it in.
 - Although this is my tool, **I am not responsible for anything that may go wrong using this script.**
