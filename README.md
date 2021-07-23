@@ -8,7 +8,7 @@
 - FOSS Apps
 - Disabling OTA Updates
 
-![Fire-Tools](/Screenshots/Fire-Tools.png)
+![Fire-Tools](https://github.com/mrhaydendp/Fire-Tools/blob/main/Screenshots/Fire%20Tools.png)
 
 ## Fire Tablet Prep
 ### Enable Unkown Sources
