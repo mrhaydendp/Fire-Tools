@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# User Interface
 opt=$(zenity --list --title=Fire-Tools --width=800 --height=500 --column=Option --column=Tool Debloat 'Removes Amazon Apps' \
  'Google-Services' 'Installs Google services and Play Store' 'Change-Launcher' 'Disables fire launcher and replaces it with Nova Launcher' \
-  Foss 'Installs free and open source alternatives such as F-Droid, Brave, Lawnchair, and Newpipe' 'Disable-OTA' 'Disables OTA updates')
+  Foss 'Installs free and open source alternatives such as F-Droid, Brave, Lawnchair, and Newpipe' 'Disable-OTA' 'Disables OTA updates' 'Custom-Apps' 'Put .apk files in Custom folder for batch install')
 
+# Options
+# Comment out any packages you don't want disabled
 if [ $opt = 'Debloat' ]
 then
     (
@@ -68,7 +71,10 @@ then
 elif [ $opt = 'Google-Services' ]
 then
     (
-    adb install Gapps/*.apk
+    for gapps in Gapps/*
+    do
+     adb install $gapps
+    done
     ) | zenity --progress --title='Install Google Services'
     exec ./Fire-Tools.sh
 
@@ -83,7 +89,10 @@ then
 elif [ $opt = 'Foss' ]
 then
     (
-    adb install Foss/*.apk
+    for foss in Foss/*
+    do
+     adb install $foss
+    done
     ) | zenity --progress --title='Installing FOSS Apps'
     exec ./Fire-Tools.sh
 
@@ -95,6 +104,17 @@ then
     adb uninstall -k --user 0 com.amazon.kindle.otter.oobe.forced.ota
     ) | zenity --progress --title='Disabling OTA Updates'
     exec ./Fire-Tools.sh
+    
+elif [ $opt = 'Custom-Apps' ]
+then
+    (
+    for custom in Custom/*
+    do
+     adb install $custom
+    done
+    ) | zenity --progress --title='Installing Custom Apps'
+    exec ./Fire-Tools.sh
+     
 else
     clear
 fi
