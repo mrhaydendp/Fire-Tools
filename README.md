@@ -10,6 +10,7 @@ Scripts for debloating, install Google services, changing launcher, and more!
 - Custom Launchers
 - FOSS Apps
 - Disabling OTA Updates
+- Custom batch installs
 
 ## Fire Tablet Prep
 ### Enable Unkown Sources
