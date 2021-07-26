@@ -4,14 +4,39 @@ Fire Tools is a powerful script that debloats and installs Google services to Am
 
 **Note this tool requires USB Debbuging and Unknown Sources to be enabled**
 
-![Fire-Tools](https://github.com/mrhaydendp/Fire-Tools/blob/main/Screenshots/Fire%20Tools.png)
+## Supported Devices
+- Fire HD 10 (9th Gen, 11th Gen)
+- Fire HD 8 (8th Gen, 10th Gen)
+- Fire 7 (9th Gen)
+
+![Picture Here](https://github.com/mrhaydendp/Fire-Tools/blob/main/Screenshots/Fire%20Tools.png)
 
 ## Fire Tablet Prep
 ### Enable Unkown Sources
-Open `Settings` and go to `Security and Lockscreen` then scroll down and enable `Unknown Sources`.
+Open `Settings` and go to `Security & Privacy`
+
+![Security & Privacy](https://github.com/mrhaydendp/Fire-Tools/blob/main/Security%20%26%20Privacy.png)
+
+Then scroll down and enable `Apps from Unknown Sources`
+
+![Unkown Sources](https://github.com/mrhaydendp/Fire-Tools/blob/main/Unkown%20Sources.png)
 
 ### Enable Developer Options
-Open `Settings` and go to `Device Options` then `Serial` and tap it 7 times. Press the back button and `Developer Options` will now be visible, tap it then switch it on at the top. Scroll down until you find `USB Debugging` and switch it on. Now get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
+Open `Settings` and go to `Device Options`
+
+![Device Options]()
+
+Then `Serial` and tap it 7 times
+
+![Serial]()
+
+Press the back button and `Developer Options` will now be visible, tap it then switch it on at the top
+
+![Developer Options]()
+
+Scroll down until you find `USB Debugging` and switch it on. Now get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
+
+![USB Debugging]()
 
 ## Setup
 Follow the instructions for your platform:
@@ -19,7 +44,7 @@ Follow the instructions for your platform:
 - [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
 
 ## Installer Script
-For Linux & Mac clone the repo using git and run Fire-Tools.sh
+For Linux, WSL, and macOS run this command in terminal:
 ```
 wget https://github.com/mrhaydendp/Fire-Tools/releases/download/v1.0/Fire-Tools.tar.xz
 tar -xf Fire-Tools.tar.xz
