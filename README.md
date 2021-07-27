@@ -46,7 +46,7 @@ Follow the instructions for your platform:
 ## Installer Script
 For Linux, WSL, and macOS run this command in terminal:
 ```
-wget https://github.com/mrhaydendp/Fire-Tools/releases/download/v1.0/Fire-Tools.tar.xz
+wget https://github.com/mrhaydendp/Fire-Tools/releases/download/v1.1/Fire-Tools.tar.xz
 tar -xf Fire-Tools.tar.xz
 cd Fire-Tools && ./Fire-Tools.sh
 ```
