@@ -5,15 +5,13 @@ adb devices
 
 # User Interface
 opt=$(zenity --list --title=Fire-Tools --width=800 --height=500 --column=Option --column=Tool Debloat 'Removes Amazon Apps' \
- 'Google-Services' 'Installs Google services and Play Store' 'Change-Launcher' 'Disables fire launcher and replaces it with Nova Launcher' \
-  'Disable-OTA' 'Disables OTA updates' 'Custom-Apps' 'Put .apk files in Custom folder for batch install')
-
+'Google-Services' 'Installs Google services and Play Store' 'Change-Launcher' 'Disables fire launcher and replaces it with Nova or Lawnchair' \
+'Disable-OTA' 'Disables OTA updates' 'Batch-Install' 'Put .apk files in Custom folder for batch install')
 
 # Options
 # Comment out any packages you don't want disabled
 if [ "$opt" = 'Debloat' ]
 then
-    (
     adb shell pm disable-user -k amazon.alexa.tablet
     adb shell pm disable-user -k com.amazon.device.backup
     adb shell pm disable-user -k com.amazon.device.backup.sdk.internal.library
@@ -69,49 +67,45 @@ then
     adb shell pm disable-user -k com.here.odnp.service
     adb shell pm disable-user -k com.kingsoft.office.amz
     adb shell pm disable-user -k org.mopria.printplugin
-    ) | zenity --progress --title='Debloating Fire OS'
+    zenity --notification --text='Successfully Debloated Fire OS'
     exec ./Fire-Tools.sh
 
-# Google Services Installer
-elif [ "$opt" = 'Google-Services' ]
-then
+# Google Services Installer (Download .apk files, push split .apks, launch and instruct SAI)
+elif [ "$opt" = 'Google-Services' ]; then
     for gapps in Gapps/*.apk
   do
     adb install "$gapps"
   done
     adb push Gapps/*.apkm /sdcard
     adb shell monkey -p com.aefyr.sai.fdroid 1
-    zenity --list --column=Instructions --width=400 --height=250 'When SAI opens tap on Install Apks then choose' 'Internal file picker and check the 2 .apkm files'
+    zenity --info --width=350 --height=200 --title='Install Split .apks' --text='When SAI opens tap on Install Apks then choose \
+Internal file picker and check the 2 .apkm files. Next click select then press install.'
+    zenity --notification --text='Successfully Installed Google Services'
     exec ./Fire-Tools.sh
 
-# Custom Launcher (Disables Fire Launcher and replaces it with Launcher.apk)
-elif [ "$opt" = 'Change-Launcher' ]
-then
-    (
+# Custom Launcher (Disables Fire Launcher and replaces it with Nova or Lawnchair)
+elif [ "$opt" = 'Change-Launcher' ]; then
+    launcher=$(zenity --list --title='Pick a Launcher' --column=Launchers 'Nova' 'Lawnchair')
     adb shell pm disable-user -k com.amazon.firelauncher
-    adb install Launcher.apk
-    ) | zenity --progress --title='Setting Nova as default launcher'
+    adb install "$launcher".apk
+    zenity --notification --text='Successfully Changed Launcher to '"$launcher"
     exec ./Fire-Tools.sh
 
 # Disable OTA Updates
-elif [ "$opt" = 'Disable-OTA' ]
-then
-    (
+elif [ "$opt" = 'Disable-OTA' ]; then
     adb shell pm disable-user -k com.amazon.device.software.ota
     adb shell pm disable-user -k com.amazon.settings.systemupdates
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
-    ) | zenity --progress --title='Disabling OTA Updates'
+    zenity --notification --text='Successfully Disabled OTA Updates'
     exec ./Fire-Tools.sh
 
 # Batch Install (Install all .apk files in /Custom folder)    
-elif [ "$opt" = 'Custom-Apps' ]
-then
-    (
+elif [ "$opt" = 'Batch-Install' ]; then
     for custom in Custom/*
     do
      adb install "$custom"
     done
-    ) | zenity --progress --title='Installing Custom Apps'
+    zenity --notification --text='Successful Batch Install'
     exec ./Fire-Tools.sh
      
 else
