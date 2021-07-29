@@ -9,7 +9,7 @@ Fire Tools is a powerful script that debloats and installs Google services to Am
 - Fire HD 8 (8th Gen, 10th Gen)
 - Fire 7 (9th Gen)
 
-![Picture Here](https://github.com/mrhaydendp/Fire-Tools/blob/main/Screenshots/Fire%20Tools.png)
+![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire-Tools.png)
 
 ## Fire Tablet Prep
 ### Enable Unkown Sources
