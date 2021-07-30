@@ -11,35 +11,12 @@ Fire Tools is a powerful script that debloats and installs Google services to Am
 
 ![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire-Tools.png)
 
-## Fire Tablet Prep
-### Enable Unkown Sources
-Open `Settings` and go to `Security & Privacy`
-
-![Security & Privacy](https://github.com/mrhaydendp/Fire-Tools/blob/main/Security%20%26%20Privacy.png)
-
-Then scroll down and enable `Apps from Unknown Sources`
-
-![Unkown Sources](https://github.com/mrhaydendp/Fire-Tools/blob/main/Unkown%20Sources.png)
-
-### Enable Developer Options
-Open `Settings` and go to `Device Options`
-
-![Device Options]()
-
-Then `Serial` and tap it 7 times
-
-![Serial]()
-
-Press the back button and `Developer Options` will now be visible, tap it then switch it on at the top
-
-![Developer Options]()
-
-Scroll down until you find `USB Debugging` and switch it on. Now get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
-
-![USB Debugging]()
 
 ## Setup
-Follow the instructions for your platform:
+First go here for Tablet Setup
+- [Fire Tablet Prep](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire%20Tablet%20Prep.md)
+
+Then follow the instructions for your platform:
 - [Linux/macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md)
 - [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
 
