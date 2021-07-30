@@ -93,9 +93,8 @@ elif [ "$opt" = 'Change-Launcher' ]; then
 
 # Disable OTA Updates
 elif [ "$opt" = 'Disable-OTA' ]; then
-    adb shell pm disable-user -k com.amazon.device.software.ota
-    adb shell pm disable-user -k com.amazon.settings.systemupdates
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
+    adb shell pm disable-user -k com.amazon.device.software.ota
     zenity --notification --text='Successfully Disabled OTA Updates'
     exec ./Fire-Tools.sh
 
