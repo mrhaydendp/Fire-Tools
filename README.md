@@ -39,7 +39,7 @@ The Launcher can also be changed by swapping out `Launcher.apk` (Nova by default
 Things you should know:
 - You are allowed to fork this script and make your own for your use cases
 - Google Apps are taken from [ApkMirror](https://www.apkmirror.com/) and are updated monthly
-- Debloat will disable all amazon apps except `Settings`, `Keyboard`, and `Home`
+- Debloat will disable all amazon apps except `Calculator`, `Camera`, `Clock`, `Files`, `Home`, and `Settings`
 - This should not void your warranty but, if unsure factory reset your device before sending it in.
 - Although this is my tool, **I am not responsible for anything that may go wrong when using this script.**
 
