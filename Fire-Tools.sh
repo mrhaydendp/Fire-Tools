@@ -7,7 +7,8 @@ adb devices
 opt=$(zenity --list --title=Fire-Tools --width=800 --height=500 --column=Option --column=Tool Debloat 'Removes Amazon apps' \
 'Undo-Debloat' 'Enables all Amazon apps' 'Google-Services' 'Installs Google services and Play Store' \
 'Change-Launcher' 'Disables fire launcher and replaces it with Nova or Lawnchair' \
-'Disable-OTA' 'Disables OTA updates' 'Batch-Install' 'Put .apk files in Custom folder for batch install')
+'Disable-OTA' 'Disables OTA updates' 'Dark-Mode' 'Enables dark mode system wide for apps that support it' \
+'Batch-Install' 'Put .apk files in Custom folder for batch install')
 
 # Options
 # Delete any packages from Debloat.txt that you don't want disabled
@@ -15,7 +16,8 @@ if [ "$opt" = 'Debloat' ]; then
     xargs -l adb shell pm disable-user -k < Debloat.txt
     zenity --notification --text='Successfully Debloated Fire OS'
     exec ./Fire-Tools.sh
-
+    
+# Enables all previously disabled bloatware
 elif [ "$opt" = 'Undo-Debloat' ]; then
     xargs -l adb shell pm enable < Debloat.txt
     zenity --notification --text='Successfully Enabled Debloated Packages'
@@ -47,6 +49,13 @@ elif [ "$opt" = 'Disable-OTA' ]; then
     adb shell pm disable-user -k com.amazon.device.software.ota
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
     zenity --notification --text='Successfully Disabled OTA Updates'
+    exec ./Fire-Tools.sh
+    
+# Enables dark mode for all apps that support it
+elif [ "$opt" = 'Dark-Mode' ]; then
+    adb shell settings put secure ui_night_mode 2
+    zenity --info --text='Reboot for changes to take effect'
+    zenity --notification --text='Successfully Enabled Dark Mode'
     exec ./Fire-Tools.sh
 
 # Batch Install (Install all .apk files in /Custom folder)    
