@@ -1,21 +1,35 @@
 # Fire Tools
 
-Fire Tools is a powerful script that debloats and installs Google services to Amazon Fire Tablets to make them feel snappier and increase the ease of use. In addition it also allows you to install custom launchers such as: Nova, Lawnchair, and others. If you wish to add your own apps theres a custom batch installer. It's as easy as putting your `.apk` files into the Custom folder and clicking the Batch-Install button!
+Fire Tools is a powerful script that debloats and installs Google services to Amazon Fire Tablets to make them feel snappier and increase the ease of use. In addition it also allows you to install custom launchers such as Nova and Lawnchair. If you wish to add your own apps theres a custom batch installer. It's as easy as putting your `.apk` files into the Custom folder and clicking the Batch-Install button!
 
-**Note this tool requires USB Debbuging and Unknown Sources to be enabled**
+**Note this tool requires USB Debbuging to be enabled**
 
 ## Supported Devices
 - Fire HD 10 (9th Gen, 11th Gen)
 - Fire HD 8 (8th Gen, 10th Gen)
 - Fire 7 (9th Gen)
 
-![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire-Tools.png)
+![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/main/fire-tools.png)
 
+## Fire Tablet Prep
+### Enable Developer Options
+Open `Settings` and go to `Device Options` then scroll down and and tap `About Fire Tablet`
+
+![About](https://github.com/mrhaydendp/Fire-Tools/blob/main/Prep%20Pictures/About%20Fire%20Tablet.png)
+
+Then tap `Serial Number` 7 times it should say you are 2 taps away after the 5th tap
+
+![Serial](https://github.com/mrhaydendp/Fire-Tools/blob/main/Prep%20Pictures/2%20Taps%20Away.png)
+
+Press the back button and `Developer Options` will now be visible
+
+![Developer Options](https://github.com/mrhaydendp/Fire-Tools/blob/main/Prep%20Pictures/Developer%20Options.png)
+
+Now switch on `Developer Options` and `ADB Debugging`. Then get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
+
+![USB Debugging](https://github.com/mrhaydendp/Fire-Tools/blob/main/Prep%20Pictures/USB%20Debugging.png)
 
 ## Setup
-First go here for Tablet Setup
-- [Fire Tablet Prep](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire%20Tablet%20Prep.md)
-
 Then follow the instructions for your platform:
 - [Linux/macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md)
 - [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
@@ -29,11 +43,8 @@ cd Fire-Tools && ./Fire-Tools.sh
 ```
 
 ## Config Options
-This script is very customizable, you can whitelist apps so they're not disabled by commenting out the package name ex:
-```
-#com.package.name
-```
-The Launcher can also be changed by swapping out `Launcher.apk` (Nova by default) with one of your choice and clicking Custom-Launcher in the script. You can also batch install apps by dropping the `.apk` files in the Custom folder and clicking Batch-Install in the script.
+This script is very customizable, you can whitelist apps so they're not disabled by deleting them from Debloat.txt.
+You can also batch install apps by dropping `.apk` files in the Custom folder and clicking Batch Install in the script.
 
 ## Notes
 Things you should know:
@@ -44,12 +55,9 @@ Things you should know:
 - Although this is my tool, **I am not responsible for anything that may go wrong when using this script.**
 
 ## Credits
-Thank you to all these peoples software included in this script!
+Thank you to all these people's software included in this script!
 - [Google](https://www.android.com/)
-- [F-Droid](https://www.f-droid.org/en/about/)
-- [AuroraOSS](https://auroraoss.com/contact/)
+- [Aefyr](https://github.com/Aefyr/SAI) (Split APKs Installer)
 - [TeslaCoil Software](https://play.google.com/store/apps/developer?id=TeslaCoil%20Software&hl=en_US&gl=US) (Nova Launcher)
-- [Brave](https://brave.com/about/)
-- [Team Newpipe](https://github.com/TeamNewPipe)
 - [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair)
 - [D0k3](https://github.com/d0k3) (For inspiration to make this script)
