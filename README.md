@@ -1,5 +1,4 @@
 # Fire Tools
-
 Fire Tools is a powerful script that debloats and installs Google services to Amazon Fire Tablets to make them feel snappier and increase the ease of use. In addition it also allows you to install custom launchers such as Nova and Lawnchair. If you wish to add your own apps theres a custom batch installer. It's as easy as putting your `.apk` files into the Custom folder and clicking the Batch-Install button!
 
 **Note this tool requires USB Debbuging to be enabled**
@@ -9,10 +8,15 @@ Fire Tools is a powerful script that debloats and installs Google services to Am
 - Fire HD 8 (8th Gen, 10th Gen)
 - Fire 7 (9th Gen)
 
-![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/main/fire-tools.png)
+![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire-Tools.png)
+
+## Setup
+Follow the instructions for your platform:
+- [Linux/macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md)
+- [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
 
 ## Fire Tablet Prep
-### Enable Developer Options
+### Enable Developer Options & USB Debugging
 Open `Settings` and go to `Device Options` then scroll down and and tap `About Fire Tablet`
 
 ![About](https://github.com/mrhaydendp/Fire-Tools/blob/main/Prep%20Pictures/About%20Fire%20Tablet.png)
@@ -25,14 +29,9 @@ Press the back button and `Developer Options` will now be visible
 
 ![Developer Options](https://github.com/mrhaydendp/Fire-Tools/blob/main/Prep%20Pictures/Developer%20Options.png)
 
-Now switch on `Developer Options` and `ADB Debugging`. Then get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
+Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
 
 ![USB Debugging](https://github.com/mrhaydendp/Fire-Tools/blob/main/Prep%20Pictures/USB%20Debugging.png)
-
-## Setup
-Then follow the instructions for your platform:
-- [Linux/macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md)
-- [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
 
 ## Installer Script
 For Linux, WSL, and macOS run this command in terminal:
