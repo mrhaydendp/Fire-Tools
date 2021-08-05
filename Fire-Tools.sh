@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Check if there's an ADB connection
-adb devices
+adb shell echo Device Connected
 
 # User Interface
-opt=$(zenity --list --title=Fire-Tools --width=800 --height=500 --column=Option --column=Tool Debloat 'Removes Amazon apps' \
-'Undo-Debloat' 'Enables all Amazon apps' 'Google-Services' 'Installs Google services and Play Store' \
-'Change-Launcher' 'Disables fire launcher and replaces it with Nova or Lawnchair' \
-'Disable-OTA' 'Disables OTA updates' 'Dark-Mode' 'Enables dark mode system wide for apps that support it' \
-'Batch-Install' 'Put .apk files in Custom folder for batch install')
+opt=$(zenity --list --title=Fire-Tools --width=500 --height=400 --column=Option --column=Tool Debloat 'Removes all Amazon apps' \
+'Undo Debloat' 'Enables all Amazon apps' 'Google Services' 'Installs Google services' \
+'Change Launcher' 'Replaces Fire Launcher with Nova or Lawnchair' \
+'Disable OTA' 'Disables OTA updates' 'Dark Mode' 'Enables system wide dark mode' \
+'Batch Install' 'Put .apk files in Custom folder for batch install')
 
 # Options
 # Delete any packages from Debloat.txt that you don't want disabled
@@ -16,15 +16,15 @@ if [ "$opt" = 'Debloat' ]; then
     xargs -l adb shell pm disable-user -k < Debloat.txt
     zenity --notification --text='Successfully Debloated Fire OS'
     exec ./Fire-Tools.sh
-    
+
 # Enables all previously disabled bloatware
-elif [ "$opt" = 'Undo-Debloat' ]; then
+elif [ "$opt" = 'Undo Debloat' ]; then
     xargs -l adb shell pm enable < Debloat.txt
     zenity --notification --text='Successfully Enabled Debloated Packages'
     exec ./Fire-Tools.sh
 
 # Google Services Installer (Download .apk files, push split .apks, launch and instruct SAI)
-elif [ "$opt" = 'Google-Services' ]; then
+elif [ "$opt" = 'Google Services' ]; then
     for gapps in Gapps/*.apk
   do
     adb install "$gapps"
@@ -37,7 +37,7 @@ Internal file picker and check the 2 .apkm files. Next click select then press i
     exec ./Fire-Tools.sh
 
 # Custom Launcher (Disables Fire Launcher and replaces it with Nova or Lawnchair)
-elif [ "$opt" = 'Change-Launcher' ]; then
+elif [ "$opt" = 'Change Launcher' ]; then
     launcher=$(zenity --list --title='Pick a Launcher' --column=Launchers 'Nova' 'Lawnchair')
     adb shell pm disable-user -k com.amazon.firelauncher
     adb install "$launcher".apk
@@ -45,28 +45,28 @@ elif [ "$opt" = 'Change-Launcher' ]; then
     exec ./Fire-Tools.sh
 
 # Disable OTA Updates
-elif [ "$opt" = 'Disable-OTA' ]; then
+elif [ "$opt" = 'Disable OTA' ]; then
     adb shell pm disable-user -k com.amazon.device.software.ota
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
     zenity --notification --text='Successfully Disabled OTA Updates'
     exec ./Fire-Tools.sh
-    
+
 # Enables dark mode for all apps that support it
-elif [ "$opt" = 'Dark-Mode' ]; then
+elif [ "$opt" = 'Dark Mode' ]; then
     adb shell settings put secure ui_night_mode 2
     zenity --info --text='Reboot for changes to take effect'
     zenity --notification --text='Successfully Enabled Dark Mode'
     exec ./Fire-Tools.sh
 
-# Batch Install (Install all .apk files in /Custom folder)    
-elif [ "$opt" = 'Batch-Install' ]; then
+# Batch Install (Install all .apk files in /Custom folder)
+elif [ "$opt" = 'Batch Install' ]; then
     for custom in Custom/*.apk
     do
      adb install "$custom"
     done
     zenity --notification --text='Successful Batch Install'
     exec ./Fire-Tools.sh
-     
+
 else
     clear
 fi
