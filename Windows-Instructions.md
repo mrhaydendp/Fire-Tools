@@ -8,6 +8,10 @@ Download Fire Tablet drivers and or universal adb drivers
 I recommend 15 seconds ADB Installer because it has basic drivers and system wide ADB
 - [15 seconds ADB Installer](https://forum.xda-developers.com/attachment.php?attachmentid=4623157&d=1540039037)
 
+## Installation
+Go to Releases Page and download `Fire-Tools.zip`. Once Downloaded unzip and right click on the .ps1 file then click "Run with PowerShell"
+- [Releases Page](https://github.com/mrhaydendp/Fire-Tools/releases)
+
 # Method #2 WSL (Windows Subsystem for Linux)
 
 ## Enable WSL
