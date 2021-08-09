@@ -13,7 +13,7 @@ opt=$(zenity --list --title=Fire-Tools --width=500 --height=400 --column=Option 
 # Options
 # Delete any packages from Debloat.txt that you don't want disabled
 if [ "$opt" = 'Debloat' ]; then
-    xargs -l adb shell pm disable-user -k < Debloat.txt
+    xargs -l adb shell pm disable-user -k < Debloat.txt 
     zenity --notification --text='Successfully Debloated Fire OS'
     exec ./Fire-Tools.sh
 
@@ -25,10 +25,7 @@ elif [ "$opt" = 'Undo Debloat' ]; then
 
 # Google Services Installer (Download .apk files, push split .apks, launch and instruct SAI)
 elif [ "$opt" = 'Google Services' ]; then
-    for gapps in Gapps/*.apk
-  do
-    adb install "$gapps"
-  done
+    ls Gapps/*.apk | xargs -I gapps adb install 'gapps'
     adb push Gapps/*.apkm /sdcard
     adb shell monkey -p com.aefyr.sai.fdroid 1
     zenity --info --width=350 --height=200 --title='Install Split .apks' --text='When SAI opens tap on Install Apks then choose \
@@ -60,10 +57,7 @@ elif [ "$opt" = 'Dark Mode' ]; then
 
 # Batch Install (Install all .apk files in /Custom folder)
 elif [ "$opt" = 'Batch Install' ]; then
-    for custom in Custom/*.apk
-    do
-     adb install "$custom"
-    done
+    ls Custom/*.apk | xargs -I custom adb install 'custom'
     zenity --notification --text='Successful Batch Install'
     exec ./Fire-Tools.sh
 
