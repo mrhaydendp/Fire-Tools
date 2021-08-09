@@ -40,6 +40,7 @@ wget https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tool
 tar -xf Fire-Tools.tar.xz && rm Fire-Tools.tar.xz
 cd Fire-Tools && ./Fire-Tools.sh
 ```
+For Windows version go to the [Releases Page](https://github.com/mrhaydendp/Fire-Tools/releases)
 
 ## Config Options
 This script is very customizable, you can whitelist apps so they're not disabled by deleting them from Debloat.txt.
