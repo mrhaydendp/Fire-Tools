@@ -1,4 +1,6 @@
-﻿Add-Type -AssemblyName System.Windows.Forms
+﻿adb shell echo Device Connected
+
+Add-Type -AssemblyName System.Windows.Forms
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools"
 $Form.ClientSize = New-Object System.Drawing.Point(340,250)
@@ -86,6 +88,9 @@ $GoogleServices.Add_Click({
     foreach ($array in $split) {
     adb push $array /sdcard/
     }
+    adb shell monkey -p com.aefyr.sai.fdroid 1
+    Write-Host 'When SAI opens tap on Install Apks then choose Internal file
+    picker and check the 2 .apkm files. Next click select then press install.'
     Out-Host
     if($?) { Write-Host "Successfully Installed Google Services" }
 })
