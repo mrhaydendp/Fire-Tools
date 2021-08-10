@@ -9,7 +9,7 @@ I recommend 15 seconds ADB Installer because it has basic drivers and system wid
 - [15 seconds ADB Installer](https://forum.xda-developers.com/attachment.php?attachmentid=4623157&d=1540039037)
 
 ## Installation
-Go to Releases Page and download `Fire-Tools.zip`. Once Downloaded unzip and right click on the .ps1 file then click "Run with PowerShell"
+Go to Releases Page and download `Fire-Tools.Windows.zip`. Once Downloaded unzip and right click on the .ps1 file then click "Run with PowerShell"
 - [Releases Page](https://github.com/mrhaydendp/Fire-Tools/releases)
 
 # Method #2 WSL (Windows Subsystem for Linux)
@@ -44,8 +44,8 @@ wsl --set-default-version 2
 ## Download Debian From the Windows Store
 - [Debaian](https://www.microsoft.com/store/apps/9MSVKQC78PK6)
 
-## Install Dependencies
-Open Debian terminal and paste the folling command to install all dependencies:
+## Dependencies
+Install all necessary packages:
 ```
 sudo apt install wget adb zenity
 ```
