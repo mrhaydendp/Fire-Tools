@@ -1,23 +1,22 @@
-## Linux Installation Instructions
+# Linux Installation Instructions
 
-### Dependencies
-- ADB
-- wget
-- Zenity
+## Debian/Ubuntu Based Systems
+Install necessary packages
+```
+sudo apt install adb wget zenity
+```
 
-Install all with this command `sudo apt get adb wget zenity`
+# MacOS Installation Instructions
 
-## MacOS Installation Instructions
-
-### Dependencies
-- Android-Platform-Tools
-- wget
-- Zenity
-
-First you need to install Homebrew:
-
+## Brew
+Paste this command into Terminal:
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Then you can install Platform Tools with this command `brew cask install android-platform-tool` and the dependencies through this one `brew install wget zenity`
+## Dependencies
+Install necesary packages
+```
+brew cask install android-platform-tool
+brew install wget zenity
+```
