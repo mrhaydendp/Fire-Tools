@@ -4,9 +4,10 @@
 adb shell echo Device Connected
 
 # User Interface
-opt=$(zenity --list --title=Fire-Tools --width=500 --height=400 --column=Option --column=Tool Debloat 'Removes all Amazon apps' \
-'Undo Debloat' 'Enables all Amazon apps' 'Google Services' 'Installs Google services' \
-'Change Launcher' 'Replaces Fire Launcher with Nova or Lawnchair' \
+opt=$(zenity --list --title=Fire-Tools --width=500 --height=400 --column=Option --column=Tool Debloat 'Disables all Amazon apps' \
+'Undo Debloat' 'Enables all Amazon apps' 'Custom Disable' 'Lists all installed packages and lets you select ones to disable' \
+'Google Services' 'Installs Google services' \
+'Change Launcher' 'Replaces Fire Launcher with Nova, Lawnchair, or an .apk file' \
 'Disable OTA' 'Disables OTA updates' 'Dark Mode' 'Enables system wide dark mode' \
 'Batch Install' 'Put .apk files in Custom folder for batch install')
 
@@ -23,6 +24,16 @@ elif [ "$opt" = 'Undo Debloat' ]; then
     zenity --notification --text='Successfully Enabled Debloated Packages'
     exec ./Fire-Tools.sh
 
+# Lists all installed packages and lets you select ones to disable
+elif [ "$opt" = 'Custom Disable' ]; then
+    adb shell pm list packages | cut -f 2 -d ":" > CustomDisable.txt
+    list=$(cat CustomDisable.txt | xargs -l)
+    disable=$(zenity --list --width=400 --height=400 --column=Disable --multiple $list)
+    echo "$disable" | tr '|' '\n' > CustomDisable.txt
+    xargs -l adb shell pm disable-user -k < CustomDisable.txt
+    zenity --notification --text='Successfully Disabled Packages'
+    exec ./Fire-Tools.sh
+
 # Google Services Installer (Download .apk files, push split .apks, launch and instruct SAI)
 elif [ "$opt" = 'Google Services' ]; then
     ls Gapps/*.apk | xargs -I gapps adb install 'gapps'
@@ -36,13 +47,13 @@ Internal file picker and check the 2 .apkm files. Next click select then press i
 # Custom Launcher (Disables Fire Launcher and replaces it with Nova, Lawnchair, or an .apk file)
 elif [ "$opt" = 'Change Launcher' ]; then
     launcher=$(zenity --list --title='Pick a Launcher' --column=Launchers 'Nova' 'Lawnchair' 'Custom')
-    adb shell pm disable-user -k com.amazon.firelauncher
     if [ "$launcher" = 'Custom' ]; then
         custom=$(zenity --file-selection)
         adb install $custom
     else
         adb install "$launcher".apk
     fi
+    adb shell pm disable-user -k com.amazon.firelauncher
     zenity --notification --text='Successfully Changed Launcher'
     exec ./Fire-Tools.sh
 
