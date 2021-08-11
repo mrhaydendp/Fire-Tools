@@ -33,7 +33,7 @@ Internal file picker and check the 2 .apkm files. Next click select then press i
     zenity --notification --text='Successfully Installed Google Services'
     exec ./Fire-Tools.sh
 
-# Custom Launcher (Disables Fire Launcher and replaces it with Nova, Lawnchair, or a .apk file)
+# Custom Launcher (Disables Fire Launcher and replaces it with Nova, Lawnchair, or an .apk file)
 elif [ "$opt" = 'Change Launcher' ]; then
     launcher=$(zenity --list --title='Pick a Launcher' --column=Launchers 'Nova' 'Lawnchair' 'Custom')
     adb shell pm disable-user -k com.amazon.firelauncher
