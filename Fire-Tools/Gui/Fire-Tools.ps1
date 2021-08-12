@@ -60,6 +60,12 @@ $Lawnchair.Size = New-Object System.Drawing.Size(120,25)
 $Lawnchair.Location = New-Object System.Drawing.Size(160,90)
 $Form.Controls.Add($Lawnchair)
 
+$Custom = New-Object System.Windows.Forms.Button
+$Custom.Text = "Custom"
+$Custom.Size = New-Object System.Drawing.Size(120,25)
+$Custom.Location = New-Object System.Drawing.Size(160,130)
+$Form.Controls.Add($Custom)
+
 $Debloat.Add_Click({
     Write-Host "Debloating Fire OS"
     $Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
@@ -80,11 +86,11 @@ $Rebloat.Add_Click({
 
 $GoogleServices.Add_Click({
     Write-Host "Installing Google Services"
-    $gapps = Get-ChildItem .\Gapps\*.apk
+    $gapps = Get-ChildItem ..\Gapps\*.apk
     foreach ($array in $gapps) {
     adb install $array
     }
-    $split = Get-ChildItem .\Gapps\*.apkm
+    $split = Get-ChildItem ..\Gapps\*.apkm
     foreach ($array in $split) {
     adb push $array /sdcard/
     }
@@ -110,7 +116,7 @@ $OTA.Add_Click({
 
 $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
-    $custom = Get-ChildItem .\Custom\*.apk
+    $custom = Get-ChildItem ..\Custom\*.apk
     foreach ($array in $custom) {
     adb install $array
     } Out-Host
@@ -128,6 +134,17 @@ $Lawnchair.Add_Click({
     Write-Host "Changing Default Launcher"
     adb shell pm disable-user -k com.amazon.firelauncher
     adb install Lawnchair.apk | Out-Host
+    if($?) { Write-Host "Successfully Changed Default Launcher" }
+})
+
+$Custom.Add_Click({
+    Write-Host "Changing Default Launcher"
+    Add-Type -AssemblyName System.Windows.Forms
+    $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
+    $FileBrowser.filter = "Apk (*.apk)| *.apk"
+    [void]$FileBrowser.ShowDialog()
+    adb install $FileBrowser.FileName
+    adb shell pm disable-user -k com.amazon.firelauncher | Out-Host
     if($?) { Write-Host "Successfully Changed Default Launcher" }
 })
 
