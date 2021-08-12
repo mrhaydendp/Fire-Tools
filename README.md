@@ -8,7 +8,7 @@ Fire Tools is a powerful script that debloats and installs Google services to Am
 - Fire HD 8 (8th Gen, 10th Gen)
 - Fire 7 (9th Gen)
 
-![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/Pictures/Fire-Tools.png)
+![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Fire-Tools.png)
 
 ## Setup
 Follow the instructions for your platform:
@@ -19,19 +19,19 @@ Follow the instructions for your platform:
 ### Enable Developer Options & USB Debugging
 Open `Settings` and go to `Device Options` then scroll down and and tap `About Fire Tablet`
 
-![About](https://github.com/mrhaydendp/Fire-Tools/blob/Pictures/About%20Fire%20Tablet.png)
+![About](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/About%20Fire%20Tablet.png)
 
 Then tap `Serial Number` 7 times it should say you are 2 taps away after the 5th tap
 
-![Serial](https://github.com/mrhaydendp/Fire-Tools/blob/Pictures/2%20Taps%20Away.png)
+![Serial](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/2%20Taps%20Away.png)
 
 Press the back button and `Developer Options` will now be visible
 
-![Developer Options](https://github.com/mrhaydendp/Fire-Tools/blob/Pictures/Developer%20Options.png)
+![Developer Options](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Developer%20Options.png)
 
 Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
 
-![USB Debugging](https://github.com/mrhaydendp/Fire-Tools/blob/Pictures/USB%20Debugging.png)
+![USB Debugging](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/USB%20Debugging.png)
 
 ## Installer Script
 For Linux, WSL, and macOS run this command in terminal:
