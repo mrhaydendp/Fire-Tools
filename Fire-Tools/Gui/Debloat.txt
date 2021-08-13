@@ -36,9 +36,7 @@ com.amazon.recess
 com.amazon.weather
 com.amazon.kindle.unifiedSearch
 com.amazon.windowshop
-com.amazon.whisperplay.service.install
 com.amazon.dpcclient
-amazon.speech.davs.davcservice
 com.android.quicksearchbox
 com.amazon.tv.launcher
 com.amazon.kindle.personal_video
@@ -68,7 +66,6 @@ com.amazon.avod
 com.amazon.device.metrics
 com.amazon.kindle.kso
 com.amazon.cloud9.systembrowserprovider
-com.amazon.alexa.youtube.app
 com.amazon.bioscope
 com.amazon.dcp.contracts.library
 com.amazon.application.compatibility.enforcer

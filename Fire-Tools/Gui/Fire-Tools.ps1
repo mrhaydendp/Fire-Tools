@@ -95,7 +95,7 @@ $GoogleServices.Add_Click({
     foreach ($array in $split) {
     adb push $array /sdcard/
     }
-    adb shell monkey -p com.aefyr.sai.fdroid 1
+    adb shell monkey -p com.aefyr.sai 1
     Write-Host 'When SAI opens tap on Install Apks then choose Internal file
     picker and check the 2 .apkm files. Next click select then press install.'
     Out-Host

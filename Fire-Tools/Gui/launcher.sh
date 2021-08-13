@@ -16,8 +16,8 @@ if [ "$launcher" = 'Nova' ]; then
 
 # Install Lawnchair
 elif [ "$launcher" = 'Lawnchair' ]; then
-    echo adb shell pm disable-user -k com.amazon.firelauncher
-    echo adb install ../$launcher.apk
+    adb shell pm disable-user -k com.amazon.firelauncher
+    adb install ../$launcher.apk
 
 # Install custom launcher
 elif [ "$launcher" = 'Custom' ]; then
