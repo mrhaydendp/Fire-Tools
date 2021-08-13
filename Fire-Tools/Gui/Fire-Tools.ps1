@@ -45,7 +45,8 @@ $Form.Controls.Add($Batch)
 $Launcher = New-Object System.Windows.Forms.Label
 $Launcher.Text = "Custom Launchers"
 $Launcher.Size = New-Object System.Drawing.Size(145,25)
-$Launcher.Location = New-Object System.Drawing.Size(175,15)
+$Launcher.Location = New-Object System.Drawing.Size(150,15)
+$Launcher.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
 $Form.Controls.Add($Launcher)
 
 $Nova = New-Object System.Windows.Forms.Button
@@ -139,7 +140,6 @@ $Lawnchair.Add_Click({
 
 $Custom.Add_Click({
     Write-Host "Changing Default Launcher"
-    Add-Type -AssemblyName System.Windows.Forms
     $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
     $FileBrowser.filter = "Apk (*.apk)| *.apk"
     [void]$FileBrowser.ShowDialog()
