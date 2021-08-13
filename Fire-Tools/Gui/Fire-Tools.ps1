@@ -42,12 +42,12 @@ $Batch.Size = New-Object System.Drawing.Size(120,25)
 $Batch.Location = New-Object System.Drawing.Size(5,210)
 $Form.Controls.Add($Batch)
 
-$Launcher = New-Object System.Windows.Forms.Label
-$Launcher.Text = "Custom Launchers"
-$Launcher.Size = New-Object System.Drawing.Size(145,25)
-$Launcher.Location = New-Object System.Drawing.Size(150,15)
-$Launcher.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
-$Form.Controls.Add($Launcher)
+$Label = New-Object System.Windows.Forms.Label
+$Label.Text = "Custom Launchers"
+$Label.Size = New-Object System.Drawing.Size(145,25)
+$Label.Location = New-Object System.Drawing.Size(150,15)
+$Label.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
+$Form.Controls.Add($Label)
 
 $Nova = New-Object System.Windows.Forms.Button
 $Nova.Text = "Nova"
