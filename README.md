@@ -48,7 +48,8 @@ You can also batch install apps by dropping `.apk` files in the Custom folder an
 
 ## Notes
 Things you should know:
-- You are allowed to fork this script and make your own for your use cases
+- Set timezone settings before debloat! 
+- You are allowed to fork this script and make your own for your use cases but you have to credit me and link back to this project
 - Google Apps are taken from [ApkMirror](https://www.apkmirror.com/) and are updated monthly
 - Debloat will disable all amazon apps except `Calculator`, `Camera`, `Clock`, `Files`, `Home`, and `Settings`
 - This should not void your warranty but, if unsure factory reset your device before sending it in.
