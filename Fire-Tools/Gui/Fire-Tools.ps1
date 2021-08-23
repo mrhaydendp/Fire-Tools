@@ -1,10 +1,12 @@
-﻿adb shell echo Device Connected
+﻿#!/usr/bin/env powershell
+
+adb shell echo Device Connected
 
 Add-Type -AssemblyName System.Windows.Forms
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools"
 $Form.ClientSize = New-Object System.Drawing.Point(340,250)
-$Form.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#b8b8b8")
+$Form.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#b6b1ae")
 
 $Debloat = New-Object System.Windows.Forms.Button
 $Debloat.Text = "Debloat"
@@ -67,24 +69,27 @@ $Custom.Size = New-Object System.Drawing.Size(120,25)
 $Custom.Location = New-Object System.Drawing.Size(160,130)
 $Form.Controls.Add($Custom)
 
+# Disable Amazon Apps
 $Debloat.Add_Click({
     Write-Host "Debloating Fire OS"
     $Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
     foreach ($array in $Disable) {
     adb shell pm disable-user -k $array
-    } Out-Host
-    if($?) { Write-Host "Successfully Debloated Fire OS" }
+    }
+    Write-Host "Successfully Debloated Fire OS"
 })
 
+# Enable Amazon Apps
 $Rebloat.Add_Click({
     Write-Host "Enabling Bloat"
     $Enable = [IO.File]::ReadAllLines('.\Debloat.txt')
     foreach ($array in $Enable) {
     adb shell pm enable $array
-    } Out-Host
-    if($?) { Write-Host "Successfully Enabled Bloat" }
+    }
+    Write-Host "Successfully Enabled Bloat"
 })
 
+# Install Google Services
 $GoogleServices.Add_Click({
     Write-Host "Installing Google Services"
     $gapps = Get-ChildItem ..\Gapps\*.apk
@@ -98,54 +103,59 @@ $GoogleServices.Add_Click({
     adb shell monkey -p com.aefyr.sai 1
     Write-Host 'When SAI opens tap on Install Apks then choose Internal file
     picker and check the 2 .apkm files. Next click select then press install.'
-    Out-Host
-    if($?) { Write-Host "Successfully Installed Google Services" }
+    Write-Host "Successfully Installed Google Services"
 })
 
+# Enable sytem wide dark mode (wonky on Fire 7 9th gen)
 $Dark.Add_Click({
     Write-Host "Enabling System Wide Dark Mode"
-    adb shell settings put secure ui_night_mode 2 | Out-Host
-    if($?) { Write-Host "Successfully Enabled Dark Mode" }
+    adb shell settings put secure ui_night_mode 2
+    Write-Host "Successfully Enabled Dark Mode"
 })
 
+# Disable OTA Updates
 $OTA.Add_Click({
     Write-Host "Disabling OTA Updates"
     adb shell pm disable-user -k com.amazon.device.software.ota
-    adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota | Out-Host
-    if($?) { Write-Host "Successfully Disabled OTA Updates" }
+    adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
+    Write-Host "Successfully Disabled OTA Updates"
 })
 
+# Batch install from Custom folder
 $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
     $custom = Get-ChildItem ..\Custom\*.apk
     foreach ($array in $custom) {
     adb install $array
-    } Out-Host
-    if($?) { Write-Host "Successfully Installed All Apps" }
+    }
+    Write-Host "Successfully Installed All Apps"
 })
 
+# Set Nova as default launcher
 $Nova.Add_Click({
     Write-Host "Changing Default Launcher"
     adb shell pm disable-user -k com.amazon.firelauncher
-    adb install Nova.apk | Out-Host
-    if($?) { Write-Host "Successfully Changed Default Launcher" }
+    adb install Nova.apk
+    Write-Host "Successfully Changed Default Launcher"
 })
 
+# Set Lawnchair as default launcher
 $Lawnchair.Add_Click({
     Write-Host "Changing Default Launcher"
     adb shell pm disable-user -k com.amazon.firelauncher
-    adb install Lawnchair.apk | Out-Host
-    if($?) { Write-Host "Successfully Changed Default Launcher" }
+    adb install Lawnchair.apk
+    Write-Host "Successfully Changed Default Launcher"
 })
 
+# Set .apk file as default launcher
 $Custom.Add_Click({
     Write-Host "Changing Default Launcher"
     $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
     $FileBrowser.filter = "Apk (*.apk)| *.apk"
     [void]$FileBrowser.ShowDialog()
     adb install $FileBrowser.FileName
-    adb shell pm disable-user -k com.amazon.firelauncher | Out-Host
-    if($?) { Write-Host "Successfully Changed Default Launcher" }
+    adb shell pm disable-user -k com.amazon.firelauncher
+    Write-Host "Successfully Changed Default Launcher"
 })
 
 $Form.ShowDialog()
