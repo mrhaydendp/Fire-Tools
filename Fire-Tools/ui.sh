@@ -42,14 +42,14 @@ elif [ "$tool" = 'Google Services' ]; then
 elif [ "$tool" = 'Change Launcher' ]; then
     exec ./launcher.sh
 
-# Disable OTA
+# Disable OTA updates
 elif [ "$tool" = 'Disable OTA' ]; then
     adb shell pm disable-user -k com.amazon.device.software.ota
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
     zenity --notification --text='Successfully Disabled OTA Updates'
     exec ./ui.sh
 
-# Enable system-wide Dark Mode (funky on Fire 7 9th gen)
+# Enable system-wide dark mode (funky on Fire 7 9th gen)
 elif [ "$tool" = 'Dark Mode' ]; then
     adb shell settings put secure ui_night_mode 2
     zenity --notification --text='Successfully Enabled Dark Mode'
