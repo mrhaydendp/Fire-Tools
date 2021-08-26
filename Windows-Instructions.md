@@ -1,12 +1,22 @@
 # Method #1 Native (Powershell)
 ## Drivers
-Download Fire Tablet drivers and or universal adb drivers 
+Download Fire Tablet drivers or universal adb drivers 
 - [Fire Tablet Drivers](https://developer.amazon.com/docs/fire-tablets/connecting-adb-to-device.html)
 - [Universal ADB Drivers](https://adb.clockworkmod.com/).
 
 ## ADB
 I recommend 15 seconds ADB Installer because it has basic drivers and system wide ADB
 - [15 seconds ADB Installer](https://forum.xda-developers.com/attachment.php?attachmentid=4623157&d=1540039037)
+
+## Perl
+Download Perl using winget or install from [here](https://strawberryperl.com/):
+```
+winget install StrawberryPerl.StrawberryPerl
+```
+
+## GNU Wget
+Download Wget then extract `wget.exe` to C:\Windows\System32
+- [Wget](https://github.com/webfolderio/wget-windows/releases/latest)
 
 ## Installation
 Go to Releases Page and download `Fire-Tools.Windows.zip`. Once Downloaded unzip and right click on the .ps1 file then click "Run with PowerShell"
