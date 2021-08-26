@@ -1,7 +1,0 @@
-1) Tap 'Install APKs'
-
-2) Select 'Internal File Picker'
-
-3) Check the .apkm files then press 'Select'
-
-4) Tap 'Install'
