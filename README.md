@@ -58,6 +58,7 @@ Things you should know:
 ## Credits
 Thank you to all these people's software included in this script!
 - [Google](https://www.android.com/)
+- [Circulosmeos](https://github.com/circulosmeos) (gdown script)
 - [Aefyr](https://github.com/Aefyr/SAI) (Split APKs Installer)
 - [TeslaCoil Software](https://play.google.com/store/apps/developer?id=TeslaCoil%20Software&hl=en_US&gl=US) (Nova Launcher)
 - [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair)
