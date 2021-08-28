@@ -91,20 +91,21 @@ $Rebloat.Add_Click({
     Write-Host "Successfully Enabled Bloat"
 })
 
-# Install Google services
+# Install Google services and display intructions
 $GoogleServices.Add_Click({
     Write-Host "Installing Google Services"
-    $gapps = Get-ChildItem ..\Gapps\*.apk
+    $gapps = Get-ChildItem .\Gapps\*.apk
     foreach ($array in $gapps) {
     adb install $array
     }
-    $split = Get-ChildItem ..\Gapps\*.apkm
+    $split = Get-ChildItem .\Gapps\*.apkm
     foreach ($array in $split) {
     adb push $array /sdcard/
     }
     adb shell monkey -p com.aefyr.sai 1
-    Write-Host 'When SAI opens tap on Install Apks then choose Internal file
-    picker and check the 2 .apkm files. Next click select then press install.'
+    $instructions = Get-Content '.\SAI Instructions.txt'
+    $wshell = New-Object -ComObject Wscript.Shell
+    $wshell.Popup("$instructions",0,"Done",0x0)
     Write-Host "Successfully Installed Google Services"
 })
 
@@ -126,7 +127,7 @@ $OTA.Add_Click({
 # Batch install
 $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
-    $custom = Get-ChildItem ..\Custom\*.apk
+    $custom = Get-ChildItem .\Custom\*.apk
     foreach ($array in $custom) {
     adb install $array
     }
