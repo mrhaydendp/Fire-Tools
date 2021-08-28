@@ -1,16 +1,5 @@
 #!/bin/powershell
 
-# Check & install apps package
-if (Test-Path '.\Gapps\Play Store.apkm'){
-    Write-Host Apps Package Already Installed
-}
-else{
-    Start-BitsTransfer -Source https://github.com/circulosmeos/gdown.pl/raw/master/gdown.pl -Destination .\
-    .\gdown.pl "https://drive.google.com/file/d/1X20WHXeqvJi23rN2GVwdOXsU9AyiI7Jy/view?usp=sharing" AppsPackage.zip
-    Expand-Archive -LiteralPath AppsPackage.zip -DestinationPath .\
-    Remove-Item .\AppsPackage.zip; Remove-Item .\gdown.pl
-}
-
 # Check ADB connection
 adb shell echo Device Connected
 
