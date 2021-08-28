@@ -1,15 +1,5 @@
 #!/bin/bash
 
-# Check if gapps and launchers are installed
-gappschk=$(ls ../Gapps | wc -l)
-
-if [ "$gappschk" = "0" ]; then
-    wget https://raw.githubusercontent.com/circulosmeos/gdown.pl/master/gdown.pl
-    chmod +x gdown.pl
-    ./gdown.pl https://drive.google.com/file/d/1nDHOW0l0D62bRZLZlbQ_aoOQVkQI5F2w/view ../Apps\ Package.tar.xz
-    cd .. && tar -xf Apps\ Package.tar.xz && rm Apps\ Package.tar.xz && cd Gui
-fi
-
 # Connection Check
 adb shell echo Device Connected
 
