@@ -38,7 +38,7 @@ For Linux, WSL, and macOS run this command in terminal:
 ```
 wget https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.tar.xz
 tar -xf Fire-Tools.tar.xz && rm Fire-Tools.tar.xz
-cd Fire-Tools/Gui && ./ui.sh
+cd Fire-Tools && ./ui.sh
 ```
 For Windows version go to the [Releases Page](https://github.com/mrhaydendp/Fire-Tools/releases)
 
@@ -48,7 +48,8 @@ You can also batch install apps by dropping `.apk` files in the Custom folder an
 
 ## Notes
 Things you should know:
-- You are allowed to fork this script and make your own for your use cases
+- Set timezone settings before debloat! 
+- You are allowed to fork this script and make your own for your use cases but you have to credit me and link back to this project
 - Google Apps are taken from [ApkMirror](https://www.apkmirror.com/) and are updated monthly
 - Debloat will disable all amazon apps except `Calculator`, `Camera`, `Clock`, `Files`, `Home`, and `Settings`
 - This should not void your warranty but, if unsure factory reset your device before sending it in.
@@ -57,6 +58,7 @@ Things you should know:
 ## Credits
 Thank you to all these people's software included in this script!
 - [Google](https://www.android.com/)
+- [Circulosmeos](https://github.com/circulosmeos) (gdown script)
 - [Aefyr](https://github.com/Aefyr/SAI) (Split APKs Installer)
 - [TeslaCoil Software](https://play.google.com/store/apps/developer?id=TeslaCoil%20Software&hl=en_US&gl=US) (Nova Launcher)
 - [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair)

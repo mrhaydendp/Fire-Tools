@@ -1,6 +1,6 @@
 # Method #1 Native (Powershell)
 ## Drivers
-Download Fire Tablet drivers and or universal adb drivers 
+Download Fire Tablet drivers or universal adb drivers 
 - [Fire Tablet Drivers](https://developer.amazon.com/docs/fire-tablets/connecting-adb-to-device.html)
 - [Universal ADB Drivers](https://adb.clockworkmod.com/).
 

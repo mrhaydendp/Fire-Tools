@@ -23,7 +23,7 @@ if [ "$tool" = 'Debloat' ]; then
 elif [ "$tool" = 'Google Services' ]; then
     ls ../Gapps/*.apk | xargs -I gapps adb install 'gapps'
     adb push ../Gapps/*.apkm /sdcard
-    adb shell monkey -p com.aefyr.sai 1
+    adb shell monkey -p com.aefyr.sai.fdroid 1
     zenity --text-info --title='SAI Instructions' --filename=SAI\ Instructions.txt
     zenity --notification --text='Successfully Installed Google Services'
     exec ./ui.sh
@@ -32,19 +32,21 @@ elif [ "$tool" = 'Google Services' ]; then
 elif [ "$tool" = 'Change Launcher' ]; then
     exec ./launcher.sh
 
+# Disable OTA updates
 elif [ "$tool" = 'Disable OTA' ]; then
     adb shell pm disable-user -k com.amazon.device.software.ota
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
     zenity --notification --text='Successfully Disabled OTA Updates'
     exec ./ui.sh
 
+# Enable system-wide dark mode (funky on Fire 7 9th gen)
 elif [ "$tool" = 'Dark Mode' ]; then
     adb shell settings put secure ui_night_mode 2
     zenity --notification --text='Successfully Enabled Dark Mode'
     exec ./ui.sh
 
+# Batch Install
 elif [ "$tool" = 'Batch Installer' ]; then
     ls ../Custom/*.apk | xargs -I custom adb install 'custom'
     zenity --notification --text='Successful Batch Install'
-    exec ./ui.sh
 fi
