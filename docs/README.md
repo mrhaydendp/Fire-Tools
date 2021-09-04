@@ -27,8 +27,8 @@ Then right click on `Fire-Tools.ps1` and open in powershell
 ## Setup
 - [Linux/macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md)
 - [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
-- [Fire Tablet](https://github.com/mrhaydendp/Fire-Tools/blob/main/docs/Fire%20Tablet%20Prep.md)
-- [Configuration Options](https://github.com/mrhaydendp/Fire-Tools/blob/main/docs/Config%20Options.md)
+- [Fire Tablet](./Fire%20Tablet%20Prep.md)
+- [Configuration Options](./Config%20Options.md)
 
 ## Notes
 Things you should know:
