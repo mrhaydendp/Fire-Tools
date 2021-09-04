@@ -1,14 +1,13 @@
-# Fire Tools
-Fire Tools is a powerful script that debloats and installs Google services to Amazon Fire Tablets to make them feel snappier and increase the ease of use. In addition it also allows you to install custom launchers such as Nova and Lawnchair. If you wish to add your own apps theres a custom batch installer. It's as easy as putting your `.apk` files into the Custom folder and clicking the Batch-Install button!
-
-**Note this tool requires USB Debbuging to be enabled**
-
 ## Supported Devices
 - Fire HD 10 (9th Gen, 11th Gen)
 - Fire HD 8 (8th Gen, 10th Gen)
 - Fire 7 (9th Gen)
 
-![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Fire-Tools.png)
+**Note this tool requires USB Debbuging to be enabled**
+
+Linux/macOS             |  Windows
+:-------------------------:|:-------------------------:
+![](../Pictures/Fire-Tools.png)  |  ![](../Pictures/Fire-Tools%20Windows.png)
 
 ## Setup
 Follow the instructions for your platform:
@@ -40,7 +39,13 @@ wget https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tool
 tar -xf Fire-Tools.tar.xz && rm Fire-Tools.tar.xz
 cd Fire-Tools && ./ui.sh
 ```
-For Windows version go to the [Releases Page](https://github.com/mrhaydendp/Fire-Tools/releases)
+
+For Windows open Powershell and paste these commands:
+```
+Start-BitsTransfer https://github.com/mrhaydendp/fire-tools/latest/download/Fire-Tools.Windows.zip
+Expand-Archive .\Fire-Tools.Windows.zip
+```
+Then right click on `Fire-Tools.ps1` and open in powershell
 
 ## Config Options
 This script is very customizable, you can whitelist apps so they're not disabled by deleting them from Debloat.txt.
