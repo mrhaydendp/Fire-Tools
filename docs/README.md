@@ -7,7 +7,7 @@
 
 Linux/macOS             |  Windows
 :-------------------------:|:-------------------------:
-![](../Pictures/Fire-Tools.png)  |  ![](../Pictures/Fire-Tools%20Windows.png)
+![](https://git.io/JuTh6)  |  ![](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Fire-Tools%20Windows.png?raw=true)
 
 ## Setup
 Follow the instructions for your platform:
