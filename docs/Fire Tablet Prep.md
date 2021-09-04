@@ -1,5 +1,6 @@
-## Fire Tablet Prep
-### Enable Developer Options & USB Debugging
+# Fire Tablet Prep
+
+## Enable Developer Options & USB Debugging
 Open `Settings` and go to `Device Options` then scroll down and and tap `About Fire Tablet`
 
 ![About](../Pictures/About%20Fire%20Tablet.png)
@@ -15,3 +16,11 @@ Press the back button and `Developer Options` will now be visible
 Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
 
 ![USB Debugging](../Pictures/USB%20Debugging.png)
+
+If you get "no permissions" when typing `adb devices` open `Default USB Configuration`
+
+![Default USB Config](../Pictures/Default%20USB%20Config.png)
+
+Now change it from `No data transfer` to `File Transfer`
+
+![File Transfer](../Pictures/File%20Transfer.png)
