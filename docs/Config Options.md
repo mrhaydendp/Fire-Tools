@@ -11,6 +11,6 @@ Hold `Ctrl` and click on packages to disable multiple packages
 ![Custom Debloat](../Pictures/Custom%20Debloat.png)
 
 ## Batch Install
-Add `.apk` files to Batch folder
+Add `.apk` files to Custom folder
 
 ![Batch](../Pictures/Batch.png)
