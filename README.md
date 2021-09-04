@@ -8,30 +8,9 @@ Fire Tools is a powerful script that debloats and installs Google services to Am
 - Fire HD 8 (8th Gen, 10th Gen)
 - Fire 7 (9th Gen)
 
-![Screenshot](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Fire-Tools.png)
-
-## Setup
-Follow the instructions for your platform:
-- [Linux/macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md)
-- [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
-
-## Fire Tablet Prep
-### Enable Developer Options & USB Debugging
-Open `Settings` and go to `Device Options` then scroll down and and tap `About Fire Tablet`
-
-![About](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/About%20Fire%20Tablet.png)
-
-Then tap `Serial Number` 7 times it should say you are 2 taps away after the 5th tap
-
-![Serial](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/2%20Taps%20Away.png)
-
-Press the back button and `Developer Options` will now be visible
-
-![Developer Options](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Developer%20Options.png)
-
-Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
-
-![USB Debugging](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/USB%20Debugging.png)
+Linux/macOS             |  Windows
+:-------------------------:|:-------------------------:
+![](./Pictures/Fire-Tools.png)  |  ![](./Pictures/Fire-Tools%20Windows.png)
 
 ## Installer Script
 For Linux, WSL, and macOS run this command in terminal:
@@ -40,11 +19,36 @@ wget https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tool
 tar -xf Fire-Tools.tar.xz && rm Fire-Tools.tar.xz
 cd Fire-Tools && ./ui.sh
 ```
-For Windows version go to the [Releases Page](https://github.com/mrhaydendp/Fire-Tools/releases)
 
-## Config Options
-This script is very customizable, you can whitelist apps so they're not disabled by deleting them from Debloat.txt.
-You can also batch install apps by dropping `.apk` files in the Custom folder and clicking Batch Install in the script.
+For Windows open Powershell and paste these commands:
+```
+Start-BitsTransfer https://github.com/mrhaydendp/fire-tools/latest/download/Fire-Tools.Windows.zip
+Expand-Archive .\Fire-Tools.Windows.zip
+```
+Then right click on `Fire-Tools.ps1` and open in powershell
+
+## Setup
+Follow the instructions for your platform:
+- [Linux/macOS](./Linux-Instructions.md)
+- [Windows](./Windows-Instructions.md)
+
+## Fire Tablet Prep
+### Enable Developer Options & USB Debugging
+Open `Settings` and go to `Device Options` then scroll down and and tap `About Fire Tablet`
+
+![About](./Pictures/About%20Fire%20Tablet.png)
+
+Then tap `Serial Number` 7 times it should say you are 2 taps away after the 5th tap
+
+![Serial](./Pictures/2%20Taps%20Away.png)
+
+Press the back button and `Developer Options` will now be visible
+
+![Developer Options](./Pictures/Developer%20Options.png)
+
+Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
+
+![USB Debugging](./Pictures/USB%20Debugging.png)
 
 ## Notes
 Things you should know:
