@@ -6,7 +6,7 @@ Add or remove package names from Debloat.txt
 ![Debloat](../Pictures/Debloat.png)
 
 ## Custom Debloat
-Hold `ctrl` and click on packages to disable multiple packages
+Hold `Ctrl` and click on packages to disable multiple packages
 
 ![Custom Debloat](../Pictures/Custom%20Debloat.png)
 
