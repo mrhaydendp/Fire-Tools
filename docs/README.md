@@ -40,10 +40,9 @@ Things you should know:
 - Although this is my tool, **I am not responsible for anything that may go wrong when using this script.**
 
 ## Credits
-Thank you to all these people's software included in this script!
-- [Google](https://www.android.com/)
-- [Circulosmeos](https://github.com/circulosmeos) (gdown script)
+Thank you to all these people!
+- [Google](https://www.android.com/) (Google Apps)
 - [Aefyr](https://github.com/Aefyr/SAI) (Split APKs Installer)
 - [TeslaCoil Software](https://play.google.com/store/apps/developer?id=TeslaCoil%20Software&hl=en_US&gl=US) (Nova Launcher)
-- [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair)
+- [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair) (Lawnchair Launcher)
 - [D0k3](https://github.com/d0k3) (For inspiration to make this script)
