@@ -9,29 +9,6 @@ Linux/macOS             |  Windows
 :-------------------------:|:-------------------------:
 ![](https://git.io/JuTh6)  |  ![](https://git.io/JuThy)
 
-## Setup
-Follow the instructions for your platform:
-- [Linux/macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md)
-- [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
-
-## Fire Tablet Prep
-### Enable Developer Options & USB Debugging
-Open `Settings` and go to `Device Options` then scroll down and and tap `About Fire Tablet`
-
-![About](../Pictures/About%20Fire%20Tablet.png)
-
-Then tap `Serial Number` 7 times it should say you are 2 taps away after the 5th tap
-
-![Serial](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/2%20Taps%20Away.png)
-
-Press the back button and `Developer Options` will now be visible
-
-![Developer Options](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Developer%20Options.png)
-
-Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
-
-![USB Debugging](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/USB%20Debugging.png)
-
 ## Installer Script
 For Linux, WSL, and macOS run this command in terminal:
 ```
@@ -47,9 +24,11 @@ Expand-Archive .\Fire-Tools.Windows.zip
 ```
 Then right click on `Fire-Tools.ps1` and open in powershell
 
-## Config Options
-This script is very customizable, you can whitelist apps so they're not disabled by deleting them from Debloat.txt.
-You can also batch install apps by dropping `.apk` files in the Custom folder and clicking Batch Install in the script.
+## Setup
+- [Linux/macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md)
+- [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
+- [Fire Tablet](https://github.com/mrhaydendp/Fire-Tools/blob/main/docs/Fire%20Tablet%20Prep.md)
+- [Configuration Options](https://github.com/mrhaydendp/Fire-Tools/blob/main/docs/Config%20Options.md)
 
 ## Notes
 Things you should know:
