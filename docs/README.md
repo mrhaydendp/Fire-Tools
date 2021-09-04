@@ -7,7 +7,7 @@
 
 Linux/macOS             |  Windows
 :-------------------------:|:-------------------------:
-![](https://git.io/JuTh6)  |  ![](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Fire-Tools%20Windows.png?raw=true)
+![](https://git.io/JuTh6)  |  ![](https://git.io/JuThy)
 
 ## Setup
 Follow the instructions for your platform:
@@ -18,7 +18,7 @@ Follow the instructions for your platform:
 ### Enable Developer Options & USB Debugging
 Open `Settings` and go to `Device Options` then scroll down and and tap `About Fire Tablet`
 
-![About](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/About%20Fire%20Tablet.png)
+![About](../Pictures/About%20Fire%20Tablet.png)
 
 Then tap `Serial Number` 7 times it should say you are 2 taps away after the 5th tap
 
