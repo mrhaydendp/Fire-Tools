@@ -13,4 +13,4 @@ Hold `Ctrl` and click on packages to disable multiple packages
 ## Batch Install
 Add `.apk` files to Custom folder
 
-![Batch](./Pictures/Batch.png)
+![Batch](./Pictures/Batch%20Install.png)
