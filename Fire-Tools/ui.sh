@@ -23,7 +23,7 @@ if [ "$tool" = 'Debloat' ]; then
 elif [ "$tool" = 'Google Services' ]; then
     ls ../Gapps/*.apk | xargs -I gapps adb install 'gapps'
     adb push ../Gapps/*.apkm /sdcard
-    adb shell monkey -p com.aefyr.sai.fdroid 1
+    adb shell monkey -p com.aefyr.sai 1
     zenity --text-info --title='SAI Instructions' --filename=SAI\ Instructions.txt
     zenity --notification --text='Successfully Installed Google Services'
     exec ./ui.sh
@@ -47,6 +47,6 @@ elif [ "$tool" = 'Dark Mode' ]; then
 
 # Batch Install
 elif [ "$tool" = 'Batch Installer' ]; then
-    ls ../Custom/*.apk | xargs -I custom adb install 'custom'
+    ls ../Batch/*.apk | xargs -I custom adb install 'custom'
     zenity --notification --text='Successful Batch Install'
 fi
