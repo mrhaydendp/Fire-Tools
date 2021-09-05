@@ -127,7 +127,7 @@ $OTA.Add_Click({
 # Batch install
 $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
-    $custom = Get-ChildItem .\Custom\*.apk
+    $custom = Get-ChildItem .\Batch\*.apk
     foreach ($array in $custom) {
     adb install $array
     }
