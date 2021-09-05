@@ -28,9 +28,9 @@ Expand-Archive .\Fire-Tools.Windows.zip
 Then right click on `Fire-Tools.ps1` and open in powershell
 
 ## Setup
-Follow the instructions for your platform:
 - [Linux/macOS](./Linux-Instructions.md)
 - [Windows](./Windows-Instructions.md)
+- [Config Options](./Config%20Options.md)
 
 ## Fire Tablet Prep
 ### Enable Developer Options & USB Debugging
