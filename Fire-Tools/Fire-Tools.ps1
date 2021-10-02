@@ -8,7 +8,7 @@ Add-Type -AssemblyName System.Windows.Forms
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools"
 $Form.ClientSize = New-Object System.Drawing.Point(340,250)
-$Form.BackColor = "#b8b8b8"
+$Form.BackColor = "Silver"
 
 $Debloat = New-Object System.Windows.Forms.Button
 $Debloat.Text = "Debloat"
