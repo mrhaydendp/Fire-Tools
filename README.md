@@ -54,7 +54,7 @@ Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that
 Things you should know:
 - Set timezone settings before debloat! 
 - You are allowed to fork this script and make your own for your use cases but you have to credit me and link back to this project
-- Google Apps are taken from [ApkMirror](https://www.apkmirror.com/) and are updated monthly
+- Google Apps are downloaded from [ApkMirror](https://www.apkmirror.com/) and are updated to the latest supported `.apk` or `.apkm`
 - Debloat will disable all amazon apps except `Calculator`, `Camera`, `Clock`, `Files`, `Home`, and `Settings`
 - This should not void your warranty but, if unsure factory reset your device before sending it in.
 - Although this is my tool, **I am not responsible for anything that may go wrong when using this script.**
