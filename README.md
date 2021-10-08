@@ -22,8 +22,8 @@ cd Fire-Tools && ./ui.sh
 
 For Windows open Powershell and paste these commands:
 ```
-Start-BitsTransfer https://github.com/mrhaydendp/fire-tools/latest/download/Fire-Tools.Windows.zip
-Expand-Archive .\Fire-Tools.Windows.zip
+Start-BitsTransfer https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.tar.xz
+tar -xf Fire-Tools.tar.xz
 ```
 Then right click on `Fire-Tools.ps1` and open in powershell
 
