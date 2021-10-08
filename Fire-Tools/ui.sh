@@ -59,4 +59,5 @@ elif [ "$tool" = "Apk Extractor" ]; then
 elif [ "$tool" = "Batch Installer" ]; then
     ls ./Batch/*.apk | xargs -I custom adb install "custom"
     zenity --notification --text="Successful Batch Install"
+    exec ./ui.sh
 fi

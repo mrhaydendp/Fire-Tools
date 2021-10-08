@@ -12,6 +12,7 @@ opt=$(zenity --list \
 # Enable Apps
 if [ "$opt" = "Enable" ]; then
     xargs -l adb shell pm enable < Debloat.txt
+    adb shell pm enable com.amazon.firelauncher
     zenity --notification --text="Successfully Enabled Debloated Packages"
 
 # Disable Apps
