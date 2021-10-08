@@ -22,7 +22,7 @@ elif [ "$opt" = "Disable" ]; then
 # List Packages & Disable Apps
 elif [ "$opt" = "Custom" ]; then
     adb shell pm list packages | cut -f 2 -d ":" > Packages.txt
-    list=$(cat CustomDisable.txt | xargs -l)
+    list=$(cat Packages.txt | xargs -l)
     disable=$(zenity --list --width=500 --height=400 --column=Packages --multiple $list)
     echo "$disable" | tr '|' '\n' > Packages.txt
     xargs -l adb shell pm disable-user -k < Packages.txt
