@@ -53,6 +53,7 @@ elif [ "$tool" = "Apk Extractor" ]; then
     Extract=$(zenity --list --width=500 --height=400 --column=Packages $list)
     adb shell pm path $Extract | cut -f 2 -d ":" > Packages.txt
     xargs -l adb pull < Packages.txt
+    exec ./ui.sh
 
 # Batch Install
 elif [ "$tool" = "Batch Installer" ]; then
