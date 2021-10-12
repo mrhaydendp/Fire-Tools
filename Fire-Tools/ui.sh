@@ -1,20 +1,38 @@
 #!/bin/bash
 
-# Connection Check
-adb shell echo Device Connected
+# Identify Device & List Model in Title Bar
+device=$(adb shell getprop ro.product.model)
+if [ "$device" = "KFMUWI" ] ; then
+    device="Fire Tools - Fire 7 (9th Gen)"
+
+elif [ "$device" = "KFKAWI" ] ; then
+    device="Fire Tools - Fire HD 8 (8th Gen)"
+
+elif [ "$device" = "KFONWI" ] ; then
+    device="Fire Tools - Fire HD 8 (10th Gen)"
+
+elif [ "$device" = "KFMAWI" ] ; then
+    device="Fire Tools - Fire HD 10 (9th Gen)"
+
+elif [ "$device" = "KFTRWI" ] ; then
+    device="Fire Tools - Fire HD 10 (11th Gen)"
+
+else
+    device="Fire Tools - Unsupported Device"
+fi
 
 # UI
 tool=$(zenity --list \
-  --title="Fire Tools" \
+  --title="$device" \
   --width=500 --height=400 \
   --column="Tool" --column="Description" \
     "Debloat" "Disable or restore Amazon apps" \
     "Google Services" "Installs Google Play" \
-    "Change Launcher" "Replaces Fire Launcher with Nova, Lawnchair, or your own" \
+    "Change Launcher" "Replaces Fire Launcher with Nova, Lawnchair, or Custom" \
     "Disable OTA" "Disables OTA Updates" \
     "Dark Mode" "Enables system wide dark mode" \
-    "Apk Extractor" "Extracts .apks from installed applicaations" \
-    "Batch Installer" "Installs all .apk files in the Custom folder")
+    "Apk Extractor" "Extracts .apks from installed applications" \
+    "Batch Installer" "Installs all .apks in the Batch folder")
 
 # Debloat Menu
 if [ "$tool" = "Debloat" ]; then
@@ -23,9 +41,9 @@ if [ "$tool" = "Debloat" ]; then
 # Install Google Services
 elif [ "$tool" = "Google Services" ]; then
     ls ./Gapps/*.apk | xargs -I gapps adb install "gapps"
-    adb push ./Gapps/*.apkm /sdcard
-    adb shell monkey -p com.aefyr.sai 1
-    zenity --text-info --title="SAI Instructions" --filename=SAI\ Instructions.txt
+    ls ./Gapps/*.apkm | xargs -I split unzip "split" -d ./"split0"
+    ls ./Gapps/*0/*.apk | xargs -I split adb install-multiple "split"
+    rm -rf ./Gapps/*0
     zenity --notification --text="Successfully Installed Google Services"
     exec ./ui.sh
 
@@ -53,11 +71,12 @@ elif [ "$tool" = "Apk Extractor" ]; then
     Extract=$(zenity --list --width=500 --height=400 --column=Packages $list)
     adb shell pm path $Extract | cut -f 2 -d ":" > Packages.txt
     xargs -l adb pull < Packages.txt
+    zenity --notification --text="Successfully Extracted Apk"
     exec ./ui.sh
 
 # Batch Install
 elif [ "$tool" = "Batch Installer" ]; then
-    ls ./Batch/*.apk | xargs -I custom adb install "custom"
+    ls ./Batch/*.apk | xargs -I batch adb install "batch"
     zenity --notification --text="Successful Batch Install"
     exec ./ui.sh
 fi

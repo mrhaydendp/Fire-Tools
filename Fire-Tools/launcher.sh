@@ -25,5 +25,5 @@ elif [ "$launcher" = "Custom" ]; then
     launcher=$(zenity --file-selection)
     adb install $launcher
 fi
-    zenity --notification --text="Successfully Set Custom Launcher"
+    zenity --notification --text="Successfully set Custom Launcher"
     exec ./ui.sh

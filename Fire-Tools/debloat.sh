@@ -13,7 +13,9 @@ opt=$(zenity --list \
 if [ "$opt" = "Enable" ]; then
     xargs -l adb shell pm enable < Debloat.txt
     adb shell pm enable com.amazon.firelauncher
-    zenity --notification --text="Successfully Enabled Debloated Packages"
+    adb shell pm enable com.amazon.device.software.ota
+    adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
+    zenity --notification --text="Successfully Enabled Fire OS Bloat"
 
 # Disable Apps
 elif [ "$opt" = "Disable" ]; then
@@ -22,7 +24,7 @@ elif [ "$opt" = "Disable" ]; then
 
 # List Packages & Disable Apps
 elif [ "$opt" = "Custom" ]; then
-    adb shell pm list packages | cut -f 2 -d ":" > Packages.txt
+    adb shell pm list packages -e | cut -f 2 -d ":" > Packages.txt
     list=$(cat Packages.txt | xargs -l)
     disable=$(zenity --list --width=500 --height=400 --column=Packages --multiple $list)
     echo "$disable" | tr '|' '\n' > Packages.txt
