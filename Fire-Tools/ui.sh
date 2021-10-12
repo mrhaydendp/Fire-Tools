@@ -42,7 +42,7 @@ if [ "$tool" = "Debloat" ]; then
 elif [ "$tool" = "Google Services" ]; then
     ls ./Gapps/*.apk | xargs -I gapps adb install "gapps"
     ls ./Gapps/*.apkm | xargs -I split unzip "split" -d ./"split0"
-    ls ./Gapps/*0/*.apk | xargs -I split adb install-multiple "split"
+    ls ./Gapps/*0/*.apk | xargs -I split adb install-multiple "split" 2>/dev/null
     rm -rf ./Gapps/*0
     zenity --notification --text="Successfully Installed Google Services"
     exec ./ui.sh
