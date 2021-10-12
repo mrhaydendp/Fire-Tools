@@ -3,27 +3,27 @@
 # Identify Device & List Model in Title Bar
 device=$(adb shell getprop ro.product.model)
 if [ "$device" = "KFMUWI" ] ; then
-    device="Fire Tools - Fire 7 (9th Gen)"
+    device="Fire 7 (9th Gen)"
 
 elif [ "$device" = "KFKAWI" ] ; then
-    device="Fire Tools - Fire HD 8 (8th Gen)"
+    device="Fire HD 8 (8th Gen)"
 
 elif [ "$device" = "KFONWI" ] ; then
-    device="Fire Tools - Fire HD 8 (10th Gen)"
+    device="Fire HD 8 (10th Gen)"
 
 elif [ "$device" = "KFMAWI" ] ; then
-    device="Fire Tools - Fire HD 10 (9th Gen)"
+    device="Fire HD 10 (9th Gen)"
 
 elif [ "$device" = "KFTRWI" ] ; then
-    device="Fire Tools - Fire HD 10 (11th Gen)"
+    device="Fire HD 10 (11th Gen)"
 
 else
-    device="Fire Tools - Unsupported Device"
+    device="Unsupported Device"
 fi
 
 # UI
 tool=$(zenity --list \
-  --title="$device" \
+  --title="Fire Tools - $device" \
   --width=500 --height=400 \
   --column="Tool" --column="Description" \
     "Debloat" "Disable or restore Amazon apps" \
