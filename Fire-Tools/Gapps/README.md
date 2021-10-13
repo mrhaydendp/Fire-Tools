@@ -4,4 +4,3 @@ Due to GitHub's 25MB upload limit and some apps being closed source I cannot upl
 - Google Play Services
 - Google Account Manager
 - Google Services Framework
-- [SAI (Split Apks Installer)](https://github.com/Aefyr/SAI)
