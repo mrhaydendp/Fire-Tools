@@ -84,11 +84,14 @@ $Debloat.Add_Click({
 # Enable Amazon apps
 $Rebloat.Add_Click({
     Write-Host "Enabling Bloat"
+    adb shell pm enable com.amazon.firelauncher
+    adb shell pm enable com.amazon.device.software.ota
+    adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
     $Enable = [IO.File]::ReadAllLines('.\Debloat.txt')
     foreach ($array in $Enable) {
     adb shell pm enable $array
     }
-    Write-Host "Successfully Enabled Bloat"
+    Write-Host "Successfully Enabled Fire OS Bloat"
 })
 
 # Install Google services and display intructions
@@ -98,14 +101,18 @@ $GoogleServices.Add_Click({
     foreach ($array in $gapps) {
     adb install $array
     }
-    $split = Get-ChildItem .\Gapps\*.apkm
+    Copy-Item '.\Gapps\Google Play Services.apkm' .\Gapps\Services.zip
+    Copy-Item '.\Gapps\Google Play Store.apkm' .\Gapps\Store.zip
+    $split = Get-ChildItem .\Gapps\*.zip
     foreach ($array in $split) {
-    adb push $array /sdcard/
+    Expand-Archive "$array" $array"0"
     }
-    adb shell monkey -p com.aefyr.sai 1
-    $instructions = Get-Content '.\SAI Instructions.txt'
-    $wshell = New-Object -ComObject Wscript.Shell
-    $wshell.Popup("$instructions",0,"Done",0x0)
+    $split = Get-ChildItem .\Gapps\*0\*.apk
+    foreach ($array in $split) {
+    adb install-multiple $array | Out-Null
+    }
+    Remove-Item .\Gapps\*.zip
+    Remove-Item -r .\Gapps\*0
     Write-Host "Successfully Installed Google Services"
 })
 
@@ -138,7 +145,7 @@ $Batch.Add_Click({
 $Nova.Add_Click({
     Write-Host "Changing Default Launcher"
     adb shell pm disable-user -k com.amazon.firelauncher
-    adb install Nova.apk
+    adb install '.\Nova Launcher.apk'
     Write-Host "Successfully Changed Default Launcher"
 })
 
@@ -146,7 +153,7 @@ $Nova.Add_Click({
 $Lawnchair.Add_Click({
     Write-Host "Changing Default Launcher"
     adb shell pm disable-user -k com.amazon.firelauncher
-    adb install Lawnchair.apk
+    adb install '.\Lawnchair V2.apk'
     Write-Host "Successfully Changed Default Launcher"
 })
 
