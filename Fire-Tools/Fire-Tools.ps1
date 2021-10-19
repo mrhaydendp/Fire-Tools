@@ -7,32 +7,50 @@ adb shell echo Device Connected
 Add-Type -AssemblyName System.Windows.Forms
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools"
-$Form.ClientSize = New-Object System.Drawing.Point(340,250)
+$Form.StartPosition = "CenterScreen"
+$Form.ClientSize = New-Object System.Drawing.Point(445,250)
 $Form.BackColor = "Silver"
 
+# Categories
+$Label = New-Object System.Windows.Forms.Label
+$Label.Text = "Debloat"
+$Label.Size = New-Object System.Drawing.Size(120,25)
+$Label.Location = New-Object System.Drawing.Size(35,15)
+$Label.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
+$Form.Controls.Add($Label)
+
+$Label2 = New-Object System.Windows.Forms.Label
+$Label2.Text = "Utilities"
+$Label2.Size = New-Object System.Drawing.Size(100,25)
+$Label2.Location = New-Object System.Drawing.Size(180,15)
+$Label2.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
+$Form.Controls.Add($Label2)
+
+$Label3 = New-Object System.Windows.Forms.Label
+$Label3.Text = "Custom Launchers"
+$Label3.Size = New-Object System.Drawing.Size(160,25)
+$Label3.Location = New-Object System.Drawing.Size(285,15)
+$Label3.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
+$Form.Controls.Add($Label3)
+
+# Debloat
 $Debloat = New-Object System.Windows.Forms.Button
 $Debloat.Text = "Debloat"
 $Debloat.Size = New-Object System.Drawing.Size(120,25)
-$Debloat.Location = New-Object System.Drawing.Size(5,10)
+$Debloat.Location = New-Object System.Drawing.Size(5,50)
 $Form.Controls.Add($Debloat)
 
 $Rebloat = New-Object System.Windows.Forms.Button
 $Rebloat.Text = "Undo Debloat"
 $Rebloat.Size = New-Object System.Drawing.Size(120,25)
-$Rebloat.Location = New-Object System.Drawing.Size(5,50)
+$Rebloat.Location = New-Object System.Drawing.Size(5,90)
 $Form.Controls.Add($Rebloat)
 
-$GoogleServices = New-Object System.Windows.Forms.Button
-$GoogleServices.Text = "Google Services"
-$GoogleServices.Size = New-Object System.Drawing.Size(120,25)
-$GoogleServices.Location = New-Object System.Drawing.Size(5,90)
-$Form.Controls.Add($GoogleServices)
-
-$Dark = New-Object System.Windows.Forms.Button
-$Dark.Text = "Dark Mode"
-$Dark.Size = New-Object System.Drawing.Size(120,25)
-$Dark.Location = New-Object System.Drawing.Size(5,130)
-$Form.Controls.Add($Dark)
+$CustomDebloat = New-Object System.Windows.Forms.Button
+$CustomDebloat.Text = "Custom"
+$CustomDebloat.Size = New-Object System.Drawing.Size(120,25)
+$CustomDebloat.Location = New-Object System.Drawing.Size(5,130)
+$Form.Controls.Add($CustomDebloat)
 
 $OTA = New-Object System.Windows.Forms.Button
 $OTA.Text = "Disable OTA"
@@ -40,35 +58,48 @@ $OTA.Size = New-Object System.Drawing.Size(120,25)
 $OTA.Location = New-Object System.Drawing.Size(5,170)
 $Form.Controls.Add($OTA)
 
+# Utilities
+$GoogleServices = New-Object System.Windows.Forms.Button
+$GoogleServices.Text = "Google Services"
+$GoogleServices.Size = New-Object System.Drawing.Size(120,25)
+$GoogleServices.Location = New-Object System.Drawing.Size(150,50)
+$Form.Controls.Add($GoogleServices)
+
+$Dark = New-Object System.Windows.Forms.Button
+$Dark.Text = "Dark Mode"
+$Dark.Size = New-Object System.Drawing.Size(120,25)
+$Dark.Location = New-Object System.Drawing.Size(150,90)
+$Form.Controls.Add($Dark)
+
 $Batch = New-Object System.Windows.Forms.Button
 $Batch.Text = "Batch Install"
 $Batch.Size = New-Object System.Drawing.Size(120,25)
-$Batch.Location = New-Object System.Drawing.Size(5,210)
+$Batch.Location = New-Object System.Drawing.Size(150,130)
 $Form.Controls.Add($Batch)
 
-$Label = New-Object System.Windows.Forms.Label
-$Label.Text = "Custom Launchers"
-$Label.Size = New-Object System.Drawing.Size(145,25)
-$Label.Location = New-Object System.Drawing.Size(150,15)
-$Label.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
-$Form.Controls.Add($Label)
+$ApkExtract = New-Object System.Windows.Forms.Button
+$ApkExtract.Text = "Apk Extractor"
+$ApkExtract.Size = New-Object System.Drawing.Size(120,25)
+$ApkExtract.Location = New-Object System.Drawing.Size(150,170)
+$Form.Controls.Add($ApkExtract)
 
+# Custom Launchers
 $Nova = New-Object System.Windows.Forms.Button
 $Nova.Text = "Nova"
 $Nova.Size = New-Object System.Drawing.Size(120,25)
-$Nova.Location = New-Object System.Drawing.Size(160,50)
+$Nova.Location = New-Object System.Drawing.Size(295,50)
 $Form.Controls.Add($Nova)
 
 $Lawnchair = New-Object System.Windows.Forms.Button
 $Lawnchair.Text = "Lawnchair"
 $Lawnchair.Size = New-Object System.Drawing.Size(120,25)
-$Lawnchair.Location = New-Object System.Drawing.Size(160,90)
+$Lawnchair.Location = New-Object System.Drawing.Size(295,90)
 $Form.Controls.Add($Lawnchair)
 
 $Custom = New-Object System.Windows.Forms.Button
 $Custom.Text = "Custom"
 $Custom.Size = New-Object System.Drawing.Size(120,25)
-$Custom.Location = New-Object System.Drawing.Size(160,130)
+$Custom.Location = New-Object System.Drawing.Size(295,130)
 $Form.Controls.Add($Custom)
 
 # Disable Amazon apps
@@ -92,6 +123,30 @@ $Rebloat.Add_Click({
     adb shell pm enable $array
     }
     Write-Host "Successfully Enabled Fire OS Bloat"
+})
+
+# Disable OTA updates
+$OTA.Add_Click({
+    Write-Host "Disabling OTA Updates"
+    adb shell pm disable-user -k com.amazon.device.software.ota
+    adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
+    Write-Host "Successfully Disabled OTA Updates"
+})
+
+# List Packages & Disable Ones in CustomDisable.txt
+$CustomDebloat.Add_Click({
+    Write-Host "Disabling Selected Packages"
+    adb shell pm list packages -e | Out-File Packages.txt
+    $disable = "Packages.txt"
+    Get-Content $disable | ForEach-Object {
+    $_.split(":")[1]
+    } | Out-File "CustomDisable (Keep All Packages You Want to Disable).txt"
+    Start-Process Notepad '.\CustomDisable (Keep All Packages You Want to Disable).txt' -NoNewWindow -Wait
+    $CustomDisable = [IO.File]::ReadAllLines('.\CustomDisable (Keep All Packages You Want to Disable).txt')
+    foreach ($array in $CustomDisable) {
+    adb shell pm disable-user -k $array
+    }
+    Write-Host "Successfully Disabled Packages"
 })
 
 # Install Google services and display intructions
@@ -123,14 +178,6 @@ $Dark.Add_Click({
     Write-Host "Successfully Enabled Dark Mode"
 })
 
-# Disable OTA updates
-$OTA.Add_Click({
-    Write-Host "Disabling OTA Updates"
-    adb shell pm disable-user -k com.amazon.device.software.ota
-    adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
-    Write-Host "Successfully Disabled OTA Updates"
-})
-
 # Batch install
 $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
@@ -139,6 +186,11 @@ $Batch.Add_Click({
     adb install $array
     }
     Write-Host "Successfully Installed All Apps"
+})
+
+# TBD
+$ApkExtract.Add_Click({
+    Write-Host "Extracting Selected Apk"
 })
 
 # Set Nova as default launcher
