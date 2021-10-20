@@ -1,11 +1,30 @@
 #!/bin/powershell
 
-# Check ADB connection
-adb shell echo Device Connected
+# Device Identifier
+$device = (adb shell getprop ro.product.model)
+if ( "KFMUWI" -eq $device ) {
+    $device = "Fire 7 (9th Gen)"
+}
+elseif ( "KFKAWI" -eq $device ) {
+    $device = "Fire HD 8 (8th Gen)"
+}
+elseif ( "KFONWI" -eq $device ) {
+    $device = "Fire HD 8 (10th Gen)"
+}
+elseif ( "KFMAWI" -eq $device ) {
+    $device = "Fire HD 10 (9th Gen)"
+}
+elseif ( "KFTRWI" -eq $device ) {
+    $device = "Fire HD 10 (11th Gen)"
+}
+else {
+    $device = "Unsupported Device"
+}
 
 # UI
+Add-Type -AssemblyName System.Windows.Forms
 $Form = New-Object System.Windows.Forms.Form
-$Form.Text = "Fire-Tools"
+$Form.Text = "Fire-Tools - $device"
 $Form.StartPosition = "CenterScreen"
 $Form.ClientSize = New-Object System.Drawing.Point(445,250)
 $Form.BackColor = "Silver"
