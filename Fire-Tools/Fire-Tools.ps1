@@ -4,7 +4,6 @@
 adb shell echo Device Connected
 
 # UI
-Add-Type -AssemblyName System.Windows.Forms
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools"
 $Form.StartPosition = "CenterScreen"
@@ -33,7 +32,7 @@ $Label3.Location = New-Object System.Drawing.Size(285,15)
 $Label3.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
 $Form.Controls.Add($Label3)
 
-# Debloat
+# Debloat Section
 $Debloat = New-Object System.Windows.Forms.Button
 $Debloat.Text = "Debloat"
 $Debloat.Size = New-Object System.Drawing.Size(120,25)
@@ -58,7 +57,7 @@ $OTA.Size = New-Object System.Drawing.Size(120,25)
 $OTA.Location = New-Object System.Drawing.Size(5,170)
 $Form.Controls.Add($OTA)
 
-# Utilities
+# Utilities Section
 $GoogleServices = New-Object System.Windows.Forms.Button
 $GoogleServices.Text = "Google Services"
 $GoogleServices.Size = New-Object System.Drawing.Size(120,25)
@@ -83,7 +82,7 @@ $ApkExtract.Size = New-Object System.Drawing.Size(120,25)
 $ApkExtract.Location = New-Object System.Drawing.Size(150,170)
 $Form.Controls.Add($ApkExtract)
 
-# Custom Launchers
+# Custom Launchers Section
 $Nova = New-Object System.Windows.Forms.Button
 $Nova.Text = "Nova"
 $Nova.Size = New-Object System.Drawing.Size(120,25)
@@ -133,18 +132,16 @@ $OTA.Add_Click({
     Write-Host "Successfully Disabled OTA Updates"
 })
 
-# List Packages & Disable Ones in CustomDisable.txt
+# List Enabled Packages & Disable Selections
 $CustomDebloat.Add_Click({
     Write-Host "Disabling Selected Packages"
     adb shell pm list packages -e | Out-File Packages.txt
-    $disable = "Packages.txt"
-    Get-Content $disable | ForEach-Object {
-    $_.split(":")[1]
-    } | Out-File "CustomDisable (Keep All Packages You Want to Disable).txt"
-    Start-Process Notepad '.\CustomDisable (Keep All Packages You Want to Disable).txt' -NoNewWindow -Wait
-    $CustomDisable = [IO.File]::ReadAllLines('.\CustomDisable (Keep All Packages You Want to Disable).txt')
-    foreach ($array in $CustomDisable) {
-    adb shell pm disable-user -k $array
+    $list = Get-Content ".\Packages.txt" | ForEach-Object {
+        $_.split(":")[1]
+    }
+    $disable = $list | Out-GridView -OutputMode Multiple
+    foreach ($array in $disable) {
+        adb shell pm disable-user -k $array
     }
     Write-Host "Successfully Disabled Packages"
 })
@@ -188,9 +185,19 @@ $Batch.Add_Click({
     Write-Host "Successfully Installed All Apps"
 })
 
-# TBD
+# List Packages & Extract Selected
 $ApkExtract.Add_Click({
-    Write-Host "Extracting Selected Apk"
+    adb shell pm list packages | Out-File Packages.txt
+    $list = Get-Content ".\Packages.txt" | ForEach-Object {
+        $_.split(":")[1]
+    }
+    $Extract = $list | Out-GridView -OutputMode Single
+    adb shell pm path $Extract | Out-File .\Packages.txt
+    $Extract = Get-Content ".\Packages.txt" | ForEach-Object {
+        $_.split(":")[1]
+    }
+    adb pull $Extract
+    Write-Host "Extracted Selected Apk"
 })
 
 # Set Nova as default launcher
