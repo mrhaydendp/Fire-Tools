@@ -20,6 +20,9 @@ if [ "$opt" = "Enable" ]; then
 # Disable Apps
 elif [ "$opt" = "Disable" ]; then
     xargs -l adb shell pm disable-user -k < Debloat.txt
+    adb shell settings put global window_animation_scale 0.50
+    adb shell settings put global transition_animation_scale 0.50
+    adb shell settings put global animator_duration_scale 0.50
     zenity --notification --text="Successfully Debloated Fire OS"
 
 # List Packages & Disable Apps
