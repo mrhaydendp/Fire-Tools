@@ -127,19 +127,22 @@ $Debloat.Add_Click({
     foreach ($array in $Disable) {
     adb shell pm disable-user -k $array
     }
+    adb shell settings put global window_animation_scale 0.50
+    adb shell settings put global transition_animation_scale 0.50
+    adb shell settings put global animator_duration_scale 0.50
     Write-Host "Successfully Debloated Fire OS"
 })
 
 # Enable Amazon apps
 $Rebloat.Add_Click({
     Write-Host "Enabling Bloat"
-    adb shell pm enable com.amazon.firelauncher
-    adb shell pm enable com.amazon.device.software.ota
-    adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
     $Enable = [IO.File]::ReadAllLines('.\Debloat.txt')
     foreach ($array in $Enable) {
     adb shell pm enable $array
     }
+    adb shell pm enable com.amazon.firelauncher
+    adb shell pm enable com.amazon.device.software.ota
+    adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
     Write-Host "Successfully Enabled Fire OS Bloat"
 })
 
