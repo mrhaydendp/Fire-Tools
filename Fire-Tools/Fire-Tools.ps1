@@ -132,6 +132,9 @@ $Debloat.Add_Click({
     adb shell settings put secure usage_metrics_marketing_enabled 0
     adb shell settings put secure USAGE_METRICS_UPLOAD_ENABLED 0
     adb shell settings put secure advertising_id null
+    Write-Host "Blocking Ads With Adguard DNS"
+    adb shell settings put global private_dns_mode hostname
+    adb shell settings put global private_dns_specifier dns.adguard.com
     Write-Host "Disabling Lockscreen Ads"
     adb shell settings put global LOCKSCREEN_AD_ENABLED 0
     Write-Host "Disabling Location"
