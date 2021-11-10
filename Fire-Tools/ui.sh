@@ -43,9 +43,9 @@ elif [ "$tool" = "Google Services" ]; then
     ls ./Gapps/*.apk | xargs -I gapps adb install "gapps"
     for apkm in ./Gapps/*.apkm
     do
-        unzip "$apkm" -d ./split
-        adb install-multiple ./split/*.apk
-        rm -rf ./split
+        unzip "$apkm" -d ./Split
+        adb install-multiple ./Split/*.apk
+        rm -rf ./Split
     done
     zenity --notification --text="Successfully Installed Google Services"
     exec ./ui.sh
