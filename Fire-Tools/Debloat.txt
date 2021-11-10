@@ -34,7 +34,6 @@ com.amazon.dp.fbcontacts
 com.amazon.pm
 com.amazon.ags.app
 com.svox.pico
-amazon.speech.audiostreamproviderservice
 com.amazon.client.metrics.api
 com.amazon.cardinal
 com.amazon.kor.demo
@@ -93,7 +92,6 @@ com.android.musicfx
 com.amazon.tv.ottssocompanionapp
 com.android.music
 com.amazon.platform
-com.amazon.kindle.cms
 com.amazon.advertisingidsettings
 com.amazon.venezia
 com.amazon.ods.kindleconnect
