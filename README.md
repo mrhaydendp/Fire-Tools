@@ -7,7 +7,9 @@ Fire Tools is a powerful script that debloats and installs Google services to Am
 - Disable Amazon bloat
 - Custom disable
 - Disable telemetry
+- Block ads with Adguard DNS
 - System tweaks for performance
+- Disable location
 - Custom launchers
 - Gapps installer
 - System wide dark mode
