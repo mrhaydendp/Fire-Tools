@@ -239,16 +239,16 @@ $ApkExtract.Add_Click({
 # Set Nova as default launcher
 $Nova.Add_Click({
     Write-Host "Changing Default Launcher"
-    adb shell pm disable-user -k com.amazon.firelauncher
     adb install '.\Nova Launcher.apk'
+    adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
 })
 
 # Set Lawnchair as default launcher
 $Lawnchair.Add_Click({
     Write-Host "Changing Default Launcher"
-    adb shell pm disable-user -k com.amazon.firelauncher
     adb install '.\Lawnchair V2.apk'
+    adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
 })
 
