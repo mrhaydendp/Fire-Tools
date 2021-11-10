@@ -185,22 +185,20 @@ $CustomDebloat.Add_Click({
 # Install Google services and display intructions
 $GoogleServices.Add_Click({
     Write-Host "Installing Google Services"
-    $gapps = Get-ChildItem .\Gapps\*.apk
+    $gapps = (Get-ChildItem .\Gapps\*.apk)
     foreach ($array in $gapps) {
     adb install $array
     }
-    Copy-Item '.\Gapps\Google Play Services.apkm' .\Gapps\Services.zip
-    Copy-Item '.\Gapps\Google Play Store.apkm' .\Gapps\Store.zip
-    $split = Get-ChildItem .\Gapps\*.zip
-    foreach ($array in $split) {
-    Expand-Archive "$array" $array"0"
+    $split = (Get-ChildItem .\Gapps\*.apkm)
+    foreach($array in $split)
+    {
+        Copy-Item $array -Destination $array".zip"
+        Expand-Archive $array".zip" -DestinationPath .\Split
+        $file = (Get-ChildItem .\Split\*.apk)
+        adb install-multiple $file
+        Remove-Item -r .\Split
+        Remove-Item $array".zip"
     }
-    $split = Get-ChildItem .\Gapps\*0\*.apk
-    foreach ($array in $split) {
-    adb install-multiple $array | Out-Null
-    }
-    Remove-Item .\Gapps\*.zip
-    Remove-Item -r .\Gapps\*0
     Write-Host "Successfully Installed Google Services"
 })
 
@@ -214,7 +212,7 @@ $Dark.Add_Click({
 # Batch install
 $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
-    $custom = Get-ChildItem .\Batch\*.apk
+    $custom = (Get-ChildItem .\Batch\*.apk)
     foreach ($array in $custom) {
     adb install $array
     }
