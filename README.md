@@ -3,14 +3,26 @@ Fire Tools is a powerful script that debloats and installs Google services to Am
 
 **Note this tool requires USB Debbuging to be enabled**
 
+## Features
+- Disable Amazon bloat
+- Custom disable
+- Disable telemetry
+- System tweaks for performance
+- Custom launchers
+- Gapps installer
+- System wide dark mode
+- Batch installer
+- Disable OTA updates
+- Extract apks
+
 ## Supported Devices
 - Fire HD 10 (9th Gen, 11th Gen)
 - Fire HD 8 (8th Gen, 10th Gen)
 - Fire 7 (9th Gen)
 
-Linux/macOS             |  Windows
-:-------------------------:|:-------------------------:
-![](./Pictures/Fire-Tools.png)  |  ![](./Pictures/Fire-Tools%20Windows.png)
+Linux/macOS                     | Windows
+:------------------------------:|:-------------------------:
+![](./Pictures/Fire-Tools.png)  | ![](./Pictures/Fire-Tools%20Windows.png)
 
 ## Installer Script
 For Linux, WSL, and macOS run this command in terminal:
@@ -20,12 +32,7 @@ tar -xf Fire-Tools.tar.xz && rm Fire-Tools.tar.xz
 cd Fire-Tools && ./ui.sh
 ```
 
-For Windows open Powershell and paste these commands:
-```
-Start-BitsTransfer https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.tar.xz
-tar -xf Fire-Tools.tar.xz
-```
-Then right click on `Fire-Tools.ps1` and open in powershell
+For Windows go to [Releases Page](https://github.com/mrhaydendp/Fire-Tools/releases/latest) and download latest version then extract with 7-zip. After the file is extracted open the `Fire-Tools` folder & right click on `Fire-Tools.ps1` and open in powershell.
 
 ## Setup
 - [Linux/macOS](./Linux-Instructions.md)
@@ -62,7 +69,6 @@ Things you should know:
 ## Credits
 Thank you to all these people's software included in this script!
 - [Google](https://www.android.com/) (Gapps)
-- [Aefyr](https://github.com/Aefyr/SAI) (Split APKs Installer)
 - [TeslaCoil Software](https://play.google.com/store/apps/developer?id=TeslaCoil%20Software&hl=en_US&gl=US) (Nova Launcher)
-- [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair)
+- [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair) (Lawnchair)
 - [D0k3](https://github.com/d0k3) (For inspiration to make this script)
