@@ -1,25 +1,13 @@
 #!/bin/bash
 
-# Identify Device & List Model in Title Bar
+# Identify Device & List Model
 device=$(adb shell getprop ro.product.model)
-if [ "$device" = "KFMUWI" ] ; then
-    device="Fire 7 (9th Gen)"
-
-elif [ "$device" = "KFKAWI" ] ; then
-    device="Fire HD 8 (8th Gen)"
-
-elif [ "$device" = "KFONWI" ] ; then
-    device="Fire HD 8 (10th Gen)"
-
-elif [ "$device" = "KFMAWI" ] ; then
-    device="Fire HD 10 (9th Gen)"
-
-elif [ "$device" = "KFTRWI" ] ; then
-    device="Fire HD 10 (11th Gen)"
-
-else
-    device="Unsupported Device"
-fi
+    [ "$device" = "KFMUWI" ] && device="Fire 7 (9th Gen)" && sup="1"
+    [ "$device" = "KFKAWI" ] && device="Fire HD 8 (8th Gen)" && sup="1"
+    [ "$device" = "KFONWI" ] && device="Fire HD 8 (10th Gen)" && sup="1"
+    [ "$device" = "KFMAWI" ] && device="Fire HD 10 (9th Gen)" && sup="1"
+    [ "$device" = "KFTRWI" ] && device="Fire HD 10 (11th Gen)" && sup="1"
+    [ "$sup" != "1" ] && device="Unsupported Device"
 
 # UI
 tool=$(zenity --list \
@@ -35,12 +23,11 @@ tool=$(zenity --list \
     "Batch Installer" "Installs all .apks in the Batch folder")
 
 # Debloat Menu
-if [ "$tool" = "Debloat" ]; then
-    exec ./debloat.sh
+[ "$tool" = "Debloat" ] && exec ./debloat.sh
 
 # Install Google Services
-elif [ "$tool" = "Google Services" ]; then
-    ls ./Gapps/*.apk | xargs -I gapps adb install "gapps"
+if [ "$tool" = "Google Services" ]; then
+    ls ./Gapps/*.apk | xargs -l adb install
     for apkm in ./Gapps/*.apkm
     do
         unzip "$apkm" -d ./Split
@@ -49,37 +36,34 @@ elif [ "$tool" = "Google Services" ]; then
     done
     zenity --notification --text="Successfully Installed Google Services"
     exec ./ui.sh
+fi
 
-# Launcher Menu
-elif [ "$tool" = "Change Launcher" ]; then
-    exec ./launcher.sh
+# Custom Launcher Menu
+[ "$tool" = "Change Launcher" ] && exec ./launcher.sh
 
 # Disable OTA Updates
-elif [ "$tool" = "Disable OTA" ]; then
-    adb shell pm disable-user -k com.amazon.device.software.ota
-    adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
-    zenity --notification --text="Successfully Disabled OTA Updates"
+[ "$tool" = "Disable OTA" ] &&
+    adb shell pm disable-user -k com.amazon.device.software.ota &&
+    adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota &&
+    zenity --notification --text="Successfully Disabled OTA Updates" &&
     exec ./ui.sh
 
 # Enable System-Wide Dark Mode (Funky on Fire 7 9th Gen)
-elif [ "$tool" = "Dark Mode" ]; then
-    adb shell settings put secure ui_night_mode 2
-    zenity --notification --text="Successfully Enabled Dark Mode"
+[ "$tool" = "Dark Mode" ] &&
+    adb shell settings put secure ui_night_mode 2 &&
+    zenity --notification --text="Successfully Enabled Dark Mode" &&
     exec ./ui.sh
 
 # Select Package from List & Extract Package's APK file(s)
-elif [ "$tool" = "Apk Extractor" ]; then
-    adb shell pm list packages | cut -f 2 -d ":" > Packages.txt
-    list=$(cat Packages.txt | xargs -l)
-    Extract=$(zenity --list --width=500 --height=400 --column=Packages $list)
-    adb shell pm path $Extract | cut -f 2 -d ":" > Packages.txt
-    xargs -l adb pull < Packages.txt
-    zenity --notification --text="Successfully Extracted Apk"
+[ "$tool" = "Apk Extractor" ] &&
+    list=$(adb shell pm list packages | cut -f 2 -d ":" > Packages.txt && cat Packages.txt | xargs -l) &&
+    package=$(zenity --list --width=500 --height=400 --column=Packages $list) &&
+    extract=$(adb shell pm path "$package" | cut -f 2 -d ":" > Packages.txt && cat Packages.txt | xargs -l) &&
+    adb pull "$extract" &&
+    zenity --notification --text="Successfully Extracted Apk" &&
     exec ./ui.sh
 
 # Batch Install
-elif [ "$tool" = "Batch Installer" ]; then
-    ls ./Batch/*.apk | xargs -I batch adb install "batch"
-    zenity --notification --text="Successful Batch Install"
+[ "$tool" = "Batch Installer" ] &&
+    ls ./Batch/*.apk | xargs -l adb install &&
     exec ./ui.sh
-fi
