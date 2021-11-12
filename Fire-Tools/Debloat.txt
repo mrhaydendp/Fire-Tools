@@ -1,8 +1,6 @@
 com.amazon.photos
 com.amazon.photos.importer
-com.amazon.alexa.youtube.app
 com.amazon.android.marketplace
-com.amazon.whisperplay.service.install
 com.amazon.device.sync.sdk.internal
 com.android.bookmarkprovider
 com.android.calllogbackup

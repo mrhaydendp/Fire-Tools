@@ -10,20 +10,21 @@ launcher=$(zenity --list \
     "Custom")
 
 # Install Nova
-if [ "$launcher" = "Nova" ]; then
-    adb install ./$launcher*.apk
-    adb shell pm disable-user -k com.amazon.firelauncher
+[ "$launcher" = "Nova" ] &&
+    adb install ./$launcher*.apk &&
 
 # Install Lawnchair
-elif [ "$launcher" = "Lawnchair" ]; then
-    adb install ./$launcher*.apk
-    adb shell pm disable-user -k com.amazon.firelauncher
+[ "$launcher" = "Lawnchair" ] &&
+    adb install ./$launcher*.apk &&
 
 # Install Custom Launcher
-elif [ "$launcher" = "Custom" ]; then
-    launcher=$(zenity --file-selection)
-    adb install $launcher
-    adb shell pm disable-user -k com.amazon.firelauncher
-fi
+[ "$launcher" = "Custom" ] &&
+    launcher=$(zenity --file-selection) &&
+    adb install $launcher &&
+
+# If Custom Launcher Selected Disable File Launcher
+[ "$launcher" != "" ] &&
+    echo adb shell pm disable-user -k com.amazon.firelauncher &&
     zenity --notification --text="Successfully set Custom Launcher"
-    exec ./ui.sh
+
+exec ./ui.sh

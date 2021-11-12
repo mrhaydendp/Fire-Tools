@@ -20,7 +20,8 @@ tool=$(zenity --list \
     "Disable OTA" "Disables OTA Updates" \
     "Dark Mode" "Enables system wide dark mode" \
     "Apk Extractor" "Extracts .apks from installed applications" \
-    "Batch Installer" "Installs all .apks in the Batch folder")
+    "Batch Installer" "Installs all .apks in the Batch folder" \
+    "Update" "Grab the Fire-Tools scripts")
 
 # Debloat Menu
 [ "$tool" = "Debloat" ] && exec ./debloat.sh
@@ -56,10 +57,10 @@ fi
 
 # Select Package from List & Extract Package's APK file(s)
 [ "$tool" = "Apk Extractor" ] &&
-    list=$(adb shell pm list packages | cut -f 2 -d ":" > Packages.txt && cat Packages.txt | xargs -l) &&
+    list=$(adb shell pm list packages | cut -f 2 -d ":" | xargs -l) &&
     package=$(zenity --list --width=500 --height=400 --column=Packages $list) &&
-    extract=$(adb shell pm path "$package" | cut -f 2 -d ":" > Packages.txt && cat Packages.txt | xargs -l) &&
-    adb pull "$extract" &&
+    adb shell pm path "$package" | cut -f 2 -d ":" > Packages.txt &&
+    xargs -l adb pull < Packages.txt &&
     zenity --notification --text="Successfully Extracted Apk" &&
     exec ./ui.sh
 
@@ -67,3 +68,10 @@ fi
 [ "$tool" = "Batch Installer" ] &&
     ls ./Batch/*.apk | xargs -l adb install &&
     exec ./ui.sh
+
+# Updater Tool
+[ "$tool" = "Update" ] &&
+    curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/ui.sh > ui.sh &&
+    curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/debloat.sh > debloat.sh &&
+    curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/launcher.sh > launcher.sh &&
+    curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt > Debloat.txt
