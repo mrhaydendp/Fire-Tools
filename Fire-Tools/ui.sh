@@ -71,7 +71,7 @@ fi
 
 # Updater Tool
 if [ "$tool" = "Update" ]; then
-    changelog=$(echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/commit/main | sed '/<pre>/,/pre>/!d;//d' | grep "-" && echo "- More at https://github.com/mrhaydendp/Fire-Tools/commit/main")
+    changelog=$(echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/commit/main | sed '/<pre>/,/pre>/!d;//d' | grep "-" && echo "- See Full Changelog at https://github.com/mrhaydendp/Fire-Tools/commit/main")
     echo "$changelog"
     for sh in *.sh
     do
