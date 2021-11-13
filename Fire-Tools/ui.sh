@@ -70,8 +70,12 @@ fi
     exec ./ui.sh
 
 # Updater Tool
-[ "$tool" = "Update" ] &&
-    curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/ui.sh > ui.sh &&
-    curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/debloat.sh > debloat.sh &&
-    curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/launcher.sh > launcher.sh &&
+if [ "$tool" = "Update" ]; then
+    changelog=$(echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/commit/main | sed '/<pre>/,/pre>/!d;//d' | grep "-" && echo "- More at https://github.com/mrhaydendp/Fire-Tools/commit/main")
+    echo "$changelog"
+    for sh in *.sh
+    do
+        curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$sh > $sh
+    done
     curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt > Debloat.txt
+fi
