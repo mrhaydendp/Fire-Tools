@@ -71,11 +71,13 @@ fi
 
 # Updater Tool
 if [ "$tool" = "Update" ]; then
-    changelog=$(echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/commit/main | sed '/<pre>/,/pre>/!d;//d' | grep "-" && echo "- See Full Changelog at https://github.com/mrhaydendp/Fire-Tools/commit/main")
-    echo "$changelog"
+    echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/commit/main | sed '/<pre>/,/pre>/!d;//d' ; echo "- See Full Changelog at https://github.com/mrhaydendp/Fire-Tools/commit/main"
     for sh in *.sh
     do
-        curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$sh > $sh
+        echo "Updating $sh"
+        curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$sh > "$sh"
     done
+    echo "Updating Debloat List"
     curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt > Debloat.txt
+    exec ./ui.sh
 fi
