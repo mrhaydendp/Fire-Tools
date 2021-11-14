@@ -101,6 +101,12 @@ $ApkExtract.Size = New-Object System.Drawing.Size(120,25)
 $ApkExtract.Location = New-Object System.Drawing.Size(150,170)
 $Form.Controls.Add($ApkExtract)
 
+$Update = New-Object System.Windows.Forms.Button
+$Update.Text = "Update Fire-Tools"
+$Update.Size = New-Object System.Drawing.Size(120,25)
+$Update.Location = New-Object System.Drawing.Size(150,210)
+$Form.Controls.Add($Update)
+
 # Custom Launchers Section
 $Nova = New-Object System.Windows.Forms.Button
 $Nova.Text = "Nova"
@@ -235,6 +241,15 @@ $ApkExtract.Add_Click({
     }
     adb pull $Extract
     Write-Host "Extracted Selected Apk"
+})
+
+# Grab Latest Fire-Tools Scripts
+$Update.Add_Click({
+    Write-Host "Updating Debloat List"
+    Start-BitsTransfer https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt
+    Write-Host "Updating Fire-Tools"
+    Start-BitsTransfer https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Fire-Tools.ps1
+    Write-Host "Please Relaunch Application"
 })
 
 # Set Nova as default launcher
