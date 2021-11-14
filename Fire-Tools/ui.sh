@@ -21,7 +21,7 @@ tool=$(zenity --list \
     "Dark Mode" "Enables system wide dark mode" \
     "Apk Extractor" "Extracts .apks from installed applications" \
     "Batch Installer" "Installs all .apks in the Batch folder" \
-    "Update" "Grab the Fire-Tools scripts")
+    "Update" "Grabs the latest Fire-Tools scripts")
 
 # Debloat Menu
 [ "$tool" = "Debloat" ] && exec ./debloat.sh
