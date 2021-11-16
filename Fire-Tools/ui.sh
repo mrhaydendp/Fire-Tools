@@ -28,7 +28,7 @@ tool=$(zenity --list \
 
 # Install Google Services
 if [ "$tool" = "Google Services" ]; then
-    ls ./Gapps/*.apk | xargs -l adb install
+    find ./Gapps/*.apk | xargs -l adb install
     for apkm in ./Gapps/*.apkm
     do
         unzip "$apkm" -d ./Split
@@ -66,16 +66,16 @@ fi
 
 # Batch Install
 [ "$tool" = "Batch Installer" ] &&
-    ls ./Batch/*.apk | xargs -l adb install &&
+    find ./Batch/*.apk | xargs -l adb install &&
     exec ./ui.sh
 
 # Updater Tool
 if [ "$tool" = "Update" ]; then
-    echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/commit/main | sed '/<pre>/,/pre>/!d;//d' ; echo "- See Full Changelog at https://github.com/mrhaydendp/Fire-Tools/commit/main"
+    echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md | grep -e "- "
     for sh in *.sh
     do
         echo "Updating $sh"
-        curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$sh > "$sh"
+        curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/"$sh" > "$sh"
     done
     echo "Updating Debloat List"
     curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt > Debloat.txt
