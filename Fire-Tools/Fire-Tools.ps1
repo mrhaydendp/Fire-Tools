@@ -23,108 +23,129 @@ else {
 
 # UI
 Add-Type -AssemblyName System.Windows.Forms
+[System.Windows.Forms.Application]::EnableVisualStyles()
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools - $device"
 $Form.StartPosition = "CenterScreen"
-$Form.ClientSize = New-Object System.Drawing.Point(445,250)
+$Form.ClientSize = New-Object System.Drawing.Point(715,400)
 $Form.BackColor = "Silver"
 
 # Categories
 $Label = New-Object System.Windows.Forms.Label
 $Label.Text = "Debloat"
-$Label.Size = New-Object System.Drawing.Size(120,25)
-$Label.Location = New-Object System.Drawing.Size(35,15)
-$Label.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
+$Label.Size = New-Object System.Drawing.Size(120,30)
+$Label.Location = New-Object System.Drawing.Size(60,15)
+$Label.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
 $Form.Controls.Add($Label)
 
 $Label2 = New-Object System.Windows.Forms.Label
 $Label2.Text = "Utilities"
-$Label2.Size = New-Object System.Drawing.Size(100,25)
-$Label2.Location = New-Object System.Drawing.Size(180,15)
-$Label2.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
+$Label2.Size = New-Object System.Drawing.Size(120,30)
+$Label2.Location = New-Object System.Drawing.Size(310,15)
+$Label2.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
+$Form.Controls.Add($Label2)
+
+$Label2 = New-Object System.Windows.Forms.Label
+$Label2.Text = "Custom Launchers"
+$Label2.Size = New-Object System.Drawing.Size(220,30)
+$Label2.Location = New-Object System.Drawing.Size(500,15)
+$Label2.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
 $Form.Controls.Add($Label2)
 
 $Label3 = New-Object System.Windows.Forms.Label
-$Label3.Text = "Custom Launchers"
-$Label3.Size = New-Object System.Drawing.Size(160,25)
-$Label3.Location = New-Object System.Drawing.Size(285,15)
-$Label3.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',12)
+$Label3.Text = "Miscellaneous"
+$Label3.Size = New-Object System.Drawing.Size(170,30)
+$Label3.Location = New-Object System.Drawing.Size(275,260)
+$Label3.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
 $Form.Controls.Add($Label3)
 
-# Debloat Section
+# Debloat Section Buttons
 $Debloat = New-Object System.Windows.Forms.Button
 $Debloat.Text = "Debloat"
-$Debloat.Size = New-Object System.Drawing.Size(120,25)
-$Debloat.Location = New-Object System.Drawing.Size(5,50)
+$Debloat.Size = New-Object System.Drawing.Size(180,38)
+$Debloat.Location = New-Object System.Drawing.Size(15,60)
 $Form.Controls.Add($Debloat)
 
 $Rebloat = New-Object System.Windows.Forms.Button
 $Rebloat.Text = "Undo Debloat"
-$Rebloat.Size = New-Object System.Drawing.Size(120,25)
-$Rebloat.Location = New-Object System.Drawing.Size(5,90)
+$Rebloat.Size = New-Object System.Drawing.Size(180,38)
+$Rebloat.Location = New-Object System.Drawing.Size(15,110)
 $Form.Controls.Add($Rebloat)
 
-$CustomDebloat = New-Object System.Windows.Forms.Button
-$CustomDebloat.Text = "Custom"
-$CustomDebloat.Size = New-Object System.Drawing.Size(120,25)
-$CustomDebloat.Location = New-Object System.Drawing.Size(5,130)
-$Form.Controls.Add($CustomDebloat)
-
 $OTA = New-Object System.Windows.Forms.Button
-$OTA.Text = "Disable OTA"
-$OTA.Size = New-Object System.Drawing.Size(120,25)
-$OTA.Location = New-Object System.Drawing.Size(5,170)
+$OTA.Text = "Disable OTA Updates"
+$OTA.Size = New-Object System.Drawing.Size(180,38)
+$OTA.Location = New-Object System.Drawing.Size(15,160)
 $Form.Controls.Add($OTA)
 
-# Utilities Section
+$CustomDebloat = New-Object System.Windows.Forms.Button
+$CustomDebloat.Text = "Custom Debloat"
+$CustomDebloat.Size = New-Object System.Drawing.Size(180,38)
+$CustomDebloat.Location = New-Object System.Drawing.Size(15,210)
+$Form.Controls.Add($CustomDebloat)
+
+# Utilities Section Buttons
 $GoogleServices = New-Object System.Windows.Forms.Button
-$GoogleServices.Text = "Google Services"
-$GoogleServices.Size = New-Object System.Drawing.Size(120,25)
-$GoogleServices.Location = New-Object System.Drawing.Size(150,50)
+$GoogleServices.Text = "Install Google Apps"
+$GoogleServices.Size = New-Object System.Drawing.Size(180,38)
+$GoogleServices.Location = New-Object System.Drawing.Size(265,60)
 $Form.Controls.Add($GoogleServices)
 
+$ApkExtract = New-Object System.Windows.Forms.Button
+$ApkExtract.Text = "Apk Extractor"
+$ApkExtract.Size = New-Object System.Drawing.Size(180,38)
+$ApkExtract.Location = New-Object System.Drawing.Size(265,110)
+$Form.Controls.Add($ApkExtract)
+
 $Dark = New-Object System.Windows.Forms.Button
-$Dark.Text = "Dark Mode"
-$Dark.Size = New-Object System.Drawing.Size(120,25)
-$Dark.Location = New-Object System.Drawing.Size(150,90)
+$Dark.Text = "System-Wide Dark Mode"
+$Dark.Size = New-Object System.Drawing.Size(180,38)
+$Dark.Location = New-Object System.Drawing.Size(265,160)
 $Form.Controls.Add($Dark)
 
 $Batch = New-Object System.Windows.Forms.Button
 $Batch.Text = "Batch Install"
-$Batch.Size = New-Object System.Drawing.Size(120,25)
-$Batch.Location = New-Object System.Drawing.Size(150,130)
+$Batch.Size = New-Object System.Drawing.Size(180,38)
+$Batch.Location = New-Object System.Drawing.Size(265,210)
 $Form.Controls.Add($Batch)
 
-$ApkExtract = New-Object System.Windows.Forms.Button
-$ApkExtract.Text = "Apk Extractor"
-$ApkExtract.Size = New-Object System.Drawing.Size(120,25)
-$ApkExtract.Location = New-Object System.Drawing.Size(150,170)
-$Form.Controls.Add($ApkExtract)
-
-$Update = New-Object System.Windows.Forms.Button
-$Update.Text = "Update Fire-Tools"
-$Update.Size = New-Object System.Drawing.Size(120,25)
-$Update.Location = New-Object System.Drawing.Size(150,210)
-$Form.Controls.Add($Update)
-
-# Custom Launchers Section
-$Nova = New-Object System.Windows.Forms.Button
-$Nova.Text = "Nova"
-$Nova.Size = New-Object System.Drawing.Size(120,25)
-$Nova.Location = New-Object System.Drawing.Size(295,50)
-$Form.Controls.Add($Nova)
-
+# Custom Launchers Section Buttons
 $Lawnchair = New-Object System.Windows.Forms.Button
 $Lawnchair.Text = "Lawnchair"
-$Lawnchair.Size = New-Object System.Drawing.Size(120,25)
-$Lawnchair.Location = New-Object System.Drawing.Size(295,90)
+$Lawnchair.Size = New-Object System.Drawing.Size(180,38)
+$Lawnchair.Location = New-Object System.Drawing.Size(515,60)
 $Form.Controls.Add($Lawnchair)
 
+$Nova = New-Object System.Windows.Forms.Button
+$Nova.Text = "Nova Launcher"
+$Nova.Size = New-Object System.Drawing.Size(180,38)
+$Nova.Location = New-Object System.Drawing.Size(515,110)
+$Form.Controls.Add($Nova)
+
 $Custom = New-Object System.Windows.Forms.Button
-$Custom.Text = "Custom"
-$Custom.Size = New-Object System.Drawing.Size(120,25)
-$Custom.Location = New-Object System.Drawing.Size(295,130)
+$Custom.Text = "Custom Launcher"
+$Custom.Size = New-Object System.Drawing.Size(180,38)
+$Custom.Location = New-Object System.Drawing.Size(515,160)
 $Form.Controls.Add($Custom)
+
+# Miscellaneous Section Buttons
+$GitHub = New-Object System.Windows.Forms.Button
+$GitHub.Text = "GitHub Page"
+$GitHub.Size = New-Object System.Drawing.Size(180,38)
+$GitHub.Location = New-Object System.Drawing.Size(15,305)
+$Form.Controls.Add($GitHub)
+
+$Update = New-Object System.Windows.Forms.Button
+$Update.Text = "Update Scripts"
+$Update.Size = New-Object System.Drawing.Size(180,38)
+$Update.Location = New-Object System.Drawing.Size(265,305)
+$Form.Controls.Add($Update)
+
+$Website = New-Object System.Windows.Forms.Button
+$Website.Text = "Website"
+$Website.Size = New-Object System.Drawing.Size(180,38)
+$Website.Location = New-Object System.Drawing.Size(515,305)
+$Form.Controls.Add($Website)
 
 # Disable Amazon apps
 $Debloat.Add_Click({
@@ -169,7 +190,7 @@ $Rebloat.Add_Click({
     Write-Host "Successfully Enabled Fire OS Bloat"
 })
 
-# Disable OTA updates
+# Disable OTA Updates
 $OTA.Add_Click({
     Write-Host "Disabling OTA Updates"
     adb shell pm disable-user -k com.amazon.device.software.ota
@@ -211,6 +232,21 @@ $GoogleServices.Add_Click({
     Write-Host "Successfully Installed Google Services"
 })
 
+# List Packages & Extract Selected
+$ApkExtract.Add_Click({
+    adb shell pm list packages | Out-File Packages.txt
+    $list = Get-Content ".\Packages.txt" | ForEach-Object {
+        $_.split(":")[1]
+    }
+    $Extract = $list | Out-GridView -OutputMode Single
+    adb shell pm path $Extract | Out-File .\Packages.txt
+    $Extract = Get-Content ".\Packages.txt" | ForEach-Object {
+        $_.split(":")[1]
+    }
+    adb pull $Extract
+    Write-Host "Extracted Selected Apk"
+})
+
 # Enable system-wide dark mode
 $Dark.Add_Click({
     Write-Host "Enabling System Wide Dark Mode"
@@ -228,28 +264,12 @@ $Batch.Add_Click({
     Write-Host "Successfully Installed All Apps"
 })
 
-# List Packages & Extract Selected
-$ApkExtract.Add_Click({
-    adb shell pm list packages | Out-File Packages.txt
-    $list = Get-Content ".\Packages.txt" | ForEach-Object {
-        $_.split(":")[1]
-    }
-    $Extract = $list | Out-GridView -OutputMode Single
-    adb shell pm path $Extract | Out-File .\Packages.txt
-    $Extract = Get-Content ".\Packages.txt" | ForEach-Object {
-        $_.split(":")[1]
-    }
-    adb pull $Extract
-    Write-Host "Extracted Selected Apk"
-})
-
-# Grab Latest Fire-Tools Scripts
-$Update.Add_Click({
-    Write-Host "Updating Debloat List"
-    Start-BitsTransfer https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt
-    Write-Host "Updating Fire-Tools"
-    Start-BitsTransfer https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Fire-Tools.ps1
-    Write-Host "Please Relaunch Application"
+# Set Lawnchair as default launcher
+$Lawnchair.Add_Click({
+    Write-Host "Changing Default Launcher"
+    adb install '.\Lawnchair V2.apk'
+    adb shell pm disable-user -k com.amazon.firelauncher
+    Write-Host "Successfully Changed Default Launcher"
 })
 
 # Set Nova as default launcher
@@ -260,15 +280,7 @@ $Nova.Add_Click({
     Write-Host "Successfully Changed Default Launcher"
 })
 
-# Set Lawnchair as default launcher
-$Lawnchair.Add_Click({
-    Write-Host "Changing Default Launcher"
-    adb install '.\Lawnchair V2.apk'
-    adb shell pm disable-user -k com.amazon.firelauncher
-    Write-Host "Successfully Changed Default Launcher"
-})
-
-# Set custom launcher
+# Set Custom launcher
 $Custom.Add_Click({
     Write-Host "Changing Default Launcher"
     $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
@@ -277,6 +289,27 @@ $Custom.Add_Click({
     adb install $FileBrowser.FileName
     adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
+})
+
+# Open My GitHub Page
+$GitHub.Add_Click({
+    Start-Process "https://github.com/mrhaydendp"
+})
+
+# Grab Latest Fire-Tools Scripts & Show Changelog
+$Update.Add_Click({
+    Write-Host "Latest Changelog:"
+    Invoke-WebRequest https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md | Select-String "- "
+    Write-Host "Updating Debloat List"
+    Start-BitsTransfer https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt
+    Write-Host "Updating Fire-Tools"
+    Start-BitsTransfer https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Fire-Tools.ps1
+    Write-Host "Please Relaunch Application"
+})
+
+# Open My Website
+$Website.Add_Click({
+    Start-Process "https://mrhaydendp.github.io"
 })
 
 $Form.ShowDialog()
