@@ -267,7 +267,8 @@ $Batch.Add_Click({
 # Set Lawnchair as default launcher
 $Lawnchair.Add_Click({
     Write-Host "Changing Default Launcher"
-    adb install '.\Lawnchair.apk'
+    $launcher = (Get-ChildItem Lawnchair*)
+    adb install $launcher
     adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
 })
@@ -275,7 +276,8 @@ $Lawnchair.Add_Click({
 # Set Nova as default launcher
 $Nova.Add_Click({
     Write-Host "Changing Default Launcher"
-    adb install '.\Nova Launcher.apk'
+    $launcher = (Get-ChildItem Nova*)
+    adb install $launcher
     adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
 })
