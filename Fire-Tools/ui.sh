@@ -29,7 +29,7 @@ tool=$(zenity --list \
 
 # Install Google Services
 if [ "$tool" = "Google Services" ]; then
-    find ./Gapps/*.apk | xargs -l adb install
+    find ./Gapps/*.apk | xargs -I gapps adb install "gapps"
     for apkm in ./Gapps/*.apkm
     do
         unzip "$apkm" -d ./Split
@@ -67,7 +67,7 @@ fi
 
 # Batch Install
 [ "$tool" = "Batch Installer" ] &&
-    find ./Batch/*.apk | xargs -l adb install &&
+    find ./Batch/*.apk | xargs -I batch adb install "batch" &&
     exec ./ui.sh
 
 # Split Apk Installer
