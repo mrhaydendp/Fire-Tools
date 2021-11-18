@@ -21,6 +21,7 @@ tool=$(zenity --list \
     "Dark Mode" "Enables system wide dark mode" \
     "Apk Extractor" "Extracts .apks from installed applications" \
     "Batch Installer" "Installs all .apks in the Batch folder" \
+    "Split Apk Installer" "Install Split Apks" \
     "Update" "Grabs the latest Fire-Tools scripts")
 
 # Debloat Menu
@@ -68,6 +69,12 @@ fi
 [ "$tool" = "Batch Installer" ] &&
     find ./Batch/*.apk | xargs -l adb install &&
     exec ./ui.sh
+
+# Split Apk Installer
+if [ "$tool" = "Split Apk Installer" ]; then
+    curl -sSL https://github.com/mrhaydendp/Split-Apk-Installer/raw/main/Split%20Apk%20Installer.sh | bash
+    exec ./ui.sh
+fi
 
 # Updater Tool
 if [ "$tool" = "Update" ]; then
