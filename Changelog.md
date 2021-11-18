@@ -1,9 +1,5 @@
 ## Features
-- Improved updater tool (Linux/macOS & Windows)
-- Updated backend for Posix compliance (Linux/macOS)
-- Redesigned UI (Windows)
-- Miscellaneous section (GitHub Page, Update Scripts, Website) (Windows)
+- Integrated my standalone split apk installer (Linux/macOS & Windows)
+- Slightly increased UI height (Windows)
 ## Bug Fixes
-- Fixed some lines of code that shellcheck suggested (Linux/macOS)
-- Removed echo command when disabling fire launcher (used for debugging) (Linux/macOS)
-- Fix for Updater not showing changelog (Windows)
+- Permanent fix for launchers not installing (Windows)

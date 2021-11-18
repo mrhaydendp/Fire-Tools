@@ -27,7 +27,7 @@ Add-Type -AssemblyName System.Windows.Forms
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools - $device"
 $Form.StartPosition = "CenterScreen"
-$Form.ClientSize = New-Object System.Drawing.Point(715,400)
+$Form.ClientSize = New-Object System.Drawing.Point(715,410)
 $Form.BackColor = "Silver"
 
 # Categories
@@ -146,6 +146,12 @@ $Website.Text = "Website"
 $Website.Size = New-Object System.Drawing.Size(180,38)
 $Website.Location = New-Object System.Drawing.Size(515,305)
 $Form.Controls.Add($Website)
+
+$SplitInstaller = New-Object System.Windows.Forms.Button
+$SplitInstaller.Text = "Split Apk Installer"
+$SplitInstaller.Size = New-Object System.Drawing.Size(180,38)
+$SplitInstaller.Location = New-Object System.Drawing.Size(15,355)
+$Form.Controls.Add($SplitInstaller)
 
 # Disable Amazon apps
 $Debloat.Add_Click({
@@ -267,7 +273,8 @@ $Batch.Add_Click({
 # Set Lawnchair as default launcher
 $Lawnchair.Add_Click({
     Write-Host "Changing Default Launcher"
-    adb install '.\Lawnchair.apk'
+    $launcher = (Get-ChildItem Lawnchair*)
+    adb install $launcher
     adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
 })
@@ -275,7 +282,8 @@ $Lawnchair.Add_Click({
 # Set Nova as default launcher
 $Nova.Add_Click({
     Write-Host "Changing Default Launcher"
-    adb install '.\Nova Launcher.apk'
+    $launcher = (Get-ChildItem Nova*)
+    adb install $launcher
     adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
 })
@@ -310,6 +318,11 @@ $Update.Add_Click({
 # Open My Website
 $Website.Add_Click({
     Start-Process "https://mrhaydendp.github.io"
+})
+
+# Split Apk Installer
+$SplitInstaller.Add_Click({
+    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://github.com/mrhaydendp/Split-Apk-Installer/raw/main/Split%20Apk%20Installer.ps1'))
 })
 
 $Form.ShowDialog()
