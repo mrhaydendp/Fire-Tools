@@ -1,6 +1,7 @@
 ## Features
-- Integrated my standalone split apk installer (Linux/macOS & Windows)
-- Slightly increased UI height (Windows)
+- Added disable search on lockscreen to debloat tool (Linux/macOS & Windows)
+- Added specific debloat packages not for Fire 7 (9th Gen) (Linux/macOS & Windows)
 ## Bug Fixes
-- Permanent fix for launchers not installing (Windows)
-- Fixes for gapps installer and batch install (Linux/macOS)
+- Added notifications to batch, updater, and reboot to recovery (Linux/macOS)
+- Debloat now outputs the current package it's disabling/enabling so you can see which one fails (Windows)
+- Cleaned up code formatting (Windows)
