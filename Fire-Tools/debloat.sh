@@ -12,6 +12,9 @@ opt=$(zenity --list \
 # Enable Apps
 [ "$opt" = "Enable" ] &&
     xargs -l adb shell pm enable < Debloat.txt &&
+    [ "$(adb shell getprop ro.product.model)" != "KFMUWI" ] &&
+        adb shell pm enable com.amazon.alexa.youtube.app &&
+        adb shell pm enable com.amazon.whisperplay.service.install &&
     adb shell pm enable com.amazon.firelauncher &&
     adb shell pm enable com.amazon.device.software.ota &&
     adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota &&
@@ -20,6 +23,9 @@ opt=$(zenity --list \
 # Disable Apps
 [ "$opt" = "Disable" ] &&
     xargs -l adb shell pm disable-user -k < Debloat.txt &&
+    [ "$(adb shell getprop ro.product.model)" != "KFMUWI" ] &&
+        adb shell pm disable-user -k com.amazon.alexa.youtube.app &&
+        adb shell pm disable-user -k com.amazon.whisperplay.service.install &&
     echo "Disabling Telemetry & Resetting Advertising ID" &&
     adb shell settings put secure limit_ad_tracking 1 &&
     adb shell settings put secure usage_metrics_marketing_enabled 0 &&
@@ -30,6 +36,8 @@ opt=$(zenity --list \
     adb shell settings put global private_dns_specifier dns.adguard.com &&
     echo "Disabling Lockscreen Ads" &&
     adb shell settings put global LOCKSCREEN_AD_ENABLED 0 &&
+    echo "Disabling Search on Lockscreen" &&
+    adb shell settings put secure search_on_lockscreen_settings 0 &&
     echo "Speeding Up Animations" &&
     adb shell settings put global window_animation_scale 0.50 &&
     adb shell settings put global transition_animation_scale 0.50 &&

@@ -22,6 +22,7 @@ tool=$(zenity --list \
     "Apk Extractor" "Extracts .apks from installed applications" \
     "Batch Installer" "Installs all .apks in the Batch folder" \
     "Split Apk Installer" "Install Split Apks" \
+    "Reboot to Recovery" "Reboots Tablet into recovery mode" \
     "Update" "Grabs the latest Fire-Tools scripts")
 
 # Debloat Menu
@@ -68,6 +69,7 @@ fi
 # Batch Install
 [ "$tool" = "Batch Installer" ] &&
     find ./Batch/*.apk | xargs -I batch adb install "batch" &&
+    zenity --notification --text="Successfully Installed Apk(s)" &&
     exec ./ui.sh
 
 # Split Apk Installer
@@ -75,6 +77,11 @@ if [ "$tool" = "Split Apk Installer" ]; then
     curl -sSL https://github.com/mrhaydendp/Split-Apk-Installer/raw/main/Split%20Apk%20Installer.sh | bash
     exec ./ui.sh
 fi
+
+[ "$tool" = "Reboot to Recovery" ] &&
+    adb reboot recovery &&
+    zenity --notification --text="Successfully Rebooted Into Recovery" &&
+    exec ./ui.sh
 
 # Updater Tool
 if [ "$tool" = "Update" ]; then
@@ -86,5 +93,6 @@ if [ "$tool" = "Update" ]; then
     done
     echo "Updating Debloat List"
     curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt > Debloat.txt
+    zenity --notification --text="Successfully Updated Fire-Tools" &&
     exec ./ui.sh
 fi
