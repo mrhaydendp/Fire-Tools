@@ -153,12 +153,23 @@ $SplitInstaller.Size = New-Object System.Drawing.Size(180,38)
 $SplitInstaller.Location = New-Object System.Drawing.Size(15,355)
 $Form.Controls.Add($SplitInstaller)
 
+$Recovery = New-Object System.Windows.Forms.Button
+$Recovery.Text = "Reboot to Recovery"
+$Recovery.Size = New-Object System.Drawing.Size(180,38)
+$Recovery.Location = New-Object System.Drawing.Size(265,355)
+$Form.Controls.Add($Recovery)
+
 # Disable Amazon apps
 $Debloat.Add_Click({
     Write-Host "Debloating Fire OS"
     $Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
     foreach ($array in $Disable) {
-    adb shell pm disable-user -k $array
+        Write-Host "Disabling $array"
+        adb shell pm disable-user -k $array
+    }
+    if ( "Fire 7 (9th Gen)" -ne $device ) {
+        adb shell pm disable-user -k com.amazon.alexa.youtube.app
+        adb shell pm disable-user -k com.amazon.whisperplay.service.install
     }
     Write-Host "Disabling Telemetry & Resetting Advertising ID"
     adb shell settings put secure limit_ad_tracking 1
@@ -170,6 +181,8 @@ $Debloat.Add_Click({
     adb shell settings put global private_dns_specifier dns.adguard.com
     Write-Host "Disabling Lockscreen Ads"
     adb shell settings put global LOCKSCREEN_AD_ENABLED 0
+    Write-Host "Disabling Search on Lockscreen"
+    adb shell settings put secure search_on_lockscreen_settings 0
     Write-Host "Disabling Location"
     adb shell settings put secure location_changer 1
     adb shell settings put secure location_providers_allowed null
@@ -188,7 +201,12 @@ $Rebloat.Add_Click({
     Write-Host "Enabling Bloat"
     $Enable = [IO.File]::ReadAllLines('.\Debloat.txt')
     foreach ($array in $Enable) {
-    adb shell pm enable $array
+        Write-Host "Enabling $array"
+        adb shell pm enable $array
+    }
+    if ( "Fire 7 (9th Gen)" -ne $device ) {
+        adb shell pm enable com.amazon.alexa.youtube.app
+        adb shell pm enable com.amazon.whisperplay.service.install
     }
     adb shell pm enable com.amazon.firelauncher
     adb shell pm enable com.amazon.device.software.ota
@@ -223,7 +241,7 @@ $GoogleServices.Add_Click({
     Write-Host "Installing Google Services"
     $gapps = (Get-ChildItem .\Gapps\*.apk)
     foreach ($array in $gapps) {
-    adb install $array
+        adb install $array
     }
     $split = (Get-ChildItem .\Gapps\*.apkm)
     foreach($array in $split)
@@ -265,7 +283,7 @@ $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
     $custom = (Get-ChildItem .\Batch\*.apk)
     foreach ($array in $custom) {
-    adb install $array
+        adb install $array
     }
     Write-Host "Successfully Installed All Apps"
 })
@@ -323,6 +341,11 @@ $Website.Add_Click({
 # Split Apk Installer
 $SplitInstaller.Add_Click({
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://github.com/mrhaydendp/Split-Apk-Installer/raw/main/Split%20Apk%20Installer.ps1'))
+})
+
+$Recovery.Add_Click({
+    Write-Host "Rebooting Into Recovery"
+    adb reboot recovery
 })
 
 $Form.ShowDialog()
