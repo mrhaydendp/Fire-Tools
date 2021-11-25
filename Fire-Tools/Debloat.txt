@@ -1,101 +1,101 @@
-com.amazon.photos
-com.amazon.photos.importer
-com.amazon.android.marketplace
-com.amazon.device.sync.sdk.internal
-com.android.bookmarkprovider
-com.android.calllogbackup
-com.amazon.connectivitydiag
-com.amazon.dee.app
-com.amazon.kindle.otter.oobe
-com.kingsoft.office.amz
-com.amazon.diode
-com.amazon.webapp
-com.android.protips
-com.amazon.kindle
-amazon.speech.sim
-com.amazon.kindle.starsight
-com.amazon.geo.client.maps
-com.amazon.geo.mapsv2
-com.amazon.geo.mapsv3.resources
-com.amazon.geo.mapsv3.services
-com.amazon.tcomm
-com.amazon.tcomm.client
-com.amazon.smartgenie
-com.amazon.legalsettings
-amazon.jackson19
-com.amazon.kindle.rdmdeviceadmin
-com.amazon.cloud9
-com.amazon.identity.auth.device.authorization
-com.amazon.minerva.client.api
-com.amazon.fireinputdevices
-com.amazon.dp.fbcontacts
-com.amazon.pm
-com.amazon.ags.app
-com.svox.pico
-com.amazon.client.metrics.api
-com.amazon.cardinal
-com.amazon.kor.demo
-com.amazon.cloud9.kids
-com.amazon.client.metrics
-com.amazon.recess
-com.amazon.weather
-com.amazon.kindle.unifiedSearch
-com.amazon.windowshop
-com.amazon.dpcclient
-com.android.quicksearchbox
-com.amazon.tv.launcher
-com.amazon.kindle.personal_video
-com.amazon.dp.logger
-com.amazon.device.sync
-com.amazon.mp3
-com.amazon.nimh
-com.amazon.dcp.contracts.framework.library
-com.amazon.whisperlink.core.android
-com.amazon.comms.kids
-com.amazon.device.messaging
-com.amazon.communication.discovery
-com.amazon.cloud9.contentservice
-com.amazon.imp
-com.amazon.logan
-com.amazon.providers.contentsupport
-com.amazon.sync.service
-com.amazon.sync.provider.ipc
-com.amazon.dcp
-com.android.contacts
-com.android.providers.contacts
-com.amazon.dp.contacts
-com.amazon.appaccesskeyprovider
-com.amazon.imdb.tv.mobile.app
-com.amazon.switchaccess.root
-com.amazon.avod
-com.amazon.device.metrics
-com.amazon.kindle.kso
-com.amazon.cloud9.systembrowserprovider
-com.amazon.bioscope
-com.amazon.dcp.contracts.library
-com.amazon.application.compatibility.enforcer
-com.amazon.media.session.monitor
-com.amazon.zico
-com.amazon.wirelessmetrics.service
-com.amazon.aca
-com.android.email
-com.goodreads.kindle
-com.amazon.csapp
-com.amazon.wallpaper
-com.amazon.tahoe
-com.android.calendar
-com.android.providers.calendar
-com.amazon.device.settings
-com.android.musicfx
-com.amazon.tv.ottssocompanionapp
-com.android.music
-com.amazon.platform
-com.amazon.advertisingidsettings
-com.amazon.venezia
-com.amazon.ods.kindleconnect
-com.android.providers.downloads.ui
-com.audible.application.kindle
-com.amazon.whisperplay.contracts
-com.amazon.iris
-com.amazon.securitysyncclient
-com.amazon.wifilocker
+com.amazon.aca                                   # ACA Application
+com.amazon.advertisingidsettings                 # Advertising ID
+com.amazon.dee.app                               # Alexa
+amazon.speech.sim                                # Alexa
+com.amazon.cardinal                              # Alexa Video Player
+com.amazon.comms.kids                            # Alexa Communication
+com.amazon.client.metrics.api                    # Amazon Client Metrics API
+com.amazon.communication.discovery               # Amazon Communication Discovery
+com.amazon.tcomm.client                          # Amazon Communication Services Client Library
+com.amazon.tcomm                                 # Amazon Communication Services
+com.amazon.application.compatibility.enforcer    # Amazon Compatibility Enforcer
+com.amazon.dpcclient                             # Amazon DCPCClient Application
+com.amazon.client.metrics                        # Amazon Device Metrics
+com.amazon.dcp                                   # Amazon Device Middleware Debugging Tool
+com.amazon.platform                              # Amazon Metrics Service Application
+com.amazon.device.sync.sdk.internal              # Amazon Sync SDK
+com.amazon.device.sync                           # Amazon Whispersync DX
+com.amazon.minerva.client.api                    # Amazon Minerva Client API
+com.amazon.ags.app                               # Amazon GameCircle
+com.amazon.kor.demo                              # Amazon Retail Demo
+com.amazon.recess                                # Amazon Recess
+com.amazon.dp.logger                             # Amazon DP Logger
+com.amazon.device.messaging                      # Amazon Device Messaging (ADM)
+com.amazon.appaccesskeyprovider                  # Amazon Keystore
+com.amazon.device.metrics                        # Amazon Device Metrics
+com.amazon.wirelessmetrics.service               # Amazon Wireless Metrics Service
+com.amazon.device.settings                       # Amazon Device Settings
+com.amazon.tahoe                                 # Amazon Kids
+com.amazon.mp3                                   # Amazon Music
+com.amazon.windowshop                            # Amazon Shopping
+com.amazon.tv.launcher                           # Amazon VideoStore
+com.amazon.bioscope                              # Amazon VideoStore
+com.amazon.venezia                               # Appstore
+com.amazon.nimh                                  # Arcus Android Client
+com.audible.application.kindle                   # Audible
+com.android.bookmarkprovider                     # Bookmarks Provider
+com.android.calendar                             # Calendar
+com.android.providers.calendar                   # Calendar Storage
+com.android.calllogbackup                        # Call Logs Backup
+com.amazon.connectivitydiag                      # Connectivitydiag
+com.android.contacts                             # Contacts
+com.android.providers.contacts                   # Contacts Storage
+com.amazon.dp.contacts                           # Contacts Sync Adapter
+com.amazon.providers.contentsupport              # Content Support Manager
+com.amazon.sync.service                          # Content Sync Framework
+com.amazon.dcp.contracts.framework.library       # DCP Contracts Framework
+com.amazon.dcp.contracts.library                 # DCP Platform Contacts
+com.amazon.kindle.otter.oobe                     # Device Setup
+com.amazon.diode                                 # Diode Apk
+com.amazon.smartgenie                            # Device Dashboard
+com.android.providers.downloads.ui               # Downloads App
+com.amazon.zico                                  # Documents
+com.android.email                                # Email
+com.amazon.dp.fbcontacts                         # Facebook Sync Adapter
+com.amazon.fireinputdevices                      # Fire Input Devices
+com.goodreads.kindle                             # Goodreads
+com.amazon.csapp                                 # Help
+com.android.protips                              # Home Screen Tips
+com.amazon.imdb.tv.mobile.app                    # IMDB TV
+com.amazon.imp                                   # Identity Mobile Platform
+amazon.jackson19                                 # Jackson19
+com.amazon.kindle                                # Kindle
+com.amazon.webapp                                # Kindle Store
+com.amazon.cloud9.kids                           # Kids Web Browser
+com.amazon.legalsettings                         # Legal Notices
+com.amazon.geo.client.maps                       # Maps
+com.amazon.geo.mapsv2                            # Map API v2
+com.amazon.geo.mapsv3.resources                  # Map API v3 Resources
+com.amazon.geo.mapsv3.services                   # Map API v3 Services
+com.amazon.kindle.personal_video                 # My Videos
+com.android.music                                # Music
+com.amazon.android.marketplace                   # Marketplace Service Reciever
+com.amazon.identity.auth.device.authorization    # Mobile Authentication Platform Android
+com.amazon.ods.kindleconnect                     # Mayday Screen Sharing
+com.amazon.media.session.monitor                 # MediaSession Monitor
+com.android.musicfx                              # MusicFX
+com.amazon.iris                                  # News
+com.amazon.tv.ottssocompanionapp                 # OttSsoCompanionApp
+com.amazon.photos                                # Prime Photos
+com.amazon.photos.importer                       # Photos Importer
+com.amazon.avod                                  # Prime Video
+com.amazon.pm                                    # Parental Monitoring Service
+com.svox.pico                                    # PicoTTS
+com.amazon.kindle.rdmdeviceadmin                 # Remote Device Management Application
+com.amazon.cloud9                                # Silk Browser
+com.amazon.cloud9.contentservice                 # Silk Content Service
+com.amazon.cloud9.systembrowserprovider          # System Browser Provider
+com.android.quicksearchbox                       # Search
+com.amazon.kindle.kso                            # Special Offers
+com.amazon.sync.provider.ipc                     # Sync Provider Executor
+com.amazon.switchaccess.root                     # Switch Access
+com.amazon.securitysyncclient                    # SecuritySync Client
+com.amazon.kindle.unifiedSearch                  # Unified Search
+com.amazon.logan                                 # Voice View
+com.amazon.weather                               # Weather
+com.kingsoft.office.amz                          # WPS Office for Amazon
+com.amazon.wallpaper                             # Wallpaper
+com.amazon.kindle.starsight                      # Wifi Reconnect
+com.amazon.whisperlink.core.android              # Whisperplay Daemon
+com.amazon.whisperplay.contracts                 # Whisperlink SDK
+com.amazon.wifilocker                            # Wifi Locker
