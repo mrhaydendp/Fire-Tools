@@ -1,7 +1,8 @@
-## Features
-- Added disable search on lockscreen to debloat tool (Linux/macOS & Windows)
-- Added specific debloat packages not for Fire 7 (9th Gen) (Linux/macOS & Windows)
-## Bug Fixes
-- Added notifications to batch, updater, and reboot to recovery (Linux/macOS)
-- Debloat now outputs the current package it's disabling/enabling so you can see which one fails (Windows)
-- Cleaned up code formatting (Windows)
+## Updated debloat.sh (Linux/macOS) - 11/24/21
+- Enable now disables Adguard DNS
+- Switched to better way of clearing advertising ID
+- Fixed and re-enabled location disabling
+
+## Updated Debloat.txt (All) - 11/24/21
+- Added application names to Debloat.txt
+- (EX: com.package.name    # Application Name)
