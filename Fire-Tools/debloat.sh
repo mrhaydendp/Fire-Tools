@@ -15,6 +15,9 @@ opt=$(zenity --list \
     [ "$(adb shell getprop ro.product.model)" != "KFMUWI" ] &&
         adb shell pm enable com.amazon.alexa.youtube.app &&
         adb shell pm enable com.amazon.whisperplay.service.install &&
+    echo "Disabling Adguard DNS"
+    adb shell settings put global private_dns_mode -hostname &&
+    adb shell settings put global private_dns_specifier -dns.adguard.com &&
     adb shell pm enable com.amazon.firelauncher &&
     adb shell pm enable com.amazon.device.software.ota &&
     adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota &&
@@ -30,7 +33,9 @@ opt=$(zenity --list \
     adb shell settings put secure limit_ad_tracking 1 &&
     adb shell settings put secure usage_metrics_marketing_enabled 0 &&
     adb shell settings put secure USAGE_METRICS_UPLOAD_ENABLED 0 &&
-    adb shell settings put secure advertising_id null &&
+    adb shell pm clear com.amazon.advertisingidsettings &&
+    echo "Disabling Location" &&
+    adb shell settings put secure location_providers_allowed -network &&
     echo "Blocking Ads With Adguard DNS" &&
     adb shell settings put global private_dns_mode hostname &&
     adb shell settings put global private_dns_specifier dns.adguard.com &&
