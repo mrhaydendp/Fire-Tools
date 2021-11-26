@@ -175,7 +175,9 @@ $Debloat.Add_Click({
     adb shell settings put secure limit_ad_tracking 1
     adb shell settings put secure usage_metrics_marketing_enabled 0
     adb shell settings put secure USAGE_METRICS_UPLOAD_ENABLED 0
-    adb shell settings put secure advertising_id null
+    adb shell pm clear com.amazon.advertisingidsettings
+    Write-Host "Disabling Location"
+    adb shell settings put secure location_providers_allowed -network
     Write-Host "Blocking Ads With Adguard DNS"
     adb shell settings put global private_dns_mode hostname
     adb shell settings put global private_dns_specifier dns.adguard.com
@@ -183,10 +185,6 @@ $Debloat.Add_Click({
     adb shell settings put global LOCKSCREEN_AD_ENABLED 0
     Write-Host "Disabling Search on Lockscreen"
     adb shell settings put secure search_on_lockscreen_settings 0
-    Write-Host "Disabling Location"
-    adb shell settings put secure location_changer 1
-    adb shell settings put secure location_providers_allowed null
-    adb shell settings put secure enable_find_my_device -2
     Write-Host "Speeding Up Animations"
     adb shell settings put global window_animation_scale 0.50
     adb shell settings put global transition_animation_scale 0.50
@@ -208,6 +206,9 @@ $Rebloat.Add_Click({
         adb shell pm enable com.amazon.alexa.youtube.app
         adb shell pm enable com.amazon.whisperplay.service.install
     }
+    Write-Host "Disabling Adguard DNS"
+    adb shell settings put global private_dns_mode -hostname
+    adb shell settings put global private_dns_specifier -dns.adguard.com
     adb shell pm enable com.amazon.firelauncher
     adb shell pm enable com.amazon.device.software.ota
     adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
