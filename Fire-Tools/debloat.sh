@@ -11,10 +11,15 @@ opt=$(zenity --list \
 
 # Enable Apps
 [ "$opt" = "Enable" ] &&
-    xargs -l adb shell pm enable < Debloat.txt &&
-    [ "$(adb shell getprop ro.product.model)" != "KFMUWI" ] &&
-        adb shell pm enable com.amazon.alexa.youtube.app &&
-        adb shell pm enable com.amazon.whisperplay.service.install &&
+    packages=($(xargs -l < Debloat.txt)) &&
+    for package in "${packages[@]}"
+    do
+        check=$(adb shell pm list packages | cut -f 2 -d ":" | grep "${package}")
+    if [ "$check" = "${package}" ]; then
+        adb shell pm enable "${package}" &>/dev/null &&
+        echo "Enabled: ${package}" || echo "Failed to Enable: ${package}"
+    fi
+    done &&
     echo "Disabling Adguard DNS"
     adb shell settings put global private_dns_mode -hostname &&
     adb shell settings put global private_dns_specifier -dns.adguard.com &&
@@ -25,10 +30,15 @@ opt=$(zenity --list \
 
 # Disable Apps
 [ "$opt" = "Disable" ] &&
-    xargs -l adb shell pm disable-user -k < Debloat.txt &&
-    [ "$(adb shell getprop ro.product.model)" != "KFMUWI" ] &&
-        adb shell pm disable-user -k com.amazon.alexa.youtube.app &&
-        adb shell pm disable-user -k com.amazon.whisperplay.service.install &&
+    packages=($(xargs -l < Debloat.txt)) &&
+    for package in "${packages[@]}"
+    do
+        check=$(adb shell pm list packages | cut -f 2 -d ":" | grep "${package}")
+    if [ "$check" = "${package}" ]; then
+        adb shell pm disable-user -k "${package}" &>/dev/null &&
+        echo "Disabled: ${package}" || echo "Failed to Disable: ${package}"
+    fi
+    done &&
     echo "Disabling Telemetry & Resetting Advertising ID" &&
     adb shell settings put secure limit_ad_tracking 1 &&
     adb shell settings put secure usage_metrics_marketing_enabled 0 &&
