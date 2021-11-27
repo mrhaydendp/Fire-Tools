@@ -4,6 +4,7 @@ com.amazon.dee.app                               # Alexa
 amazon.speech.sim                                # Alexa
 com.amazon.cardinal                              # Alexa Video Player
 com.amazon.comms.kids                            # Alexa Communication
+com.amazon.alexa.youtube.app                     # Alexa YouTube Player
 com.amazon.client.metrics.api                    # Amazon Client Metrics API
 com.amazon.communication.discovery               # Amazon Communication Discovery
 com.amazon.tcomm.client                          # Amazon Communication Services Client Library
@@ -52,7 +53,6 @@ com.android.providers.downloads.ui               # Downloads App
 com.amazon.zico                                  # Documents
 com.android.email                                # Email
 com.amazon.dp.fbcontacts                         # Facebook Sync Adapter
-com.amazon.fireinputdevices                      # Fire Input Devices
 com.goodreads.kindle                             # Goodreads
 com.amazon.csapp                                 # Help
 com.android.protips                              # Home Screen Tips
@@ -98,4 +98,5 @@ com.amazon.wallpaper                             # Wallpaper
 com.amazon.kindle.starsight                      # Wifi Reconnect
 com.amazon.whisperlink.core.android              # Whisperplay Daemon
 com.amazon.whisperplay.contracts                 # Whisperlink SDK
+com.amazon.whisperplay.service.install           # Whisperlink Installer
 com.amazon.wifilocker                            # Wifi Locker
