@@ -1,3 +1,8 @@
+## Updated ui.sh & debloat.sh (Linux/macOS) - 11/27/21
+- Removed reboot to recovery option as it was unnecessary
+- Fixed bug in new debloat tool where fire launcher and ota gets enabled by leaving menu
+- Slightly increased UI size so Custom Launcher description fits
+
 ## Update Debloat.txt (All) - 11/26/21
 - Added Alexa Youtube Player
 - Added Whisperlink Installer
@@ -12,8 +17,3 @@
 - Switched to better method of resetting advertising ID
 - Re-added disable location to debloat
 - Enable now disables Adguard DNS
-
-## Updated debloat.sh (Linux/macOS) - 11/24/21
-- Enable now disables Adguard DNS
-- Switched to better way of clearing advertising ID
-- Fixed and re-enabled location disabling
