@@ -12,7 +12,7 @@ device=$(adb shell getprop ro.product.model)
 # UI
 tool=$(zenity --list \
   --title="Fire Tools - $device" \
-  --width=500 --height=400 \
+  --width=510 --height=400 \
   --column="Tool" --column="Description" \
     "Debloat" "Disable or restore Amazon apps" \
     "Google Services" "Installs Google Play" \
@@ -22,7 +22,6 @@ tool=$(zenity --list \
     "Apk Extractor" "Extracts .apks from installed applications" \
     "Batch Installer" "Installs all .apks in the Batch folder" \
     "Split Apk Installer" "Install Split Apks" \
-    "Reboot to Recovery" "Reboots Tablet into recovery mode" \
     "Update" "Grabs the latest Fire-Tools scripts")
 
 # Debloat Menu
@@ -47,6 +46,7 @@ fi
 # Disable OTA Updates
 [ "$tool" = "Disable OTA" ] &&
     adb shell pm disable-user -k com.amazon.device.software.ota &&
+    adb shell pm disable-user -k com.amazon.device.software.ota.override &&
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota &&
     zenity --notification --text="Successfully Disabled OTA Updates" &&
     exec ./ui.sh
@@ -78,14 +78,9 @@ if [ "$tool" = "Split Apk Installer" ]; then
     exec ./ui.sh
 fi
 
-[ "$tool" = "Reboot to Recovery" ] &&
-    adb reboot recovery &&
-    zenity --notification --text="Successfully Rebooted Into Recovery" &&
-    exec ./ui.sh
-
 # Updater Tool
 if [ "$tool" = "Update" ]; then
-    echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md | grep -e "- "
+    echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
     for sh in *.sh
     do
         echo "Updating $sh"
