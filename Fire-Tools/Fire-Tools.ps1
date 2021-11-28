@@ -162,14 +162,15 @@ $Form.Controls.Add($Recovery)
 # Disable Amazon apps
 $Debloat.Add_Click({
     Write-Host "Debloating Fire OS"
+    # Search System for Packages in Debloat.txt, If There Attempt to Disable It
     $Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
-    foreach ($array in $Disable) {
-        Write-Host "Disabling $array"
-        adb shell pm disable-user -k $array
-    }
-    if ( "Fire 7 (9th Gen)" -ne $device ) {
-        adb shell pm disable-user -k com.amazon.alexa.youtube.app
-        adb shell pm disable-user -k com.amazon.whisperplay.service.install
+    foreach ($array in $Disable){
+        $search = (adb shell pm list packages | Select-String -Pattern $array.Split('#'' ')[0])
+        $package = ($search[0] -Split "package:")
+        if ($package -ne ""){
+            Write-Host "Disabling: $package"
+            adb shell pm disable-user -k $package
+        }
     }
     Write-Host "Disabling Telemetry & Resetting Advertising ID"
     adb shell settings put secure limit_ad_tracking 1
@@ -197,14 +198,14 @@ $Debloat.Add_Click({
 # Enable Amazon apps
 $Rebloat.Add_Click({
     Write-Host "Enabling Bloat"
-    $Enable = [IO.File]::ReadAllLines('.\Debloat.txt')
-    foreach ($array in $Enable) {
-        Write-Host "Enabling $array"
-        adb shell pm enable $array
-    }
-    if ( "Fire 7 (9th Gen)" -ne $device ) {
-        adb shell pm enable com.amazon.alexa.youtube.app
-        adb shell pm enable com.amazon.whisperplay.service.install
+    $Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
+    foreach ($array in $Disable){
+        $search = (adb shell pm list packages | Select-String -Pattern $array.Split('#'' ')[0])
+        $package = ($search[0] -Split "package:")
+        if ($package -ne ""){
+            Write-Host "Enabling: $package"
+            adb shell pm enable $package
+        }
     }
     Write-Host "Disabling Adguard DNS"
     adb shell settings put global private_dns_mode -hostname
@@ -237,7 +238,7 @@ $CustomDebloat.Add_Click({
     Write-Host "Successfully Disabled Packages"
 })
 
-# Install Google services and display intructions
+# Install Google services
 $GoogleServices.Add_Click({
     Write-Host "Installing Google Services"
     $gapps = (Get-ChildItem .\Gapps\*.apk)
@@ -272,14 +273,14 @@ $ApkExtract.Add_Click({
     Write-Host "Extracted Selected Apk"
 })
 
-# Enable system-wide dark mode
+# Enable System-Wide Dark Mode
 $Dark.Add_Click({
     Write-Host "Enabling System Wide Dark Mode"
     adb shell settings put secure ui_night_mode 2
     Write-Host "Successfully Enabled Dark Mode"
 })
 
-# Batch install
+# Batch Install
 $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
     $custom = (Get-ChildItem .\Batch\*.apk)
@@ -289,7 +290,7 @@ $Batch.Add_Click({
     Write-Host "Successfully Installed All Apps"
 })
 
-# Set Lawnchair as default launcher
+# Set Lawnchair as Default Launcher
 $Lawnchair.Add_Click({
     Write-Host "Changing Default Launcher"
     $launcher = (Get-ChildItem Lawnchair*)
@@ -298,7 +299,7 @@ $Lawnchair.Add_Click({
     Write-Host "Successfully Changed Default Launcher"
 })
 
-# Set Nova as default launcher
+# Set Nova as Default Launcher
 $Nova.Add_Click({
     Write-Host "Changing Default Launcher"
     $launcher = (Get-ChildItem Nova*)
@@ -307,7 +308,7 @@ $Nova.Add_Click({
     Write-Host "Successfully Changed Default Launcher"
 })
 
-# Set Custom launcher
+# Set Custom Launcher
 $Custom.Add_Click({
     Write-Host "Changing Default Launcher"
     $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
@@ -344,6 +345,7 @@ $SplitInstaller.Add_Click({
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://github.com/mrhaydendp/Split-Apk-Installer/raw/main/Split%20Apk%20Installer.ps1'))
 })
 
+# Reboot to Recovery
 $Recovery.Add_Click({
     Write-Host "Rebooting Into Recovery"
     adb reboot recovery
