@@ -1,3 +1,7 @@
+## Update Fire-Tools.ps1 (Windows) - 11/29/21
+- Application now changes colors based on system theme
+- Added -g argument to Google apps install and launchers to grant all permissions on installation
+
 ## Updated Fire-Tools.ps1 (Windows) - 11/28/21
 - New rebuilt debloat tool that has multi device support & creates less errors
 - Updated comments above code
@@ -11,8 +15,3 @@
 - Added Alexa Youtube Player
 - Added Whisperlink Installer
 - Removed Fire Input Devices
-
-## Updated debloat.sh (Linux/macOS) - 11/26/21
-- Rebuilt debloat tool to better handle errors and have multi device support
-- Fixes to combat newest Fire OS update (allow most apps to be disabled)
-- Looking into device admin package disablers to break parental controls
