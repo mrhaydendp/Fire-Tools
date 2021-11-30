@@ -1,5 +1,12 @@
 #!/bin/powershell
 
+# Set Dark Theme Based on Color Mode Prefrence
+$theme = "GhostWhite"
+$prefrence = (reg query HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize /v AppsUseLightTheme | Select-String "0x0")
+if ($prefrence -like '*0x0'){
+    $theme = "#B9B7BD"
+}
+
 # Device Identifier
 $device = (adb shell getprop ro.product.model)
 if ( "KFMUWI" -eq $device ) {
@@ -28,7 +35,7 @@ $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools - $device"
 $Form.StartPosition = "CenterScreen"
 $Form.ClientSize = New-Object System.Drawing.Point(715,410)
-$Form.BackColor = "Silver"
+$Form.BackColor = "$theme"
 
 # Categories
 $Label = New-Object System.Windows.Forms.Label
@@ -243,7 +250,7 @@ $GoogleServices.Add_Click({
     Write-Host "Installing Google Services"
     $gapps = (Get-ChildItem .\Gapps\*.apk)
     foreach ($array in $gapps) {
-        adb install $array
+        adb install -g $array
     }
     $split = (Get-ChildItem .\Gapps\*.apkm)
     foreach($array in $split)
@@ -251,7 +258,7 @@ $GoogleServices.Add_Click({
         Copy-Item $array -Destination $array".zip"
         Expand-Archive $array".zip" -DestinationPath .\Split
         $file = (Get-ChildItem .\Split\*.apk)
-        adb install-multiple $file
+        adb install-multiple -g $file
         Remove-Item -r .\Split
         Remove-Item $array".zip"
     }
@@ -294,7 +301,7 @@ $Batch.Add_Click({
 $Lawnchair.Add_Click({
     Write-Host "Changing Default Launcher"
     $launcher = (Get-ChildItem Lawnchair*)
-    adb install $launcher
+    adb install -g $launcher
     adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
 })
@@ -303,7 +310,7 @@ $Lawnchair.Add_Click({
 $Nova.Add_Click({
     Write-Host "Changing Default Launcher"
     $launcher = (Get-ChildItem Nova*)
-    adb install $launcher
+    adb install -g $launcher
     adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
 })
@@ -314,7 +321,7 @@ $Custom.Add_Click({
     $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
     $FileBrowser.filter = "Apk (*.apk)| *.apk"
     [void]$FileBrowser.ShowDialog()
-    adb install $FileBrowser.FileName
+    adb install -g $FileBrowser.FileName
     adb shell pm disable-user -k com.amazon.firelauncher
     Write-Host "Successfully Changed Default Launcher"
 })
