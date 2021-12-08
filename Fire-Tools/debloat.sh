@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # UI
 opt=$(zenity --list \
@@ -11,7 +11,7 @@ opt=$(zenity --list \
 
 # Enable Apps
 if [ "$opt" = "Enable" ]; then
-    packages=($(xargs -l < Debloat.txt))
+    mapfile -t packages < <(awk '{print $1}' < Debloat.txt)
     for package in "${packages[@]}"
     do
         check=$(adb shell pm list packages | cut -f 2 -d ":" | grep "${package}")
@@ -30,7 +30,7 @@ if [ "$opt" = "Enable" ]; then
 
 # Disable Apps
 elif [ "$opt" = "Disable" ]; then
-    packages=($(xargs -l < Debloat.txt))
+    mapfile -t packages < <(awk '{print $1}' < Debloat.txt)
     for package in "${packages[@]}"
     do
         check=$(adb shell pm list packages | cut -f 2 -d ":" | grep "${package}")
@@ -64,8 +64,8 @@ fi
 
 # List Packages & Disable Apps
 [ "$opt" = "Custom" ] &&
-    list=$(adb shell pm list packages -e | cut -f 2 -d ":" | xargs -l) &&
-    disable=$(zenity --list --width=500 --height=400 --column=Packages --multiple $list) &&
+    adb shell pm list packages -e | cut -f 2 -d ":" > packagelist &&
+    disable=$(zenity --list --width=500 --height=400 --column=Packages --multiple < packagelist) &&
     echo "$disable" | tr '|' '\n' > Packages.txt &&
     xargs -l adb shell pm disable-user -k < Packages.txt &&
     zenity --notification --text="Successfully Disabled Packages"

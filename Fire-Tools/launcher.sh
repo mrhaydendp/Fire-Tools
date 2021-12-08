@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # UI
 launcher=$(zenity --list \
@@ -11,16 +11,16 @@ launcher=$(zenity --list \
 
 # Install Nova Launcher
 [ "$launcher" = "Nova" ] &&
-    adb install ./"$launcher"*.apk
+    adb install -g ./"$launcher"*.apk
 
 # Install Lawnchair
 [ "$launcher" = "Lawnchair" ] &&
-    adb install ./"$launcher"*.apk
+    adb install -g ./"$launcher"*.apk
 
 # Install Custom Launcher
 [ "$launcher" = "Custom" ] &&
     launcher=$(zenity --file-selection) &&
-    adb install "$launcher"
+    adb install -g "$launcher"
 
 # If a Custom Launcher is Selected Disable File Launcher
 [ "$launcher" != "" ] &&

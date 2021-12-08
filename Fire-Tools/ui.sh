@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Identify Device & List Model
 device=$(adb shell getprop ro.product.model)
@@ -29,7 +29,7 @@ tool=$(zenity --list \
 
 # Install Google Services
 if [ "$tool" = "Google Services" ]; then
-    find ./Gapps/*.apk | xargs -I gapps adb install "gapps"
+    find ./Gapps/*.apk -print0 | xargs -0 -l adb install
     for apkm in ./Gapps/*.apkm
     do
         unzip "$apkm" -d ./Split
@@ -59,8 +59,8 @@ fi
 
 # Select Package from List & Extract Package's APK file(s)
 [ "$tool" = "Apk Extractor" ] &&
-    list=$(adb shell pm list packages | cut -f 2 -d ":" | xargs -l) &&
-    package=$(zenity --list --width=500 --height=400 --column=Packages $list) &&
+    adb shell pm list packages | cut -f 2 -d ":" > packagelist &&
+    package=$(zenity --list --width=500 --height=400 --column=Packages < packagelist) &&
     adb shell pm path "$package" | cut -f 2 -d ":" > Packages.txt &&
     xargs -l adb pull < Packages.txt &&
     zenity --notification --text="Successfully Extracted Apk" &&
@@ -68,7 +68,7 @@ fi
 
 # Batch Install
 [ "$tool" = "Batch Installer" ] &&
-    find ./Batch/*.apk | xargs -I batch adb install "batch" &&
+    find ./Batch/*.apk -print0 | xargs -0 -l adb install &&
     zenity --notification --text="Successfully Installed Apk(s)" &&
     exec ./ui.sh
 
