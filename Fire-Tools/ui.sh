@@ -18,14 +18,14 @@ tool=$(zenity --list \
   --width=510 --height=400 \
   --column="Tool" --column="Description" \
     "Debloat" "Disable or restore Amazon apps" \
-    "Google Services" "Installs Google Play" \
-    "Change Launcher" "Replaces Fire Launcher with Nova, Lawnchair, or Custom" \
-    "Disable OTA" "Disables OTA Updates" \
-    "Dark Mode" "Enables system wide dark mode" \
-    "Apk Extractor" "Extracts .apks from installed applications" \
-    "Batch Installer" "Installs all .apks in the Batch folder" \
-    "Split Apk Installer" "Install Split Apks" \
-    "Update" "Grabs the latest Fire-Tools scripts")
+    "Google Services" "Install Google Play" \
+    "Change Launcher" "Replace Fire Launcher with Nova, Lawnchair, or Custom" \
+    "Disable OTA" "Disable OTA Updates" \
+    "Dark Mode" "Enable system-wide dark mode" \
+    "Apk Extractor" "Extract .apks from installed applications" \
+    "Batch Installer" "Install all .apks in the Batch folder" \
+    "Split Apk Installer" "Install split apks" \
+    "Update" "Grab the latest Fire-Tools scripts")
 
 # Debloat Menu
 [ "$tool" = "Debloat" ] && exec ./debloat.sh
@@ -41,7 +41,6 @@ if [ "$tool" = "Google Services" ]; then
     done
     zenity --notification --text="Successfully Installed Google Services"
     exec ./ui.sh
-fi
 
 # Custom Launcher Menu
 [ "$tool" = "Change Launcher" ] && exec ./launcher.sh
@@ -76,13 +75,12 @@ fi
     exec ./ui.sh
 
 # Split Apk Installer
-if [ "$tool" = "Split Apk Installer" ]; then
+elif [ "$tool" = "Split Apk Installer" ]; then
     curl -sSL https://github.com/mrhaydendp/Split-Apk-Installer/raw/main/Split%20Apk%20Installer.sh | bash
     exec ./ui.sh
-fi
 
 # Updater Tool
-if [ "$tool" = "Update" ]; then
+elif [ "$tool" = "Update" ]; then
     echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
     for sh in *.sh
     do
