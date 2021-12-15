@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Show the Message of the Day
+curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Motd
+
 # Identify Device & List Model
 device=$(adb shell getprop ro.product.model)
     [ "$device" = "KFMUWI" ] && device="Fire 7 (9th Gen)" && sup="1"
