@@ -1,4 +1,7 @@
-#!/bin/powershell
+#!/usr/bin/env pwsh
+
+# Message of the Day
+Invoke-RestMethod -Uri https://github.com/mrhaydendp/Fire-Tools/raw/main/Motd
 
 # Set Dark Theme Based on Color Mode Prefrence
 $theme = "GhostWhite"
@@ -333,7 +336,7 @@ $GitHub.Add_Click({
 
 # Grab Latest Fire-Tools Scripts & Show Changelog
 $Update.Add_Click({
-    $Changelog = (Invoke-WebRequest https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md | Select-String "- ")
+    $Changelog = (Invoke-RestMethod https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md)
     Write-Host "Latest Changelog:`n $changelog"
     Write-Host "Updating Debloat List"
     Start-BitsTransfer https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt
