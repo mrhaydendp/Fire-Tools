@@ -1,3 +1,8 @@
+## Updated Fire-Tools.ps1 (Windows) - 12/15/21
+- Updated shebang so its more compatible
+- Added MOTD function for the holidays
+- Replaced Invoke-WebRequest with Invoke-RestMethod so I don't have to format changelog output
+
 ## Updated ui.sh (Linux/macOS) - 12/15/21
 - Added message of the day for holiday messages
 - Fixed the tense of all descriptions so they're the same
@@ -12,7 +17,3 @@
 ## Updated Fire-Tools.ps1 (Windows) - 11/29/21
 - Application now changes colors based on system theme
 - Added -g argument to Google apps install and launchers to grant all permissions on installation
-
-## Updated Fire-Tools.ps1 (Windows) - 11/28/21
-- New rebuilt debloat tool that has multi device support & creates less errors
-- Updated comments above code
