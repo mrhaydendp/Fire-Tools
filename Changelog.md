@@ -1,3 +1,11 @@
+## Updated ui.sh, debloat.sh, and Debloat.txt (Linux/macOS) - 12/22/21
+- Added exit if no option selected
+- Added error message if "Disable OTA" fails
+- Closed the if statement above "Custom Launcher" because it was causing issues
+- Fixed apps not enabling/disabling if there are more than one with a similar name
+- "Enable" now tells you it's enabling Fire Launcher & OTA Updates
+- Added "On Deck" to the debloat list
+
 ## Updated Fire-Tools.ps1 (Windows) - 12/15/21
 - Updated shebang so its more compatible
 - Added MOTD function for the holidays
@@ -13,7 +21,3 @@
 - Updated shebang to `#!/usr/bin/env bash` for better compatibility
 - Updated the debloat tool to be more efficient
 - Launcher installs now grant all permissions to the launcher so there's no hang after install
-
-## Updated Fire-Tools.ps1 (Windows) - 11/29/21
-- Application now changes colors based on system theme
-- Added -g argument to Google apps install and launchers to grant all permissions on installation
