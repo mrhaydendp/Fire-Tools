@@ -100,3 +100,4 @@ com.amazon.whisperlink.core.android              # Whisperplay Daemon
 com.amazon.whisperplay.contracts                 # Whisperlink SDK
 com.amazon.whisperplay.service.install           # Whisperlink Installer
 com.amazon.wifilocker                            # Wifi Locker
+com.amazon.readynowcore                          # On Deck
