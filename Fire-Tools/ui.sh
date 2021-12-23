@@ -27,6 +27,9 @@ tool=$(zenity --list \
     "Split Apk Installer" "Install split apks" \
     "Update" "Grab the latest Fire-Tools scripts")
 
+# Exit if No Option is Selected
+[ "$tool" = "" ] && exit
+
 # Debloat Menu
 [ "$tool" = "Debloat" ] && exec ./debloat.sh
 
@@ -41,6 +44,7 @@ if [ "$tool" = "Google Services" ]; then
     done
     zenity --notification --text="Successfully Installed Google Services"
     exec ./ui.sh
+fi
 
 # Custom Launcher Menu
 [ "$tool" = "Change Launcher" ] && exec ./launcher.sh
@@ -50,7 +54,8 @@ if [ "$tool" = "Google Services" ]; then
     adb shell pm disable-user -k com.amazon.device.software.ota &&
     adb shell pm disable-user -k com.amazon.device.software.ota.override &&
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota &&
-    zenity --notification --text="Successfully Disabled OTA Updates" &&
+    zenity --notification --text="Successfully Disabled OTA Updates" ||
+    zenity --notification --text="Failed to Disable OTA Updates" &&
     exec ./ui.sh
 
 # Enable System-Wide Dark Mode (Funky on Fire 7 9th Gen)
@@ -75,7 +80,7 @@ if [ "$tool" = "Google Services" ]; then
     exec ./ui.sh
 
 # Split Apk Installer
-elif [ "$tool" = "Split Apk Installer" ]; then
+if [ "$tool" = "Split Apk Installer" ]; then
     curl -sSL https://github.com/mrhaydendp/Split-Apk-Installer/raw/main/Split%20Apk%20Installer.sh | bash
     exec ./ui.sh
 
