@@ -1,6 +1,4 @@
 ## Updated ui.sh, debloat.sh, and Debloat.txt (Linux/macOS) - 12/22/21
-- Added exit if no option selected
-- Added error message if "Disable OTA" fails
 - Closed the if statement above "Custom Launcher" because it was causing issues
 - Fixed apps not enabling/disabling if there are more than one with a similar name
 - "Enable" now tells you it's enabling Fire Launcher & OTA Updates
