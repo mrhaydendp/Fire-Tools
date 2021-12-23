@@ -27,9 +27,6 @@ tool=$(zenity --list \
     "Split Apk Installer" "Install split apks" \
     "Update" "Grab the latest Fire-Tools scripts")
 
-# Exit if No Option is Selected
-[ "$tool" = "" ] && exit
-
 # Debloat Menu
 [ "$tool" = "Debloat" ] && exec ./debloat.sh
 
@@ -54,8 +51,7 @@ fi
     adb shell pm disable-user -k com.amazon.device.software.ota &&
     adb shell pm disable-user -k com.amazon.device.software.ota.override &&
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota &&
-    zenity --notification --text="Successfully Disabled OTA Updates" ||
-    zenity --notification --text="Failed to Disable OTA Updates" &&
+    zenity --notification --text="Successfully Disabled OTA Updates" &&
     exec ./ui.sh
 
 # Enable System-Wide Dark Mode (Funky on Fire 7 9th Gen)
