@@ -14,8 +14,8 @@ if [ "$opt" = "Enable" ]; then
     mapfile -t packages < <(awk '{print $1}' < Debloat.txt)
     for package in "${packages[@]}"
     do
-        check=$(adb shell pm list packages | cut -f 2 -d ":" | grep "${package}")
-    if [ "$check" = "${package}" ]; then
+        check=($(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}"))
+    if [ "${check[0]}" = "${package}" ]; then
         adb shell pm enable "${package}" &>/dev/null &&
         echo "Enabled: ${package}" || echo "Failed to Enable: ${package}"
     fi
@@ -23,6 +23,7 @@ if [ "$opt" = "Enable" ]; then
     echo "Disabling Adguard DNS"
     adb shell settings put global private_dns_mode -hostname
     adb shell settings put global private_dns_specifier -dns.adguard.com
+    echo "Enabling Fire Launcher & OTA Updates"
     adb shell pm enable com.amazon.firelauncher
     adb shell pm enable com.amazon.device.software.ota
     adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
@@ -33,8 +34,8 @@ elif [ "$opt" = "Disable" ]; then
     mapfile -t packages < <(awk '{print $1}' < Debloat.txt)
     for package in "${packages[@]}"
     do
-        check=$(adb shell pm list packages | cut -f 2 -d ":" | grep "${package}")
-    if [ "$check" = "${package}" ]; then
+        check=($(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}"))
+    if [ "${check[0]}" = "${package}" ]; then
         adb shell pm disable-user -k "${package}" &>/dev/null &&
         echo "Disabled: ${package}" || echo "Failed to Disable: ${package}"
     fi
