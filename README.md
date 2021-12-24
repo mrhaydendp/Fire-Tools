@@ -63,7 +63,7 @@ Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that
 
 ## Notes
 Things you should know:
-- Set timezone settings before debloat! 
+- Set timezone settings before debloat! (re-enable `com.amazon.kindle.otter.oobe` to change date & time settings)
 - You are allowed to fork this script and make your own for your use cases but you have to credit me and link back to this project
 - Google Apps are downloaded from [ApkMirror](https://www.apkmirror.com/) and are updated to the latest supported `.apk` or `.apkm`
 - Debloat will disable all amazon apps except `Calculator`, `Camera`, `Clock`, `Files`, `Home`, and `Settings`
