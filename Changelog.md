@@ -1,3 +1,6 @@
+## Updated Fire-Tools.ps1 & ui.sh (All) - 12/28/21
+- Removed MOTD functionality
+
 ## Updated ui.sh, debloat.sh, and Debloat.txt (Linux/macOS) - 12/22/21
 - Closed the if statement above "Custom Launcher" because it was causing issues
 - Fixed apps not enabling/disabling if there are more than one with a similar name
@@ -13,9 +16,3 @@
 - Added message of the day for holiday messages
 - Fixed the tense of all descriptions so they're the same
 - Removed unneeded fi endings
-
-##  Updated ui.sh, launcher.sh, and debloat.sh (Linux/macOS) - 12/07/21
-- Passed all bash specific shellcheck checks (and very close to posix shell compliance)
-- Updated shebang to `#!/usr/bin/env bash` for better compatibility
-- Updated the debloat tool to be more efficient
-- Launcher installs now grant all permissions to the launcher so there's no hang after install
