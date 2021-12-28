@@ -1,8 +1,5 @@
 #!/usr/bin/env pwsh
 
-# Message of the Day
-Invoke-RestMethod -Uri https://github.com/mrhaydendp/Fire-Tools/raw/main/Motd
-
 # Set Dark Theme Based on Color Mode Prefrence
 $theme = "GhostWhite"
 $prefrence = (reg query HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize /v AppsUseLightTheme | Select-String "0x0")
