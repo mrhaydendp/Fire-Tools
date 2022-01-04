@@ -1,6 +1,7 @@
 ## Updated Fire-Tools.ps1 (Windows) - 1/4/21
 - Changed "dark preference" theme color to "LightGray" because the previous one had a weird reddish hue
 - Switched to better method of getting "AppsUseLightTheme" preference
+- Code cleanup
 
 ## Updated Fire-Tools.ps1 & ui.sh (All) - 12/28/21
 - Removed MOTD functionality
