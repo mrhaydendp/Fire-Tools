@@ -10,20 +10,15 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 $device = (adb shell getprop ro.product.model)
 if ( "KFMUWI" -eq $device ) {
     $device = "Fire 7 (9th Gen)"
-}
-elseif ( "KFKAWI" -eq $device ) {
+} elseif ( "KFKAWI" -eq $device ) {
     $device = "Fire HD 8 (8th Gen)"
-}
-elseif ( "KFONWI" -eq $device ) {
+} elseif ( "KFONWI" -eq $device ) {
     $device = "Fire HD 8 (10th Gen)"
-}
-elseif ( "KFMAWI" -eq $device ) {
+} elseif ( "KFMAWI" -eq $device ) {
     $device = "Fire HD 10 (9th Gen)"
-}
-elseif ( "KFTRWI" -eq $device ) {
+} elseif ( "KFTRWI" -eq $device ) {
     $device = "Fire HD 10 (11th Gen)"
-}
-else {
+} else {
     $device = "Unsupported Device"
 }
 
@@ -65,7 +60,7 @@ $Label3.Location = New-Object System.Drawing.Size(275,260)
 $Label3.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
 $Form.Controls.Add($Label3)
 
-# Debloat Section Buttons
+# Buttons - Debloat
 $Debloat = New-Object System.Windows.Forms.Button
 $Debloat.Text = "Debloat"
 $Debloat.Size = New-Object System.Drawing.Size(180,38)
@@ -90,7 +85,7 @@ $CustomDebloat.Size = New-Object System.Drawing.Size(180,38)
 $CustomDebloat.Location = New-Object System.Drawing.Size(15,210)
 $Form.Controls.Add($CustomDebloat)
 
-# Utilities Section Buttons
+# Buttons - Utilities
 $GoogleServices = New-Object System.Windows.Forms.Button
 $GoogleServices.Text = "Install Google Apps"
 $GoogleServices.Size = New-Object System.Drawing.Size(180,38)
@@ -115,7 +110,7 @@ $Batch.Size = New-Object System.Drawing.Size(180,38)
 $Batch.Location = New-Object System.Drawing.Size(265,210)
 $Form.Controls.Add($Batch)
 
-# Custom Launchers Section Buttons
+# Buttons - Custom Launchers
 $Lawnchair = New-Object System.Windows.Forms.Button
 $Lawnchair.Text = "Lawnchair"
 $Lawnchair.Size = New-Object System.Drawing.Size(180,38)
@@ -134,7 +129,7 @@ $Custom.Size = New-Object System.Drawing.Size(180,38)
 $Custom.Location = New-Object System.Drawing.Size(515,160)
 $Form.Controls.Add($Custom)
 
-# Miscellaneous Section Buttons
+# Buttons - Miscellaneous
 $GitHub = New-Object System.Windows.Forms.Button
 $GitHub.Text = "GitHub Page"
 $GitHub.Size = New-Object System.Drawing.Size(180,38)
@@ -216,6 +211,7 @@ $Rebloat.Add_Click({
     Write-Host "Disabling Adguard DNS"
     adb shell settings put global private_dns_mode -hostname
     adb shell settings put global private_dns_specifier -dns.adguard.com
+    Write-Host "Enabling Fire Launcher & OTA Updates"
     adb shell pm enable com.amazon.firelauncher
     adb shell pm enable com.amazon.device.software.ota
     adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
@@ -279,7 +275,7 @@ $ApkExtract.Add_Click({
     Write-Host "Extracted Selected Apk"
 })
 
-# Enable System-Wide Dark Mode
+# Enable System-Wide Dark Mode (Funky on Fire 7)
 $Dark.Add_Click({
     Write-Host "Enabling System Wide Dark Mode"
     adb shell settings put secure ui_night_mode 2
