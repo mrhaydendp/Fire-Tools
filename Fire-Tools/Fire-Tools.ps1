@@ -1,10 +1,9 @@
 #!/usr/bin/env pwsh
 
-# Set Dark Theme Based on Color Mode Prefrence
-$theme = "GhostWhite"
-$prefrence = (reg query HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize /v AppsUseLightTheme | Select-String "0x0")
-if ($prefrence -like '*0x0'){
-    $theme = "#B9B7BD"
+# Set Theme Based on AppUseLightTheme Prefrence
+$theme = "LightGray"
+if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme"){
+    $theme = "GhostWhite"
 }
 
 # Device Identifier
