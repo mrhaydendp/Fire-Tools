@@ -1,3 +1,7 @@
+## Updated Fire-Tools.ps1 (Windows) - 1/4/21
+- Changed "dark preference" theme color to "LightGray" because the previous one had a weird reddish hue
+- Switched to better method of getting "AppsUseLightTheme" preference
+
 ## Updated Fire-Tools.ps1 & ui.sh (All) - 12/28/21
 - Removed MOTD functionality
 
@@ -11,8 +15,3 @@
 - Updated shebang so its more compatible
 - Added MOTD function for the holidays
 - Replaced Invoke-WebRequest with Invoke-RestMethod so I don't have to format changelog output
-
-## Updated ui.sh (Linux/macOS) - 12/15/21
-- Added message of the day for holiday messages
-- Fixed the tense of all descriptions so they're the same
-- Removed unneeded fi endings
