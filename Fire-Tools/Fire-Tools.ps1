@@ -1,9 +1,9 @@
 #!/usr/bin/env pwsh
 
-# Set Theme Based on AppUseLightTheme Prefrence
-$theme = "LightGray"
+# Set Theme Based on AppsUseLightTheme Prefrence
+$theme = @('#fafafa','#202020','#2b2b2b')
 if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme"){
-    $theme = "GhostWhite"
+    $theme = @('#363636','#f3f3f3','#fbfbfb')
 }
 
 # Device Identifier
@@ -29,7 +29,8 @@ $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools - $device"
 $Form.StartPosition = "CenterScreen"
 $Form.ClientSize = New-Object System.Drawing.Point(715,410)
-$Form.BackColor = "$theme"
+$Form.ForeColor = $theme[0]
+$Form.BackColor = $theme[1]
 
 # Categories
 $Label = New-Object System.Windows.Forms.Label
@@ -65,24 +66,36 @@ $Debloat = New-Object System.Windows.Forms.Button
 $Debloat.Text = "Debloat"
 $Debloat.Size = New-Object System.Drawing.Size(180,38)
 $Debloat.Location = New-Object System.Drawing.Size(15,60)
+$Debloat.FlatStyle = "0"
+$Debloat.FlatAppearance.BorderSize = "0"
+$Debloat.BackColor = $theme[2]
 $Form.Controls.Add($Debloat)
 
 $Rebloat = New-Object System.Windows.Forms.Button
 $Rebloat.Text = "Undo Debloat"
 $Rebloat.Size = New-Object System.Drawing.Size(180,38)
 $Rebloat.Location = New-Object System.Drawing.Size(15,110)
+$Rebloat.FlatStyle = "0"
+$Rebloat.FlatAppearance.BorderSize = "0"
+$Rebloat.BackColor = $theme[2]
 $Form.Controls.Add($Rebloat)
 
 $OTA = New-Object System.Windows.Forms.Button
 $OTA.Text = "Disable OTA Updates"
 $OTA.Size = New-Object System.Drawing.Size(180,38)
 $OTA.Location = New-Object System.Drawing.Size(15,160)
+$OTA.FlatStyle = "0"
+$OTA.FlatAppearance.BorderSize = "0"
+$OTA.BackColor = $theme[2]
 $Form.Controls.Add($OTA)
 
 $CustomDebloat = New-Object System.Windows.Forms.Button
 $CustomDebloat.Text = "Custom Debloat"
 $CustomDebloat.Size = New-Object System.Drawing.Size(180,38)
 $CustomDebloat.Location = New-Object System.Drawing.Size(15,210)
+$CustomDebloat.FlatStyle = "0"
+$CustomDebloat.FlatAppearance.BorderSize = "0"
+$CustomDebloat.BackColor = $theme[2]
 $Form.Controls.Add($CustomDebloat)
 
 # Buttons - Utilities
@@ -90,24 +103,36 @@ $GoogleServices = New-Object System.Windows.Forms.Button
 $GoogleServices.Text = "Install Google Apps"
 $GoogleServices.Size = New-Object System.Drawing.Size(180,38)
 $GoogleServices.Location = New-Object System.Drawing.Size(265,60)
+$GoogleServices.FlatStyle = "0"
+$GoogleServices.FlatAppearance.BorderSize = "0"
+$GoogleServices.BackColor = $theme[2]
 $Form.Controls.Add($GoogleServices)
 
 $ApkExtract = New-Object System.Windows.Forms.Button
 $ApkExtract.Text = "Apk Extractor"
 $ApkExtract.Size = New-Object System.Drawing.Size(180,38)
 $ApkExtract.Location = New-Object System.Drawing.Size(265,110)
+$ApkExtract.FlatStyle = "0"
+$ApkExtract.FlatAppearance.BorderSize = "0"
+$ApkExtract.BackColor = $theme[2]
 $Form.Controls.Add($ApkExtract)
 
 $Dark = New-Object System.Windows.Forms.Button
 $Dark.Text = "System-Wide Dark Mode"
 $Dark.Size = New-Object System.Drawing.Size(180,38)
 $Dark.Location = New-Object System.Drawing.Size(265,160)
+$Dark.FlatStyle = "0"
+$Dark.FlatAppearance.BorderSize = "0"
+$Dark.BackColor = $theme[2]
 $Form.Controls.Add($Dark)
 
 $Batch = New-Object System.Windows.Forms.Button
 $Batch.Text = "Batch Install"
 $Batch.Size = New-Object System.Drawing.Size(180,38)
 $Batch.Location = New-Object System.Drawing.Size(265,210)
+$Batch.FlatStyle = "0"
+$Batch.FlatAppearance.BorderSize = "0"
+$Batch.BackColor = $theme[2]
 $Form.Controls.Add($Batch)
 
 # Buttons - Custom Launchers
@@ -115,18 +140,27 @@ $Lawnchair = New-Object System.Windows.Forms.Button
 $Lawnchair.Text = "Lawnchair"
 $Lawnchair.Size = New-Object System.Drawing.Size(180,38)
 $Lawnchair.Location = New-Object System.Drawing.Size(515,60)
+$Lawnchair.FlatStyle = "0"
+$Lawnchair.FlatAppearance.BorderSize = "0"
+$Lawnchair.BackColor = $theme[2]
 $Form.Controls.Add($Lawnchair)
 
 $Nova = New-Object System.Windows.Forms.Button
 $Nova.Text = "Nova Launcher"
 $Nova.Size = New-Object System.Drawing.Size(180,38)
 $Nova.Location = New-Object System.Drawing.Size(515,110)
+$Nova.FlatStyle = "0"
+$Nova.FlatAppearance.BorderSize = "0"
+$Nova.BackColor = $theme[2]
 $Form.Controls.Add($Nova)
 
 $Custom = New-Object System.Windows.Forms.Button
 $Custom.Text = "Custom Launcher"
 $Custom.Size = New-Object System.Drawing.Size(180,38)
 $Custom.Location = New-Object System.Drawing.Size(515,160)
+$Custom.FlatStyle = "0"
+$Custom.FlatAppearance.BorderSize = "0"
+$Custom.BackColor = $theme[2]
 $Form.Controls.Add($Custom)
 
 # Buttons - Miscellaneous
@@ -134,30 +168,45 @@ $GitHub = New-Object System.Windows.Forms.Button
 $GitHub.Text = "GitHub Page"
 $GitHub.Size = New-Object System.Drawing.Size(180,38)
 $GitHub.Location = New-Object System.Drawing.Size(15,305)
+$GitHub.FlatStyle = "0"
+$GitHub.FlatAppearance.BorderSize = "0"
+$GitHub.BackColor = $theme[2]
 $Form.Controls.Add($GitHub)
 
 $Update = New-Object System.Windows.Forms.Button
 $Update.Text = "Update Scripts"
 $Update.Size = New-Object System.Drawing.Size(180,38)
 $Update.Location = New-Object System.Drawing.Size(265,305)
+$Update.FlatStyle = "0"
+$Update.FlatAppearance.BorderSize = "0"
+$Update.BackColor = $theme[2]
 $Form.Controls.Add($Update)
 
 $Website = New-Object System.Windows.Forms.Button
 $Website.Text = "Website"
 $Website.Size = New-Object System.Drawing.Size(180,38)
 $Website.Location = New-Object System.Drawing.Size(515,305)
+$Website.FlatStyle = "0"
+$Website.FlatAppearance.BorderSize = "0"
+$Website.BackColor = $theme[2]
 $Form.Controls.Add($Website)
 
 $SplitInstaller = New-Object System.Windows.Forms.Button
 $SplitInstaller.Text = "Split Apk Installer"
 $SplitInstaller.Size = New-Object System.Drawing.Size(180,38)
 $SplitInstaller.Location = New-Object System.Drawing.Size(15,355)
+$SplitInstaller.FlatStyle = "0"
+$SplitInstaller.FlatAppearance.BorderSize = "0"
+$SplitInstaller.BackColor = $theme[2]
 $Form.Controls.Add($SplitInstaller)
 
 $Recovery = New-Object System.Windows.Forms.Button
 $Recovery.Text = "Reboot to Recovery"
 $Recovery.Size = New-Object System.Drawing.Size(180,38)
 $Recovery.Location = New-Object System.Drawing.Size(265,355)
+$Recovery.FlatStyle = "0"
+$Recovery.FlatAppearance.BorderSize = "0"
+$Recovery.BackColor = $theme[2]
 $Form.Controls.Add($Recovery)
 
 # Disable Amazon apps
