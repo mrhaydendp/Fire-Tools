@@ -2,19 +2,19 @@
 
 # UI
 opt=$(zenity --list \
-  --title=Debloat \
+  --title="Debloat" \
   --width=500 --height=400 \
   --column="Option" --column="Description" \
-    "Enable" "Enables all Amazon apps" \
-    "Disable" "Disables all Amazon apps" \
-    "Custom" "Lists installed packages and lets you disable them")
+    "Enable" "Enables All Amazon Apps" \
+    "Disable" "Disables All Amazon Apps" \
+    "Custom" "Lists Installed Packages & Lets You Disable Them")
 
 # Enable Apps
 if [ "$opt" = "Enable" ]; then
     mapfile -t packages < <(awk '{print $1}' < Debloat.txt)
     for package in "${packages[@]}"
     do
-        check=($(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}"))
+        mapfile -t check < <(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}")
     if [ "${check[0]}" = "${package}" ]; then
         adb shell pm enable "${package}" &>/dev/null &&
         echo "Enabled: ${package}" || echo "Failed to Enable: ${package}"
@@ -34,7 +34,7 @@ elif [ "$opt" = "Disable" ]; then
     mapfile -t packages < <(awk '{print $1}' < Debloat.txt)
     for package in "${packages[@]}"
     do
-        check=($(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}"))
+        mapfile -t check < <(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}")
     if [ "${check[0]}" = "${package}" ]; then
         adb shell pm disable-user -k "${package}" &>/dev/null &&
         echo "Disabled: ${package}" || echo "Failed to Disable: ${package}"

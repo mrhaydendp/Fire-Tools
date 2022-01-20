@@ -29,8 +29,8 @@ tool=$(zenity --list \
 
 # Install Google Services
 if [ "$tool" = "Google Services" ]; then
-    find ./Gapps/*.apk -print0 | xargs -0 -l adb install
-    for apkm in ./Gapps/*.apkm
+    find ./Gapps/Google*.apk -print0 | xargs -0 -l adb install
+    for apkm in ./Gapps/Google*.apkm
     do
         unzip "$apkm" -d ./Split
         adb install-multiple ./Split/*.apk
@@ -44,12 +44,14 @@ fi
 [ "$tool" = "Change Launcher" ] && exec ./launcher.sh
 
 # Disable OTA Updates
-[ "$tool" = "Disable OTA" ] &&
+if [ "$tool" = "Disable OTA" ]; then
     adb shell pm disable-user -k com.amazon.device.software.ota &&
     adb shell pm disable-user -k com.amazon.device.software.ota.override &&
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota &&
-    zenity --notification --text="Successfully Disabled OTA Updates" &&
+    zenity --notification --text="Successfully Disabled OTA Updates" ||
+    zenity --notification --text="Failed to Disable OTA Updates"
     exec ./ui.sh
+fi
 
 # Enable System-Wide Dark Mode (Funky on Fire 7 9th Gen)
 [ "$tool" = "Dark Mode" ] &&
@@ -87,6 +89,6 @@ elif [ "$tool" = "Update" ]; then
     done
     echo "Updating Debloat List"
     curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt > Debloat.txt
-    zenity --notification --text="Successfully Updated Fire-Tools" &&
+    zenity --notification --text="Successfully Updated Fire-Tools"
     exec ./ui.sh
 fi
