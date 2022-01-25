@@ -1,5 +1,42 @@
 #!/usr/bin/env bash
 
+# Thank you https://stackoverflow.com/questions/41475261/need-alternative-to-readarray-mapfile-for-script-on-older-version-of-bash
+if ! type -t readarray >/dev/null; then
+  # Very minimal readarray implementation using read. Does NOT work with lines that contain double-quotes due to eval()
+  readarray() {
+    local cmd opt t v=MAPFILE
+    while [ -n "$1" ]; do
+      case "$1" in
+      -h|--help) echo "minimal substitute readarray for older bash"; exit; ;;
+      -r) shift; opt="$opt -r"; ;;
+      -t) shift; t=1; ;;
+      -u) 
+          shift; 
+          if [ -n "$1" ]; then
+            opt="$opt -u $1"; 
+            shift
+          fi
+          ;;
+      *)
+          if [[ "$1" =~ ^[A-Za-z_]+$ ]]; then
+            v="$1"
+            shift
+          else
+            echo -en "${C_BOLD}${C_RED}Error: ${C_RESET}Unknown option: '$1'\n" 1>&2
+            exit
+          fi
+          ;;
+      esac
+    done
+    cmd="read $opt"
+    eval "$v=()"
+    while IFS= eval "$cmd line"; do      
+      line=$(echo "$line" | sed -e "s#\([\"\`]\)#\\\\\1#g" )
+      eval "${v}+=(\"$line\")"
+    done
+  }
+fi
+
 # UI
 opt=$(zenity --list \
   --title="Debloat" \
@@ -11,10 +48,10 @@ opt=$(zenity --list \
 
 # Enable Apps
 if [ "$opt" = "Enable" ]; then
-    mapfile -t packages < <(awk '{print $1}' < Debloat.txt)
+    readarray -t packages < <(awk '{print $1}' < Debloat.txt)
     for package in "${packages[@]}"
     do
-        mapfile -t check < <(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}")
+        readarray -t check < <(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}")
     if [ "${check[0]}" = "${package}" ]; then
         adb shell pm enable "${package}" &>/dev/null &&
         echo "Enabled: ${package}" || echo "Failed to Enable: ${package}"
@@ -31,10 +68,10 @@ if [ "$opt" = "Enable" ]; then
 
 # Disable Apps
 elif [ "$opt" = "Disable" ]; then
-    mapfile -t packages < <(awk '{print $1}' < Debloat.txt)
+    readarray -t packages < <(awk '{print $1}' < Debloat.txt)
     for package in "${packages[@]}"
     do
-        mapfile -t check < <(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}")
+        readarray -t check < <(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}")
     if [ "${check[0]}" = "${package}" ]; then
         adb shell pm disable-user -k "${package}" &>/dev/null &&
         echo "Disabled: ${package}" || echo "Failed to Disable: ${package}"
