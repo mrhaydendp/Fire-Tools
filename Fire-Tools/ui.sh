@@ -64,7 +64,7 @@ fi
     adb shell pm list packages | cut -f 2 -d ":" > packagelist &&
     package=$(zenity --list --width=500 --height=400 --column=Packages < packagelist) &&
     adb shell pm path "$package" | cut -f 2 -d ":" > Packages.txt &&
-    xargs -l adb pull < Packages.txt &&
+    xargs -L1 adb pull < Packages.txt &&
     zenity --notification --text="Successfully Extracted Apk" &&
     exec ./ui.sh
 
