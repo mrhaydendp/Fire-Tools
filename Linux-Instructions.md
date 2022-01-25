@@ -19,6 +19,5 @@ Install the [Brew Package Manager](https://brew.sh/) Using Terminal:
 Install necessary packages:
 
 ```bash
-brew cask install android-platform-tool
-brew install wget zenity
+brew install android-platform-tool wget zenity
 ```
