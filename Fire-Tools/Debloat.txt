@@ -9,12 +9,16 @@ com.amazon.client.metrics.api                    # Amazon Client Metrics API
 com.amazon.communication.discovery               # Amazon Communication Discovery
 com.amazon.tcomm.client                          # Amazon Communication Services Client Library
 com.amazon.tcomm                                 # Amazon Communication Services
+com.amazon.tcomm.jackson                         # Amazon Communication Service Jackson19
 com.amazon.application.compatibility.enforcer    # Amazon Compatibility Enforcer
 com.amazon.dpcclient                             # Amazon DCPCClient Application
 com.amazon.client.metrics                        # Amazon Device Metrics
 com.amazon.dcp                                   # Amazon Device Middleware Debugging Tool
+com.amazon.dcpms.fos.service                     # DCPMSFOSService
 com.amazon.platform                              # Amazon Metrics Service Application
+com.amazon.device.sale.service                   # Amazon Sale Service
 com.amazon.device.sync.sdk.internal              # Amazon Sync SDK
+com.amazon.sync.service                          # Amazon Sync Service
 com.amazon.device.sync                           # Amazon Whispersync DX
 com.amazon.minerva.client.api                    # Amazon Minerva Client API
 com.amazon.ags.app                               # Amazon GameCircle
@@ -54,7 +58,9 @@ com.amazon.zico                                  # Documents
 com.android.email                                # Email
 com.amazon.dp.fbcontacts                         # Facebook Sync Adapter
 com.goodreads.kindle                             # Goodreads
+com.amazon.alta.h2clientservice                  # H2Application
 com.amazon.csapp                                 # Help
+com.here.odnp.service                            # HERE Positioning
 com.android.protips                              # Home Screen Tips
 com.amazon.imdb.tv.mobile.app                    # IMDB TV
 com.amazon.imp                                   # Identity Mobile Platform
@@ -82,6 +88,7 @@ com.amazon.avod                                  # Prime Video
 com.amazon.pm                                    # Parental Monitoring Service
 com.svox.pico                                    # PicoTTS
 com.amazon.kindle.rdmdeviceadmin                 # Remote Device Management Application
+com.amazon.shpm                                  # Shipmode
 com.amazon.cloud9                                # Silk Browser
 com.amazon.cloud9.contentservice                 # Silk Content Service
 com.amazon.cloud9.systembrowserprovider          # System Browser Provider
