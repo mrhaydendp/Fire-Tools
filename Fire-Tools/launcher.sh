@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-# UI
+# GUI Specs
 launcher=$(zenity --list \
   --title="Custom Launcher" \
   --width=500 --height=400 \
@@ -9,13 +9,10 @@ launcher=$(zenity --list \
     "Lawnchair" \
     "Custom")
 
-# Install Nova Launcher
-[ "$launcher" = "Nova" ] &&
+# Install Selected Launcher (Nova or Lawnchair)
+if [ "$launcher" = "Nova" ] || [ "$launcher" = "Lawnchair" ]; then
     adb install -g ./"$launcher"*.apk
-
-# Install Lawnchair
-[ "$launcher" = "Lawnchair" ] &&
-    adb install -g ./"$launcher"*.apk
+fi
 
 # Install Custom Launcher
 [ "$launcher" = "Custom" ] &&
@@ -25,6 +22,6 @@ launcher=$(zenity --list \
 # If a Custom Launcher is Selected Disable File Launcher
 [ "$launcher" != "" ] &&
     adb shell pm disable-user -k com.amazon.firelauncher &&
-    zenity --notification --text="Successfully set Custom Launcher"
+    echo "Successfully set Custom Launcher"
 
 exec ./ui.sh

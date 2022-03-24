@@ -1,61 +1,23 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-# Thank you https://stackoverflow.com/questions/41475261/need-alternative-to-readarray-mapfile-for-script-on-older-version-of-bash
-if ! type -t readarray >/dev/null; then
-  # Very minimal readarray implementation using read. Does NOT work with lines that contain double-quotes due to eval()
-  readarray() {
-    local cmd opt t v=MAPFILE
-    while [ -n "$1" ]; do
-      case "$1" in
-      -h|--help) echo "minimal substitute readarray for older bash"; exit; ;;
-      -r) shift; opt="$opt -r"; ;;
-      -t) shift; t=1; ;;
-      -u) 
-          shift; 
-          if [ -n "$1" ]; then
-            opt="$opt -u $1"; 
-            shift
-          fi
-          ;;
-      *)
-          if [[ "$1" =~ ^[A-Za-z_]+$ ]]; then
-            v="$1"
-            shift
-          else
-            echo -en "${C_BOLD}${C_RED}Error: ${C_RESET}Unknown option: '$1'\n" 1>&2
-            exit
-          fi
-          ;;
-      esac
-    done
-    cmd="read $opt"
-    eval "$v=()"
-    while IFS= eval "$cmd line"; do      
-      line=$(echo "$line" | sed -e "s#\([\"\`]\)#\\\\\1#g" )
-      eval "${v}+=(\"$line\")"
-    done
-  }
-fi
-
-# UI
+# GUI Specs
 opt=$(zenity --list \
-  --title="Debloat" \
-  --width=500 --height=400 \
-  --column="Option" --column="Description" \
+--title="Debloat" \
+--width=500 --height=400 \
+--column="Option" --column="Description" \
     "Enable" "Enables All Amazon Apps" \
     "Disable" "Disables All Amazon Apps" \
     "Custom" "Lists Installed Packages & Lets You Disable Them")
 
+# Debloat List
+packages=$(awk '{print $1}' < Debloat.txt)
+
 # Enable Apps
 if [ "$opt" = "Enable" ]; then
-    readarray -t packages < <(awk '{print $1}' < Debloat.txt)
-    for package in "${packages[@]}"
+    for package in ${packages}
     do
-        readarray -t check < <(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}")
-    if [ "${check[0]}" = "${package}" ]; then
-        adb shell pm enable "${package}" &>/dev/null &&
-        echo "Enabled: ${package}" || echo "Failed to Enable: ${package}"
-    fi
+        adb shell pm enable "$package" 2> /dev/null ||
+        echo "Failed to Enable: $package"
     done
     echo "Disabling Adguard DNS"
     adb shell settings put global private_dns_mode -hostname
@@ -64,18 +26,14 @@ if [ "$opt" = "Enable" ]; then
     adb shell pm enable com.amazon.firelauncher
     adb shell pm enable com.amazon.device.software.ota
     adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
-    zenity --notification --text="Successfully Enabled Fire OS Bloat"
+    echo "Successfully Enabled Fire OS Bloat"
 
 # Disable Apps
 elif [ "$opt" = "Disable" ]; then
-    readarray -t packages < <(awk '{print $1}' < Debloat.txt)
-    for package in "${packages[@]}"
+    for package in ${packages}
     do
-        readarray -t check < <(adb shell pm list packages | cut -f 2 -d ":" | grep -ow "${package}")
-    if [ "${check[0]}" = "${package}" ]; then
-        adb shell pm disable-user -k "${package}" &>/dev/null &&
-        echo "Disabled: ${package}" || echo "Failed to Disable: ${package}"
-    fi
+        adb shell pm disable-user -k "$package" 2> /dev/null ||
+        echo "Failed to Disable: $package"
     done
     echo "Disabling Telemetry & Resetting Advertising ID"
     adb shell settings put secure limit_ad_tracking 1
@@ -97,7 +55,7 @@ elif [ "$opt" = "Disable" ]; then
     adb shell settings put global animator_duration_scale 0.50
     echo "Disabling Background Apps"
     adb shell settings put global always_finish_activities 1
-    zenity --notification --text="Successfully Debloated Fire OS"
+    echo "Successfully Debloated Fire OS"
 fi
 
 # List Packages & Disable Apps
@@ -105,7 +63,7 @@ fi
     adb shell pm list packages -e | cut -f 2 -d ":" > packagelist &&
     disable=$(zenity --list --width=500 --height=400 --column=Packages --multiple < packagelist) &&
     echo "$disable" | tr '|' '\n' > Packages.txt &&
-    xargs -l adb shell pm disable-user -k < Packages.txt &&
-    zenity --notification --text="Successfully Disabled Packages"
+    xargs -L1 adb shell pm disable-user -k < Packages.txt &&
+    echo "Successfully Disabled Package(s)"
 
 exec ./ui.sh

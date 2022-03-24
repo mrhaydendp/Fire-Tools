@@ -1,6 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-# Identify Device & List Model
+# Check for ADB
+command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
+
+# Identify Tablet ID
 device=$(adb shell getprop ro.product.model)
     [ "$device" = "KFMUWI" ] && device="Fire 7 (9th Gen)" && sup="1"
     [ "$device" = "KFKAWI" ] && device="Fire HD 8 (8th Gen)" && sup="1"
@@ -9,25 +12,23 @@ device=$(adb shell getprop ro.product.model)
     [ "$device" = "KFTRWI" ] && device="Fire HD 10 (11th Gen)" && sup="1"
     [ "$sup" != "1" ] && device="Unsupported Device"
 
-# UI
+# GUI Specs
 tool=$(zenity --list \
-  --title="Fire Tools - $device" \
-  --width=510 --height=400 \
-  --column="Tool" --column="Description" \
+--title="Fire Tools - $device" \
+--width=510 --height=400 \
+--column="Tool" --column="Description" \
     "Debloat" "Disable or restore Amazon apps" \
     "Google Services" "Install Google Play" \
-    "Change Launcher" "Replace Fire Launcher with Nova, Lawnchair, or Custom" \
+    "Change Launcher" "Replace Fire Launcher with an alternative launcher" \
     "Disable OTA" "Disable OTA Updates" \
-    "Dark Mode" "Enable system-wide dark mode" \
     "Apk Extractor" "Extract .apks from installed applications" \
-    "Batch Installer" "Install all .apks in the Batch folder" \
-    "Split Apk Installer" "Install split apks" \
+    "Batch Installer" "Install all .apk or .apkm files in the Batch folder" \
     "Update" "Grab the latest Fire-Tools scripts")
 
 # Debloat Menu
 [ "$tool" = "Debloat" ] && exec ./debloat.sh
 
-# Install Google Services
+# Install Google Services 
 if [ "$tool" = "Google Services" ]; then
     find ./Gapps/Google*.apk -print0 | xargs -0 -L1 adb install
     for apkm in ./Gapps/Google*.apkm
@@ -36,8 +37,6 @@ if [ "$tool" = "Google Services" ]; then
         adb install-multiple ./Split/*.apk
         rm -rf ./Split
     done
-    zenity --notification --text="Successfully Installed Google Services"
-    exec ./ui.sh
 fi
 
 # Custom Launcher Menu
@@ -45,19 +44,14 @@ fi
 
 # Disable OTA Updates
 if [ "$tool" = "Disable OTA" ]; then
-    adb shell pm disable-user -k com.amazon.device.software.ota &&
-    adb shell pm disable-user -k com.amazon.device.software.ota.override &&
-    adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota &&
-    zenity --notification --text="Successfully Disabled OTA Updates" ||
-    zenity --notification --text="Failed to Disable OTA Updates"
-    exec ./ui.sh
-fi
-
-# Enable System-Wide Dark Mode (Funky on Fire 7 9th Gen)
-[ "$tool" = "Dark Mode" ] &&
-    adb shell settings put secure ui_night_mode 2 &&
-    zenity --notification --text="Successfully Enabled Dark Mode" &&
-    exec ./ui.sh
+    export ota="com.amazon.device.software.ota com.amazon.device.software.ota.override com.amazon.kindle.otter.oobe.forced.ota"
+    for package in ${ota}
+    do
+        adb shell pm disable-user -k "$package" ||
+        echo "Failed to Disable OTA Updates"; exec ./ui.sh
+    done
+    echo "Successfully Disabled OTA Updates"
+fi 
 
 # Select Package from List & Extract Package's APK file(s)
 [ "$tool" = "Apk Extractor" ] &&
@@ -65,19 +59,18 @@ fi
     package=$(zenity --list --width=500 --height=400 --column=Packages < packagelist) &&
     adb shell pm path "$package" | cut -f 2 -d ":" > Packages.txt &&
     xargs -L1 adb pull < Packages.txt &&
-    zenity --notification --text="Successfully Extracted Apk" &&
-    exec ./ui.sh
+    echo "Finished Extracting App(s)"
 
 # Batch Install
-[ "$tool" = "Batch Installer" ] &&
-    find ./Batch/*.apk -print0 | xargs -0 -L1 adb install &&
-    zenity --notification --text="Successfully Installed Apk(s)" &&
-    exec ./ui.sh
-
-# Split Apk Installer
-if [ "$tool" = "Split Apk Installer" ]; then
-    curl -sSL https://github.com/mrhaydendp/Split-Apk-Installer/raw/main/Split%20Apk%20Installer.sh | bash
-    exec ./ui.sh
+if [ "$tool" = "Batch Installer" ]; then
+    find ./Batch/*.apk -print0 | xargs -0 -L1 adb install
+    for apkm in ./Batch/*.apkm
+    do
+        unzip "$apkm" -d ./Split
+        adb install-multiple ./Split/*.apk
+        rm -rf ./Split
+    done &&
+    echo "Finished Installing App(s)"
 
 # Updater Tool
 elif [ "$tool" = "Update" ]; then
@@ -89,6 +82,8 @@ elif [ "$tool" = "Update" ]; then
     done
     echo "Updating Debloat List"
     curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt > Debloat.txt
-    zenity --notification --text="Successfully Updated Fire-Tools"
-    exec ./ui.sh
+    echo "Updating Fire-Tools"
 fi
+
+# Exit to Menu When Tool Finishes
+[ "$tool" != "" ] && exec ./ui.sh
