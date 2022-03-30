@@ -25,6 +25,7 @@ if [ "$opt" = "Enable" ]; then
     echo "Enabling Fire Launcher & OTA Updates"
     adb shell pm enable com.amazon.firelauncher
     adb shell pm enable com.amazon.device.software.ota
+    adb shell pm enable com.amazon.device.software.ota.override
     adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
     echo "Successfully Enabled Fire OS Bloat"
 
