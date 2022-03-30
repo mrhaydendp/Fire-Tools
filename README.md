@@ -11,23 +11,20 @@ Fire Tools is a powerful script that debloats and installs Google services on Am
 - Cross-Device Debloat Tool
   
 - Manual Disable
-  
+
 - Google Services
-  
+
 - Disable Privacy Infringing Settings
-  
+
 - AdGuard Private DNS
   
 - Custom Launchers
-  
-- System-Wide Dark Mode
   
 - Apk extractor
   
 - Batch Installer
   
 - Split Apk Installer
-  
 
 ## Supported Devices
 
@@ -103,4 +100,4 @@ Thank you to all these people's software included in this script!
 - [Google](https://www.android.com/) (Gapps)
 - [TeslaCoil Software](https://play.google.com/store/apps/developer?id=TeslaCoil%20Software&hl=en_US&gl=US) (Nova Launcher)
 - [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair) (Lawnchair)
-- [D0k3](https://github.com/d0k3) (For inspiration to make this script)
+- [D0k3](https://github.com/d0k3) (Inspired by their OneClick-for-Amazon-Fire tool)
