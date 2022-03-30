@@ -1,6 +1,6 @@
 # Fire Tools
 
-Fire Tools is a powerful script that debloats and installs Google services on Amazon Fire Tablets to make them feel snappier and increase ease of use. In addition it also supports installing custom launchers such as Nova, Lawnchair, or any `.apk`. If you wish to install all your own apps at once theres a batch installer. It's as easy as dropping all your `.apk` files in the Batch folder and clicking the Batch Install button!
+Fire Tools is a powerful script that debloats and installs Google services on Amazon Fire Tablets to make them feel snappier and increase ease of use. In addition it also supports installing custom launchers such as Nova, Lawnchair, or any `.apk`. If you wish to install all your own apps at once theres a batch installer. It's as easy as dropping all your `.apk` & `.apkm` files in the Batch folder and clicking the Batch Install button!
 
 **Fire OS 7.3.2.2+ Users: Custom Launcher will not work & some packages won't be disabled during debloat**
 
