@@ -1,3 +1,12 @@
+## Updated Fire-Launcher.ps1 (Windows) 3/30/22
+- Removed shebang as it was unneeded
+- Updated comments
+- Removed system-wide dark mode as it was finicky on Fire 7
+- Slimmed down and better integrated split apk installer for gapps and batch install
+- Batch install now installs split apk files
+- Added `com.amazon.device.software.ota.override` to disable ota
+- Slimmed down updater tool
+
 ## Updated ui.sh, launcher.sh, & debloat.sh (Linux/macOS) 3/24/22
 - Posix Shell compliant
 - Application now checks for adb on launch
@@ -16,10 +25,3 @@
 
 ## Updated ui.sh & debloat.sh (Linux/macOS) 1/25/22
 - Improved macOS support by [danieltwagner](https://github.com/danieltwagner)
-
-## Updated ui.sh & debloat.sh (Linux/macOS) 1/20/22
-- Added Google to  install Google Services wildcard so only Google apps will be installed
-- Added "Failed to Disable OTA Updates" notification if disabling OTA fails
-- Removed unecessary "&&" during update process
-- Cleaned up debloat descriptions
-- Swapped array with mapfile to pass shellcheck checks (debloat)
