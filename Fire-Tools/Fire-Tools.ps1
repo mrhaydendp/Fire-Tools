@@ -1,5 +1,3 @@
-#!/usr/bin/env pwsh
-
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @('#fafafa','#202020','#2b2b2b')
 if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme"){
@@ -22,7 +20,7 @@ if ( "KFMUWI" -eq $device ) {
     $device = "Unsupported Device"
 }
 
-# UI
+# GUI Specs
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $Form = New-Object System.Windows.Forms.Form
@@ -117,19 +115,10 @@ $ApkExtract.FlatAppearance.BorderSize = "0"
 $ApkExtract.BackColor = $theme[2]
 $Form.Controls.Add($ApkExtract)
 
-$Dark = New-Object System.Windows.Forms.Button
-$Dark.Text = "System-Wide Dark Mode"
-$Dark.Size = New-Object System.Drawing.Size(180,38)
-$Dark.Location = New-Object System.Drawing.Size(265,160)
-$Dark.FlatStyle = "0"
-$Dark.FlatAppearance.BorderSize = "0"
-$Dark.BackColor = $theme[2]
-$Form.Controls.Add($Dark)
-
 $Batch = New-Object System.Windows.Forms.Button
 $Batch.Text = "Batch Install"
 $Batch.Size = New-Object System.Drawing.Size(180,38)
-$Batch.Location = New-Object System.Drawing.Size(265,210)
+$Batch.Location = New-Object System.Drawing.Size(265,160)
 $Batch.FlatStyle = "0"
 $Batch.FlatAppearance.BorderSize = "0"
 $Batch.BackColor = $theme[2]
@@ -209,11 +198,13 @@ $Recovery.FlatAppearance.BorderSize = "0"
 $Recovery.BackColor = $theme[2]
 $Form.Controls.Add($Recovery)
 
+# Deboat List
+$Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
+
 # Disable Amazon apps
 $Debloat.Add_Click({
     Write-Host "Debloating Fire OS"
     # Search System for Packages in Debloat.txt, If There Attempt to Disable It
-    $Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
     foreach ($array in $Disable){
         $search = (adb shell pm list packages | Select-String -Pattern $array.Split('#'' ')[0])
         $package = ($search[0] -Split "package:")
@@ -231,7 +222,7 @@ $Debloat.Add_Click({
     adb shell settings put secure location_providers_allowed -network
     Write-Host "Blocking Ads With Adguard DNS"
     adb shell settings put global private_dns_mode hostname
-    adb shell settings put global private_dns_specifier dns.adguard.com
+    adb shell settings put global private_dns_specifier "dns.adguard.com"
     Write-Host "Disabling Lockscreen Ads"
     adb shell settings put global LOCKSCREEN_AD_ENABLED 0
     Write-Host "Disabling Search on Lockscreen"
@@ -248,7 +239,6 @@ $Debloat.Add_Click({
 # Enable Amazon apps
 $Rebloat.Add_Click({
     Write-Host "Enabling Bloat"
-    $Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
     foreach ($array in $Disable){
         $search = (adb shell pm list packages | Select-String -Pattern $array.Split('#'' ')[0])
         $package = ($search[0] -Split "package:")
@@ -259,10 +249,10 @@ $Rebloat.Add_Click({
     }
     Write-Host "Disabling Adguard DNS"
     adb shell settings put global private_dns_mode -hostname
-    adb shell settings put global private_dns_specifier -dns.adguard.com
     Write-Host "Enabling Fire Launcher & OTA Updates"
     adb shell pm enable com.amazon.firelauncher
     adb shell pm enable com.amazon.device.software.ota
+    adb shell pm enable com.amazon.device.software.ota.override
     adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
     Write-Host "Successfully Enabled Fire OS Bloat"
 })
@@ -271,6 +261,7 @@ $Rebloat.Add_Click({
 $OTA.Add_Click({
     Write-Host "Disabling OTA Updates"
     adb shell pm disable-user -k com.amazon.device.software.ota
+    adb shell pm disable-user -k com.amazon.device.software.ota.override
     adb shell pm disable-user -k com.amazon.kindle.otter.oobe.forced.ota
     Write-Host "Successfully Disabled OTA Updates"
 })
@@ -292,19 +283,18 @@ $CustomDebloat.Add_Click({
 # Install Google services
 $GoogleServices.Add_Click({
     Write-Host "Installing Google Services"
-    $gapps = (Get-ChildItem .\Gapps\*.apk)
+    $gapps = (Get-ChildItem .\Gapps\Google*.apk*)
     foreach ($array in $gapps) {
-        adb install -g $array
-    }
-    $split = (Get-ChildItem .\Gapps\*.apkm)
-    foreach($array in $split)
-    {
-        Copy-Item $array -Destination $array".zip"
-        Expand-Archive $array".zip" -DestinationPath .\Split
-        $file = (Get-ChildItem .\Split\*.apk)
-        adb install-multiple -g $file
-        Remove-Item -r .\Split
-        Remove-Item $array".zip"
+        if ($array -like '*.apkm'){
+            Copy-Item $array -Destination $array".zip"
+            Expand-Archive $array".zip" -DestinationPath .\Split
+            $file = (Get-ChildItem .\Split\*.apk)
+            adb install-multiple -g $file
+            Remove-Item -r .\Split
+            Remove-Item $array".zip"
+        } else {
+            adb install -g $array
+        }
     }
     Write-Host "Successfully Installed Google Services"
 })
@@ -324,21 +314,23 @@ $ApkExtract.Add_Click({
     Write-Host "Extracted Selected Apk"
 })
 
-# Enable System-Wide Dark Mode (Funky on Fire 7)
-$Dark.Add_Click({
-    Write-Host "Enabling System Wide Dark Mode"
-    adb shell settings put secure ui_night_mode 2
-    Write-Host "Successfully Enabled Dark Mode"
-})
-
 # Batch Install
 $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
-    $custom = (Get-ChildItem .\Batch\*.apk)
+    $custom = (Get-ChildItem .\Batch\*.apk*)
     foreach ($array in $custom) {
-        adb install $array
+        if ($array -like '*.apkm'){
+            Copy-Item $array -Destination $array".zip"
+            Expand-Archive $array".zip" -DestinationPath .\Split
+            $file = (Get-ChildItem .\Split\*.apk)
+            adb install-multiple -g $file
+            Remove-Item -r .\Split
+            Remove-Item $array".zip"
+        } else {
+            adb install -g $array
+        }
     }
-    Write-Host "Successfully Installed All Apps"
+    Write-Host "Successfully Installed Application(s)"
 })
 
 # Set Lawnchair as Default Launcher
@@ -377,13 +369,11 @@ $GitHub.Add_Click({
 
 # Grab Latest Fire-Tools Scripts & Show Changelog
 $Update.Add_Click({
-    $Changelog = (Invoke-RestMethod https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md)
-    Write-Host "Latest Changelog:`n $changelog"
-    Write-Host "Updating Debloat List"
-    Start-BitsTransfer https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt
-    Write-Host "Updating Fire-Tools"
-    Start-BitsTransfer https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Fire-Tools.ps1
-    Write-Host "Please Relaunch Application"
+    Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
+    Write-Host "Updating Fire-Tools & Debloat List"
+    Start-BitsTransfer "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Fire-Tools.ps1"
+    Start-BitsTransfer "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt"
+    Write-Host "Updates Complete! Please Relaunch Application"
 })
 
 # Open My Website
