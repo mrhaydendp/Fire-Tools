@@ -3,14 +3,22 @@
 # Check for ADB
 command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
 
-# Identify Tablet ID
-device=$(adb shell getprop ro.product.model)
-    [ "$device" = "KFMUWI" ] && device="Fire 7 (9th Gen)" && sup="1"
-    [ "$device" = "KFKAWI" ] && device="Fire HD 8 (8th Gen)" && sup="1"
-    [ "$device" = "KFONWI" ] && device="Fire HD 8 (10th Gen)" && sup="1"
-    [ "$device" = "KFMAWI" ] && device="Fire HD 10 (9th Gen)" && sup="1"
-    [ "$device" = "KFTRWI" ] && device="Fire HD 10 (11th Gen)" && sup="1"
-    [ "$sup" != "1" ] && device="Unsupported Device"
+# Get Device Name from Amazon Docs Using Model Number, if no Devices Connected Set Model to Null
+model=$(adb shell getprop ro.product.model) || model="Null"
+device=$(curl -s "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" | grep -B 2 "$model" | grep -o -P '(?<=">).*(?=</a>)')
+[ "$device" = "" ] && device="Unsupported Device"
+
+# Change Application Installation Method Based on the Type of File
+appinstaller () {
+    case "$1" in
+    *.apk)
+        adb install -g "$1";;
+    *.apkm)
+        unzip "$1" -d ./Split
+        adb install-multiple -g ./Split/*.apk
+        rm -rf ./Split;;
+    esac
+}
 
 # GUI Specs
 tool=$(zenity --list \
@@ -19,10 +27,10 @@ tool=$(zenity --list \
 --column="Tool" --column="Description" \
     "Debloat" "Disable or restore Amazon apps" \
     "Google Services" "Install Google Play" \
-    "Change Launcher" "Replace Fire Launcher with an alternative launcher" \
-    "Disable OTA" "Disable OTA Updates" \
-    "Apk Extractor" "Extract .apks from installed applications" \
-    "Batch Installer" "Install all .apk or .apkm files in the Batch folder" \
+    "Change Launcher" "Replace Fire Launcher with alternatives" \
+    "Disable OTA" "Disable Fire OS updates" \
+    "Apk Extractor" "Extract .apk(s) from installed applications" \
+    "Batch Installer" "Install all .apk(m) files in the Batch folder" \
     "Update" "Grab the latest Fire-Tools scripts")
 
 # Debloat Menu
@@ -30,13 +38,11 @@ tool=$(zenity --list \
 
 # Install Google Services 
 if [ "$tool" = "Google Services" ]; then
-    find ./Gapps/Google*.apk -print0 | xargs -0 -L1 adb install
-    for apkm in ./Gapps/Google*.apkm
+    for gapps in ./Gapps/Google*.apk*
     do
-        unzip "$apkm" -d ./Split
-        adb install-multiple ./Split/*.apk
-        rm -rf ./Split
+        appinstaller "$gapps"
     done
+    echo "Successfully Installed Google Apps"
 fi
 
 # Custom Launcher Menu
@@ -63,26 +69,21 @@ fi
 
 # Batch Install
 if [ "$tool" = "Batch Installer" ]; then
-    find ./Batch/*.apk -print0 | xargs -0 -L1 adb install
-    for apkm in ./Batch/*.apkm
+    for apps in ./Batch/*.apkm
     do
-        unzip "$apkm" -d ./Split
-        adb install-multiple ./Split/*.apk
-        rm -rf ./Split
-    done &&
+        appinstaller "$apps"
+    done
     echo "Finished Installing App(s)"
 
 # Updater Tool
 elif [ "$tool" = "Update" ]; then
     echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
-    for sh in *.sh
+    export modules="Debloat.txt ui.sh debloat.sh launcher.sh"
+    for module in ${modules}
     do
-        echo "Updating $sh"
-        curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/"$sh" > "$sh"
+        curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/"$module" > "$module"
     done
-    echo "Updating Debloat List"
-    curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt > Debloat.txt
-    echo "Updating Fire-Tools"
+    echo "Successfully Updated, Restarting Now..."
 fi
 
 # Exit to Menu When Tool Finishes

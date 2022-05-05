@@ -3,7 +3,7 @@
 # GUI Specs
 launcher=$(zenity --list \
   --title="Custom Launcher" \
-  --width=500 --height=400 \
+  --width=510 --height=400 \
   --column="Launchers" \
     "Nova" \
     "Lawnchair" \
