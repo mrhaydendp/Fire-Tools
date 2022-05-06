@@ -3,9 +3,11 @@
 # Check for ADB
 command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
 
-# Get Device Name from Amazon Docs Using Model Number, if no Devices Connected Set Model to Null
+# Get Device Name from Amazon Docs Using Model Number, if Device Not Connected Set Model to Null. Cache Website for Subsequent Searches
 model=$(adb shell getprop ro.product.model) || model="Null"
-device=$(curl -s "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" | grep -B 2 "$model" | grep -o -P '(?<=">).*(?=</a>)')
+[ -e identifying-tablet-devices.html ] ||
+curl -o ./identifying-tablet-devices.html "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
+device=$(grep -B 2 "$model" < identifying-tablet-devices.html | grep "Fire" | awk '$0=$2' FS=">" RS="<")
 [ "$device" = "" ] && device="Unsupported Device"
 
 # Change Application Installation Method Based on the Type of File
