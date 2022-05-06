@@ -7,38 +7,26 @@ Fire Tools is a powerful script that debloats and installs Google services on Am
 **Note this tool requires USB Debugging to be enabled**
 
 ## Features
-
-- Cross-Device Debloat Tool
-  
-- Manual Disable
-
-- Google Services
-
-- Disable Privacy Infringing Settings
-
-- AdGuard Private DNS
-  
-- Custom Launchers
-  
-- Apk extractor
-  
-- Batch Installer
-  
-- Split Apk Installer
+- Cross Platform (Linux, macOS, Windows)
+- Powerful Debloat Tool
+- Google Play Installer (Fire 7 9th Gen & Up)
+- Custom Launcher Installer
+- Disable OTA Updates
+- Apk Extractor
+- Split Apk Support (.apkm)
+- Built in Update Tool for Updating Scripts
 
 ## Supported Devices
-
 - Fire HD 10 (9th Gen, 11th Gen)
-  
 - Fire HD 8 (8th Gen, 10th Gen)
-  
 - Fire 7 (9th Gen)
-  
 
+| Linux/macOS | Windows |
+| ----------- | ------- |
 | ![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/Fire-Tools.png) | ![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/Fire-Tools%20Windows.png) |
-| --- | --- |
 
 ## Installation Instructions
+After installation run update tool to get the latest version of scripts!
 
 Linux, WSL, & macOS:
 
@@ -50,21 +38,16 @@ cd Fire-Tools && ./ui.sh
 
 Windows:
 
-- Download [Latest Release](https://github.com/mrhaydendp/Fire-Tools/releases/download/v2.1/Fire-Tools.tar.xz)
-  
+- Download [Latest Release](https://github.com/mrhaydendp/Fire-Tools/releases/latest/download/Fire-Tools.tar.xz)  
 - Extract With 7-Zip or Similar Application
-  
 - Open the `Fire-Tools` Folder Then Right Click on `Fire-Tools.ps1` & Open in Powershell
   
-
 ## Setup
 
-- [Linux/macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md)
-  
+Select Instructions for Your OS:
+- [Linux](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md#linux-installation-instructions)
+- [macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md#macos)
 - [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
-  
-- [Config Options](https://github.com/mrhaydendp/Fire-Tools/blob/main/Config%20Options.md)
-  
 
 ## Fire Tablet Prep
 
@@ -87,12 +70,13 @@ Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that
 ![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/USB%20Debugging.png)
 
 ## Notes
+
 Things you should know:
 - Set timezone settings before debloat! (re-enable `com.amazon.kindle.otter.oobe` to change date & time settings)
-- You are allowed to fork this script and make your own for your use cases but you have to credit me and link back to this project
-- Google Apps are downloaded from [ApkMirror](https://www.apkmirror.com/)
+- You are allowed to fork this script for your own use case but you have to link back to this project
+- Google Apps are downloaded from [ApkMirror](https://www.apkmirror.com/) and are included in releases for convienence. See [terms](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire-Tools/Gapps/README.md) 
 - Debloat will disable all amazon apps except `Calculator`, `Camera`, `Clock`, `Files`, `Home`, and `Settings`
-- This should not void your warranty but, if unsure factory reset your device before sending it in.
+- This should not void your warranty but, if unsure factory reset your device to erase all changes.
 - Although this is my tool, **I am not responsible for anything that may go wrong when using this script.**
   
 ## Credits
