@@ -5,7 +5,7 @@
 Install necessary packages:
 
 ```bash
-sudo apt install adb wget zenity
+sudo apt install adb zenity
 ```
 
 ## MacOS
@@ -19,5 +19,5 @@ Install the [Brew Package Manager](https://brew.sh/) Using Terminal:
 Install necessary packages:
 
 ```bash
-brew install android-platform-tools wget zenity
+brew install android-platform-tools zenity
 ```
