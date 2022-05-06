@@ -17,9 +17,9 @@ opt=$(zenity --list \
 --title="Debloat" \
 --width=510 --height=400 \
 --column="Option" --column="Description" \
-    "Enable" "Enables All Amazon Apps" \
-    "Disable" "Disables All Amazon Apps" \
-    "Custom" "Lists Installed Packages & Lets You Disable Them")
+    "Enable" "Enables all Amazon apps" \
+    "Disable" "Disables all Amazon apps" \
+    "Custom" "Disables selected apps")
 
 # Debloat List
 packages=$(awk '{print $1}' < Debloat.txt)
