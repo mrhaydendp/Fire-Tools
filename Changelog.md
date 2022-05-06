@@ -1,3 +1,11 @@
+## Updated ui.sh, launcher.sh, & debloat.sh (Linux/macOS) 05/05/2022
+- Made all UIs uniform with 510pt width
+- Shortened tool descriptions
+- Device name is now found using amazon docs page https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html
+- Added Appinstaller function that detects and installs files based on file type (apk, apkm)
+- Updater now uses an array so it won't mess with `.sh` files in the same directory and opens up the possibility of adding new scripts through the updater in the future
+- Simplified and combined enable and disable into one function with arguments
+
 ## Updated Fire-Launcher.ps1 (Windows) 3/30/22
 - Removed shebang as it was unneeded
 - Updated comments
@@ -22,6 +30,3 @@
 - Added com.amazon.alta.h2clientservice
 - Added com.here.odnp.service
 - Added com.amazon.shpm
-
-## Updated ui.sh & debloat.sh (Linux/macOS) 1/25/22
-- Improved macOS support by [danieltwagner](https://github.com/danieltwagner)
