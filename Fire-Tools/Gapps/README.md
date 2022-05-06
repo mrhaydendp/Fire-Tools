@@ -1,6 +1,5 @@
-## Note
-Due to GitHub's 25MB upload limit and some apps being closed source I cannot upload the `.apk` files here. They are included in the releases. The apps included are as follows:
-- Google Play Store
-- Google Play Services
-- Google Account Manager
-- Google Services Framework
+# Terms
+Fire-Tools does not provide you with any license for Google’s APKs included in the releases. Packages are included to provide a convenient way to sideload APKs to your device. Included apps are as follows:
+- Google Play Store 28.3.16.apkm
+- Google Play Services 21.48.15.apkm
+- Google Services Framework 9-6957767.apk
