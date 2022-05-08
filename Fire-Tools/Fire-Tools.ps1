@@ -4,24 +4,48 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
     $theme = @('#363636','#f3f3f3','#fbfbfb')
 }
 
-# Device Identifier
+# Device Identifier Dictionary
 $device = (adb shell getprop ro.product.model)
-if ( "KFMUWI" -eq $device ) {
-    $device = "Fire 7 (9th Gen)"
-} elseif ( "KFKAWI" -eq $device ) {
-    $device = "Fire HD 8 (8th Gen)"
-} elseif ( "KFONWI" -eq $device ) {
-    $device = "Fire HD 8 (10th Gen)"
-} elseif ( "KFMAWI" -eq $device ) {
-    $device = "Fire HD 10 (9th Gen)"
-} elseif ( "KFTRWI" -eq $device ) {
-    $device = "Fire HD 10 (11th Gen)"
+if ( $device -eq "KFKAWI" ){
+    $device = "Fire HD 8 (2018, 8th Gen)"
+} elseif ( $device -eq "KFMUWI" ){
+    $device = "Fire 7 (2019, 9th Gen)"
+} elseif ( $device -eq "KFMAWI" ){
+    $device = "Fire HD 10 (2019, 9th Gen)"
+} elseif ( $device -eq "KFONWI" ){
+    $device = "Fire HD 8 (2020, 10th Gen)"
+} elseif ( $device -like 'KFTR*WI' ){
+    $device = "Fire HD 10 (2021, 11th gen)"
 } else {
     $device = "Unsupported Device"
 }
 
+function debloat {
+    if ($args[0] -eq "Disable"){
+        adb shell pm disable-user -k $args[1] | Out-Host
+    }
+    if ($args[0] -eq "Enable"){
+        adb shell pm enable $args[1] | Out-Host
+    }    
+
+}
+function appinstaller {
+    if ($args[0] -like '*.apk'){
+        adb install -g $args[0] | Out-Host
+    }
+    if ($args[0] -like '*.apkm'){
+        Copy-Item $args -Destination $args".zip"
+        Expand-Archive $args".zip" -DestinationPath .\Split
+        $file = (Get-ChildItem .\Split\*.apk)
+        adb install-multiple -g $file | Out-Host
+        Remove-Item -r .\Split
+        Remove-Item $args".zip"
+    }
+}
+
 # GUI Specs
 Add-Type -AssemblyName System.Windows.Forms
+$tooltip = New-Object System.Windows.Forms.ToolTip
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Fire-Tools - $device"
@@ -67,6 +91,7 @@ $Debloat.Location = New-Object System.Drawing.Size(15,60)
 $Debloat.FlatStyle = "0"
 $Debloat.FlatAppearance.BorderSize = "0"
 $Debloat.BackColor = $theme[2]
+$tooltip.SetToolTip($Debloat, "Disable all Amazon apps")
 $Form.Controls.Add($Debloat)
 
 $Rebloat = New-Object System.Windows.Forms.Button
@@ -76,6 +101,7 @@ $Rebloat.Location = New-Object System.Drawing.Size(15,110)
 $Rebloat.FlatStyle = "0"
 $Rebloat.FlatAppearance.BorderSize = "0"
 $Rebloat.BackColor = $theme[2]
+$tooltip.SetToolTip($Rebloat, "Enable all Amazon apps")
 $Form.Controls.Add($Rebloat)
 
 $OTA = New-Object System.Windows.Forms.Button
@@ -85,6 +111,7 @@ $OTA.Location = New-Object System.Drawing.Size(15,160)
 $OTA.FlatStyle = "0"
 $OTA.FlatAppearance.BorderSize = "0"
 $OTA.BackColor = $theme[2]
+$tooltip.SetToolTip($OTA, "Disable Fire OS updates")
 $Form.Controls.Add($OTA)
 
 $CustomDebloat = New-Object System.Windows.Forms.Button
@@ -94,6 +121,7 @@ $CustomDebloat.Location = New-Object System.Drawing.Size(15,210)
 $CustomDebloat.FlatStyle = "0"
 $CustomDebloat.FlatAppearance.BorderSize = "0"
 $CustomDebloat.BackColor = $theme[2]
+$tooltip.SetToolTip($CustomDebloat, "Disable selected packages")
 $Form.Controls.Add($CustomDebloat)
 
 # Buttons - Utilities
@@ -104,6 +132,7 @@ $GoogleServices.Location = New-Object System.Drawing.Size(265,60)
 $GoogleServices.FlatStyle = "0"
 $GoogleServices.FlatAppearance.BorderSize = "0"
 $GoogleServices.BackColor = $theme[2]
+$tooltip.SetToolTip($GoogleServices, "Install Google Play Services")
 $Form.Controls.Add($GoogleServices)
 
 $ApkExtract = New-Object System.Windows.Forms.Button
@@ -113,6 +142,7 @@ $ApkExtract.Location = New-Object System.Drawing.Size(265,110)
 $ApkExtract.FlatStyle = "0"
 $ApkExtract.FlatAppearance.BorderSize = "0"
 $ApkExtract.BackColor = $theme[2]
+$tooltip.SetToolTip($ApkExtract, "Extract .apk(s) from installed applications")
 $Form.Controls.Add($ApkExtract)
 
 $Batch = New-Object System.Windows.Forms.Button
@@ -122,6 +152,7 @@ $Batch.Location = New-Object System.Drawing.Size(265,160)
 $Batch.FlatStyle = "0"
 $Batch.FlatAppearance.BorderSize = "0"
 $Batch.BackColor = $theme[2]
+$tooltip.SetToolTip($Batch, "Install all .apk(m) files in the Batch folder")
 $Form.Controls.Add($Batch)
 
 # Buttons - Custom Launchers
@@ -132,6 +163,7 @@ $Lawnchair.Location = New-Object System.Drawing.Size(515,60)
 $Lawnchair.FlatStyle = "0"
 $Lawnchair.FlatAppearance.BorderSize = "0"
 $Lawnchair.BackColor = $theme[2]
+$tooltip.SetToolTip($Lawnchair, "Set Lawnchair as default launcher")
 $Form.Controls.Add($Lawnchair)
 
 $Nova = New-Object System.Windows.Forms.Button
@@ -141,6 +173,7 @@ $Nova.Location = New-Object System.Drawing.Size(515,110)
 $Nova.FlatStyle = "0"
 $Nova.FlatAppearance.BorderSize = "0"
 $Nova.BackColor = $theme[2]
+$tooltip.SetToolTip($Nova, "Set Nova Launcher as default launcher")
 $Form.Controls.Add($Nova)
 
 $Custom = New-Object System.Windows.Forms.Button
@@ -150,6 +183,7 @@ $Custom.Location = New-Object System.Drawing.Size(515,160)
 $Custom.FlatStyle = "0"
 $Custom.FlatAppearance.BorderSize = "0"
 $Custom.BackColor = $theme[2]
+$tooltip.SetToolTip($Custom, "Select a local default launcher")
 $Form.Controls.Add($Custom)
 
 # Buttons - Miscellaneous
@@ -160,6 +194,7 @@ $GitHub.Location = New-Object System.Drawing.Size(15,305)
 $GitHub.FlatStyle = "0"
 $GitHub.FlatAppearance.BorderSize = "0"
 $GitHub.BackColor = $theme[2]
+$tooltip.SetToolTip($GitHub, "Link to my GitHub")
 $Form.Controls.Add($GitHub)
 
 $Update = New-Object System.Windows.Forms.Button
@@ -169,6 +204,7 @@ $Update.Location = New-Object System.Drawing.Size(265,305)
 $Update.FlatStyle = "0"
 $Update.FlatAppearance.BorderSize = "0"
 $Update.BackColor = $theme[2]
+$tooltip.SetToolTip($Update, "Update Fire Tools' scripts")
 $Form.Controls.Add($Update)
 
 $Website = New-Object System.Windows.Forms.Button
@@ -178,25 +214,8 @@ $Website.Location = New-Object System.Drawing.Size(515,305)
 $Website.FlatStyle = "0"
 $Website.FlatAppearance.BorderSize = "0"
 $Website.BackColor = $theme[2]
+$tooltip.SetToolTip($Website, "Link to my website")
 $Form.Controls.Add($Website)
-
-$SplitInstaller = New-Object System.Windows.Forms.Button
-$SplitInstaller.Text = "Split Apk Installer"
-$SplitInstaller.Size = New-Object System.Drawing.Size(180,38)
-$SplitInstaller.Location = New-Object System.Drawing.Size(15,355)
-$SplitInstaller.FlatStyle = "0"
-$SplitInstaller.FlatAppearance.BorderSize = "0"
-$SplitInstaller.BackColor = $theme[2]
-$Form.Controls.Add($SplitInstaller)
-
-$Recovery = New-Object System.Windows.Forms.Button
-$Recovery.Text = "Reboot to Recovery"
-$Recovery.Size = New-Object System.Drawing.Size(180,38)
-$Recovery.Location = New-Object System.Drawing.Size(265,355)
-$Recovery.FlatStyle = "0"
-$Recovery.FlatAppearance.BorderSize = "0"
-$Recovery.BackColor = $theme[2]
-$Form.Controls.Add($Recovery)
 
 # Deboat List
 $Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
@@ -206,12 +225,7 @@ $Debloat.Add_Click({
     Write-Host "Debloating Fire OS"
     # Search System for Packages in Debloat.txt, If There Attempt to Disable It
     foreach ($array in $Disable){
-        $search = (adb shell pm list packages | Select-String -Pattern $array.Split('#'' ')[0])
-        $package = ($search[0] -Split "package:")
-        if ($package -ne ""){
-            Write-Host "Disabling: $package"
-            adb shell pm disable-user -k $package
-        }
+        debloat Disable $array
     }
     Write-Host "Disabling Telemetry & Resetting Advertising ID"
     adb shell settings put secure limit_ad_tracking 1
@@ -240,12 +254,7 @@ $Debloat.Add_Click({
 $Rebloat.Add_Click({
     Write-Host "Enabling Bloat"
     foreach ($array in $Disable){
-        $search = (adb shell pm list packages | Select-String -Pattern $array.Split('#'' ')[0])
-        $package = ($search[0] -Split "package:")
-        if ($package -ne ""){
-            Write-Host "Enabling: $package"
-            adb shell pm enable $package
-        }
+        debloat Enable $array
     }
     Write-Host "Disabling Adguard DNS"
     adb shell settings put global private_dns_mode -hostname
@@ -285,16 +294,7 @@ $GoogleServices.Add_Click({
     Write-Host "Installing Google Services"
     $gapps = (Get-ChildItem .\Gapps\Google*.apk*)
     foreach ($array in $gapps) {
-        if ($array -like '*.apkm'){
-            Copy-Item $array -Destination $array".zip"
-            Expand-Archive $array".zip" -DestinationPath .\Split
-            $file = (Get-ChildItem .\Split\*.apk)
-            adb install-multiple -g $file
-            Remove-Item -r .\Split
-            Remove-Item $array".zip"
-        } else {
-            adb install -g $array
-        }
+        appinstaller $array
     }
     Write-Host "Successfully Installed Google Services"
 })
@@ -319,16 +319,7 @@ $Batch.Add_Click({
     Write-Host "Batch Installing Apps"
     $custom = (Get-ChildItem .\Batch\*.apk*)
     foreach ($array in $custom) {
-        if ($array -like '*.apkm'){
-            Copy-Item $array -Destination $array".zip"
-            Expand-Archive $array".zip" -DestinationPath .\Split
-            $file = (Get-ChildItem .\Split\*.apk)
-            adb install-multiple -g $file
-            Remove-Item -r .\Split
-            Remove-Item $array".zip"
-        } else {
-            adb install -g $array
-        }
+        appinstaller $array
     }
     Write-Host "Successfully Installed Application(s)"
 })
@@ -379,17 +370,6 @@ $Update.Add_Click({
 # Open My Website
 $Website.Add_Click({
     Start-Process "https://mrhaydendp.github.io"
-})
-
-# Split Apk Installer
-$SplitInstaller.Add_Click({
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://github.com/mrhaydendp/Split-Apk-Installer/raw/main/Split%20Apk%20Installer.ps1'))
-})
-
-# Reboot to Recovery
-$Recovery.Add_Click({
-    Write-Host "Rebooting Into Recovery"
-    adb reboot recovery
 })
 
 $Form.ShowDialog()
