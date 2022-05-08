@@ -1,3 +1,11 @@
+## Update Fire-Tools.ps1 (Windows) 05/07/2022
+- Updated device identifier list
+- Added debloat function with enable and disable parameters to simplify and remove redundant code
+- Added appinstaller function to intelligently switch app install methods based on file type (`.apk` or `.apkm`)
+- Removed SplitInstaller shortcut as there is a integrated split apk installer now
+- Removed recovery because it isn't necessary 
+- Added tooltips to buttons
+
 ## Updated ui.sh, launcher.sh, & debloat.sh (Linux/macOS) 05/05/2022
 - Made all UIs have a uniform width
 - Shortened tool descriptions
@@ -22,12 +30,3 @@
 - Switched to echo for notifications because zenity --notification isn't supported on macOS
 - Removed system-wide dark mode as it was finicky with fire 7
 - Batch installer can now install split apks
-
-## Updated Debloat.txt (All) 2/25/22
-- Added package name for com.amazon.dcpms.fos.service (DCPMSFOSService)
-- Added com.amazon.tcomm.jackson
-- Added com.amazon.device.sale.service
-- Added com.amazon.sync.service
-- Added com.amazon.alta.h2clientservice
-- Added com.here.odnp.service
-- Added com.amazon.shpm
