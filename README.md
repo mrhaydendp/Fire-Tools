@@ -9,7 +9,7 @@ Fire Tools is a powerful script that debloats and installs Google services on Am
 ## Features
 - Cross Platform (Linux, macOS, Windows)
 - Powerful Debloat Tool
-- Google Play Installer (Fire 7 9th Gen & Up)
+- Google Play Installer (Fire HD 8 8th Gen & Up)
 - Custom Launcher Installer
 - Disable OTA Updates
 - Apk Extractor
