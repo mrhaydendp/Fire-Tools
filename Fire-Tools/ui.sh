@@ -84,8 +84,8 @@ elif [ "$tool" = "Update" ]; then
     for module in ${modules}
     do
         curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/"$module" > "$module"
-        rm ./identifying-tablet-devices.html
     done
+    rm ./identifying-tablet-devices.html
     echo "Successfully Updated, Restarting Now..."
 fi
 
