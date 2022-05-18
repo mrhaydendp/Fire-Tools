@@ -8,7 +8,7 @@ model=$(adb shell getprop ro.product.model) || model="Null"
 [ -e identifying-tablet-devices.html ] ||
 curl -o ./identifying-tablet-devices.html "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
 device=$(grep -B 2 "$model" < identifying-tablet-devices.html | grep "Fire" | awk '$0=$2' FS=">" RS="<")
-[ "$device" = "" ] && device="Unsupported Device"
+[ "$device" = "" ] && device="Unkown or Unsupported Device"
 
 # Change Application Installation Method Based on the Type of File
 appinstaller () {
@@ -84,6 +84,7 @@ elif [ "$tool" = "Update" ]; then
     for module in ${modules}
     do
         curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/"$module" > "$module"
+        rm ./identifying-tablet-devices.html
     done
     echo "Successfully Updated, Restarting Now..."
 fi

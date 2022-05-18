@@ -1,7 +1,7 @@
 # Set Theme Based on AppsUseLightTheme Prefrence
-$theme = @('#fafafa','#202020','#2b2b2b')
+$theme = @("#ffffff","#202020","#323232")
 if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme"){
-    $theme = @('#363636','#f3f3f3','#fbfbfb')
+    $theme = @("#292929","#f3f3f3","#fbfbfb")
 }
 
 # Device Identifier Dictionary
@@ -15,9 +15,11 @@ if ( $device -eq "KFKAWI" ){
 } elseif ( $device -eq "KFONWI" ){
     $device = "Fire HD 8 (2020, 10th Gen)"
 } elseif ( $device -like 'KFTR*WI' ){
-    $device = "Fire HD 10 (2021, 11th gen)"
+    $device = "Fire HD 10 (2021, 11th Gen)"
+} elseif ( $device -eq "P8AT8Z" ){
+    $device = "Fire 7 (2022, 12th Gen)"
 } else {
-    $device = "Unsupported Device"
+    $device = "Unkown or Unsupported Device"
 }
 
 function debloat {
