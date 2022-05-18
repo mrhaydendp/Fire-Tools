@@ -1,6 +1,6 @@
 # Fire Tools
 
-Fire Tools is a powerful script that debloats and installs Google services on Amazon Fire Tablets to make them feel snappier and increase ease of use. In addition it also supports installing custom launchers such as Nova, Lawnchair, or any `.apk`. If you wish to install all your own apps at once theres a batch installer. It's as easy as dropping all your `.apk` & `.apkm` files in the Batch folder and clicking the Batch Install button!
+Fire Tools is a powerful tool that debloats and installs Google services on Amazon Fire Tablets to make them feel snappier and increase ease of use. In addition it also supports installing custom launchers such as Nova, Lawnchair, or any `.apk`. If you wish to install all your own apps at once theres a batch installer. It's as easy as dropping all your `.apk` & `.apkm` files in the Batch folder and clicking the Batch Install button!
 
 **Fire OS 7.3.2.2+ Users: Custom Launcher will not work & some packages won't be disabled during debloat**
 
@@ -73,14 +73,14 @@ Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that
 
 Things you should know:
 - Set timezone settings before debloat! (re-enable `com.amazon.kindle.otter.oobe` to change date & time settings)
-- You are allowed to fork this script for your own use case but you have to link back to this project
+- You are allowed to fork this tool for your own use case but you have to link back to this project
 - Google Apps are downloaded from [ApkMirror](https://www.apkmirror.com/) and are included in releases for convienence. See [terms](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire-Tools/Gapps/README.md) 
 - Debloat will disable all amazon apps except `Calculator`, `Camera`, `Clock`, `Files`, `Home`, and `Settings`
 - This should not void your warranty but, if unsure factory reset your device to erase all changes.
-- Although this is my tool, **I am not responsible for anything that may go wrong when using this script.**
+- Although this is my tool, **I am not responsible for anything that may go wrong when using this tool.**
   
 ## Credits
-Thank you to all these people's software included in this script!
+Thank you to all these people's software included in this tool!
 - [Google](https://www.android.com/) (Gapps)
 - [TeslaCoil Software](https://play.google.com/store/apps/developer?id=TeslaCoil%20Software&hl=en_US&gl=US) (Nova Launcher)
 - [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair) (Lawnchair)
