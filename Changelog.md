@@ -1,4 +1,11 @@
-## Update Fire-Tools.ps1 (Windows) 05/07/2022
+## Updated ui.sh & Fire-Tools.ps1 (All) 05/18/2022
+- Unidentified devices are now "Unknown or Unsupported Device" instead of "Unsupported Device"
+- Updater now deletes 'identifying-tablet-devices.html' to get a new cache after update (Linux/macOS)
+- Added upcoming Fire 7 (2022, 12th Gen) to identfier dictionary (Windows)
+- Updated UI theme to better match Windows 11's colors (Windows) 
+- Updated README.md in /Gapps
+
+## Updated Fire-Tools.ps1 (Windows) 05/07/2022
 - Updated device identifier list
 - Added debloat function with enable and disable parameters to simplify and remove redundant code
 - Added appinstaller function to intelligently switch app install methods based on file type (`.apk` or `.apkm`)
@@ -15,7 +22,7 @@
 - Simplified and combined enable and disable into one function with arguments
 - Debloat tool is now 1/3 - 1/2 a second faster
 
-## Updated Fire-Launcher.ps1 (Windows) 3/30/22
+## Updated Fire-Launcher.ps1 (Windows) 3/30/2022
 - Removed shebang as it was unneeded
 - Updated comments
 - Removed system-wide dark mode as it was finicky on Fire 7
@@ -23,10 +30,3 @@
 - Batch install now installs split apk files
 - Added `com.amazon.device.software.ota.override` to disable ota
 - Slimmed down updater tool
-
-## Updated ui.sh, launcher.sh, & debloat.sh (Linux/macOS) 3/24/22
-- Posix Shell compliant
-- Application now checks for adb on launch
-- Switched to echo for notifications because zenity --notification isn't supported on macOS
-- Removed system-wide dark mode as it was finicky with fire 7
-- Batch installer can now install split apks
