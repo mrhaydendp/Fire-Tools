@@ -19,7 +19,7 @@ if ( $device -eq "KFKAWI" ){
 } elseif ( $device -eq "P8AT8Z" ){
     $device = "Fire 7 (2022, 12th Gen)"
 } else {
-    $device = "Unkown or Unsupported Device"
+    $device = "Unknown or Unsupported Device"
 }
 
 function debloat {
