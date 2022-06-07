@@ -53,21 +53,11 @@ Select Instructions for Your OS:
 
 Enable Developer Options & USB Debugging:
 
-Open `Settings` and go to `Device Options` then scroll down and and tap `About Fire Tablet`
+Open Settings > Device Options > About Fire Tablet and tap `Serial Number` 7 times. Return to previous screen and tap on  `Developer Options` then flip on the switch. Finally scroll down to `USB Debugging` and turn it on.
 
-![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/About%20Fire%20Tablet.png)
+![Enable USB Debugging](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Enable%20USB%20Debugging.gif?raw=true)
 
-Then tap `Serial Number` 7 times it should say you are 2 taps away after the 5th tap
-
-![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/2%20Taps%20Away.png)
-
-Press the back button and `Developer Options` will now be visible
-
-![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/Developer%20Options.png)
-
-Now switch on `Developer Options` and `USB Debugging`. Then get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer.
-
-![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/USB%20Debugging.png)
+Now get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer. 
 
 ## Notes
 
