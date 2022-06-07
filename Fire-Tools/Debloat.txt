@@ -29,19 +29,24 @@ com.amazon.device.messaging                      # Amazon Device Messaging (ADM)
 com.amazon.appaccesskeyprovider                  # Amazon Keystore
 com.amazon.device.metrics                        # Amazon Device Metrics
 com.amazon.wirelessmetrics.service               # Amazon Wireless Metrics Service
+com.fireos.usagestats.proxy                      # Amazon Usage Stats Map Proxy
 com.amazon.device.settings                       # Amazon Device Settings
 com.amazon.tahoe                                 # Amazon Kids
 com.amazon.mp3                                   # Amazon Music
 com.amazon.windowshop                            # Amazon Shopping
 com.amazon.tv.launcher                           # Amazon VideoStore
 com.amazon.bioscope                              # Amazon VideoStore
-com.amazon.venezia                               # Appstore
+com.amazon.venezia                               # Amazon Appstore
+com.amazon.firespotlight                         # Amazon Appstore Spotlight
+com.amazon.appverification                       # Amazon App Verification
+com.fireos.arcus.proxy                           # Arcus Proxy
 com.amazon.nimh                                  # Arcus Android Client
 com.audible.application.kindle                   # Audible
 com.android.bookmarkprovider                     # Bookmarks Provider
 com.android.calendar                             # Calendar
 com.android.providers.calendar                   # Calendar Storage
 com.android.calllogbackup                        # Call Logs Backup
+com.amazon.fireos.cirruscloud                    # Cirrus Cloud
 com.amazon.connectivitydiag                      # Connectivitydiag
 com.android.contacts                             # Contacts
 com.android.providers.contacts                   # Contacts Storage
@@ -62,7 +67,7 @@ com.amazon.alta.h2clientservice                  # H2Application
 com.amazon.csapp                                 # Help
 com.here.odnp.service                            # HERE Positioning
 com.android.protips                              # Home Screen Tips
-com.amazon.imdb.tv.mobile.app                    # IMDB TV
+com.amazon.imdb.tv.mobile.app                    # Freevee
 com.amazon.imp                                   # Identity Mobile Platform
 amazon.jackson19                                 # Jackson19
 com.amazon.kindle                                # Kindle
