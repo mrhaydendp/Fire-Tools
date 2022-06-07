@@ -1,5 +1,5 @@
 ## Updated Debloat.txt (All) 06/07/2022
-- Added Amazon Usage Stats, Arcus Proxy, Amazon App Verification, and Cirrus Cloud
+- Added Amazon Usage Stats Map Proxy, Arcus Proxy, Amazon App Verification, Amazon Appstore Spotlight, and Cirrus Cloud
 - Updated IMDB TV name to its new name Freevee
 
 ## Updated ui.sh & Fire-Tools.ps1 (All) 05/18/2022
