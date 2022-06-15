@@ -39,6 +39,8 @@ if [ "$opt" = "Enable" ] || [ "$opt" = "Disable" ]; then
         adb shell pm enable com.amazon.device.software.ota
         adb shell pm enable com.amazon.device.software.ota.override
         adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
+        echo "Enabling Background Activities"
+        adb shell settings put global always_finish_activities 0
         echo "Successfully Enabled Fire OS Bloat"
     else
         echo "Disabling Telemetry & Resetting Advertising ID"
@@ -59,8 +61,11 @@ if [ "$opt" = "Enable" ] || [ "$opt" = "Disable" ]; then
         adb shell settings put global window_animation_scale 0.50
         adb shell settings put global transition_animation_scale 0.50
         adb shell settings put global animator_duration_scale 0.50
-        echo "Disabling Background Apps"
-        adb shell settings put global always_finish_activities 1
+        ram=$(adb shell grep "MemTotal" /proc/meminfo | awk '{print $2}')
+        if [ "$ram" -lt "1572864" ]; then
+            echo "Disabling Background Activities (< 1.5GB Ram)"
+            adb shell settings put global always_finish_activities 1
+        fi
         echo "Successfully Debloated Fire OS"
     fi
 fi

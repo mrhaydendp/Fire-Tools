@@ -28,7 +28,7 @@ function debloat {
     }
     if ($args[0] -eq "Enable"){
         adb shell pm enable $args[1] | Out-Host
-    }    
+    }
 
 }
 function appinstaller {
@@ -247,8 +247,11 @@ $Debloat.Add_Click({
     adb shell settings put global window_animation_scale 0.50
     adb shell settings put global transition_animation_scale 0.50
     adb shell settings put global animator_duration_scale 0.50
-    Write-Host "Disabling Background Apps"
+    $ram = (adb shell grep "MemTotal" /proc/meminfo)
+    if ("$ram" -replace "[^0-9]" , '' -lt "1572864"){
+    Write-Host "Disabling Background Activities (< 1.5GB Ram)"
     adb shell settings put global always_finish_activities 1
+    }
     Write-Host "Successfully Debloated Fire OS"
 })
 
@@ -265,6 +268,8 @@ $Rebloat.Add_Click({
     adb shell pm enable com.amazon.device.software.ota
     adb shell pm enable com.amazon.device.software.ota.override
     adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
+    Write-Host "Enabling Background Activities"
+    adb shell settings put global always_finish_activities 0
     Write-Host "Successfully Enabled Fire OS Bloat"
 })
 
