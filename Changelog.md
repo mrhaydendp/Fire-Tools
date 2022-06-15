@@ -1,3 +1,8 @@
+## Updated debloat.sh & Fire-Tools.ps1 (All) 06/15/2022
+- Disable background apps renamed to disable background activities to better match the setting that it changes
+- Background activities now only gets disabled if device has less that 1.5GB of ram
+- "Enable" now enables background activities so you can troubleshoot apps that don't play nicely with the setting
+
 ## Updated Debloat.txt (All) 06/07/2022
 - Added Amazon Usage Stats Map Proxy, Arcus Proxy, Amazon App Verification, Amazon Appstore Spotlight, and Cirrus Cloud
 - Updated IMDB TV name to its new name Freevee
@@ -16,12 +21,3 @@
 - Removed SplitInstaller shortcut as there is a integrated split apk installer now
 - Removed recovery because it isn't necessary 
 - Added tooltips to buttons
-
-## Updated ui.sh, launcher.sh, & debloat.sh (Linux/macOS) 05/05/2022
-- Made all UIs have a uniform width
-- Shortened tool descriptions
-- Device name is now found using amazon docs page: https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html
-- Added Appinstaller function that detects and installs files based on file type (apk, apkm)
-- Updater now uses an array so it won't mess with `.sh` files in the same directory and opens up the possibility of adding new scripts through the updater in the future
-- Simplified and combined enable and disable into one function with arguments
-- Debloat tool is now up to 1/2 a second faster
