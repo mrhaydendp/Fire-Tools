@@ -50,3 +50,12 @@ sudo apt update && sudo apt full-upgrade
 sudo apt install adb zenity
 
 ```
+
+## Installation
+Follow the [installation instructions](https://github.com/mrhaydendp/Fire-Tools#installation-instructions) on the main page or copy the command from here:
+
+``` bash
+curl -LO https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.tar.xz
+tar -xf Fire-Tools.tar.xz && rm Fire-Tools.tar.xz
+cd Fire-Tools && ./ui.sh
+```
