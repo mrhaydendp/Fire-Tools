@@ -28,44 +28,25 @@ Remove-Item .\platform-tools-latest-windows.zip
 
 # Method #2 WSL (Windows Subsytem for Linux)
 
-## Enable & Setup WSL
-  
-Open PowerShell as Administrator and run:
-  
-```powershell
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-```
-Reboot your machine.
+## Install & Setup WSL
+Since Windows 11 & Windows 10 version 2004+ the WSL install is a lot easier and can be completed in one command.
 
-Enable Virtual Machine Feature:
+``` powershell
+# Automated Install (Ubuntu)
+wsl --install
 
-Before installing WSL 2, you must enable the Virtual Machine Platform optional feature. Your machine will require virtualization capabilities to use this feature.
-Open PowerShell as Administrator and run:
-  
-```powershell
-dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-```
-  
-Reboot your machine.
-
-Download the Linux Kernel Update Package:
-- [WSL2 Linux kernel update package](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi)    
-- Run the installer
-
-Set WSL 2 as the Default Version:
-
-Open PowerShell and run this command to set WSL 2 as the default version:
-
-```powershell
-wsl --set-default-version 2
+# For a Specific Distro use "wsl -l -o" to List Available Distros
+wsl --install -d distroname
 ```
 
-## Download Debian & Fire Tools Dependencies
+## Update & Grab Dependencies
+Now run updates then install ADB & Zenity.
 
-- [Debian](https://www.microsoft.com/store/apps/9MSVKQC78PK6)
+``` bash
+# Update
+sudo apt update && sudo apt full-upgrade
 
-Dependencies:
+# Dependencies for Fire Tools
+sudo apt install adb zenity
 
-```bash
-sudo apt install adb wget zenity
 ```
