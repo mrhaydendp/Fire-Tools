@@ -1,3 +1,12 @@
+## Updated ui.sh, launcher.sh, and debloat.sh (Linux/macOS) 07/13/2022
+- Added Alexa Cards to Debloat.txt
+- Switched to case for interface functions (ui, launcher, & debloat)
+- Simplified device identifier
+- Unknown devices are now "Unsupported/Unknown Devices"
+- Added `-r` argument to appinstaller
+- Fixed Disable OTA function not finishing
+- ui.sh now passes shellcheck without warnings
+
 ## Updated debloat.sh & Fire-Tools.ps1 (All) 06/15/2022
 - Disable background apps renamed to disable background activities to better match the setting that it changes
 - Background activities now only gets disabled if device has less that 1.5GB of ram
@@ -13,11 +22,3 @@
 - Added upcoming Fire 7 (2022, 12th Gen) to identfier dictionary (Windows)
 - Updated UI theme to better match Windows 11's colors (Windows) 
 - Updated README.md in /Gapps
-
-## Updated Fire-Tools.ps1 (Windows) 05/07/2022
-- Updated device identifier list
-- Added debloat function with enable and disable parameters to simplify and remove redundant code
-- Added appinstaller function to intelligently switch app install methods based on file type (`.apk` or `.apkm`)
-- Removed SplitInstaller shortcut as there is a integrated split apk installer now
-- Removed recovery because it isn't necessary 
-- Added tooltips to buttons
