@@ -2,6 +2,7 @@ com.amazon.aca                                   # ACA Application
 com.amazon.advertisingidsettings                 # Advertising ID
 com.amazon.dee.app                               # Alexa
 amazon.speech.sim                                # Alexa
+com.amazon.alexa.multimodal.gemini               # Alexa Cards
 com.amazon.cardinal                              # Alexa Video Player
 com.amazon.comms.kids                            # Alexa Communication
 com.amazon.alexa.youtube.app                     # Alexa YouTube Player
