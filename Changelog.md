@@ -13,6 +13,7 @@
 - Added `-r` argument to appinstaller
 - Fixed Disable OTA function not finishing
 - ui.sh now passes shellcheck without warnings
+- Fixed Nova & Lawnchair install
 
 ## Updated debloat.sh & Fire-Tools.ps1 (All) 06/15/2022
 - Disable background apps renamed to disable background activities to better match the setting that it changes
