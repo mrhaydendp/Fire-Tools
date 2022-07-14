@@ -1,35 +1,39 @@
 # Fire Tools
+Fire Tools is a powerful tool that debloats and installs Google services on your Amazon Fire Tablet to make it feel snappier and improve usability. Additionally it supports custom launchers such as Nova, Lawnchair, or any `.apk`. If you need to install multiple apps quickly there's a batch installer. It's as easy as dropping all your APKs & Split APKs in the Batch folder and clicking the Batch Install button!
 
-Fire Tools is a powerful tool that debloats and installs Google services on Amazon Fire Tablets to make them feel snappier and increase ease of use. In addition it also supports installing custom launchers such as Nova, Lawnchair, or any `.apk`. If you wish to install all your own apps at once theres a batch installer. It's as easy as dropping all your `.apk` & `.apkm` files in the Batch folder and clicking the Batch Install button!
+**Fire OS 7.3.2.2+ Users: Custom Launchers will not work & some packages won't be disabled during debloat**
 
-**Fire OS 7.3.2.2+ Users: Custom Launcher will not work & some packages won't be disabled during debloat**
-
-**Note this tool requires USB Debugging to be enabled**
+**Note: This tool requires USB Debugging to be enabled**
 
 ## Features
-- Cross Platform (Linux, macOS, Windows)
+- Cross Platform (Linux, macOS, & Windows)
 - Powerful Debloat Tool
-- Google Play Installer (Fire HD 8 8th Gen & Up)
-- Custom Launcher Installer
+- Google Play Installer (Fire HD 8 8th Gen+)
 - Disable OTA Updates
 - Apk Extractor
-- Split Apk Support (.apkm)
-- Built in Update Tool for Updating Scripts
+- Split Apk Support (aka App Bundles)
+- Built in Update Tool
 
-## Supported Devices
+## Officially Supported Devices
 - Fire HD 10 (9th Gen, 11th Gen)
 - Fire HD 8 (8th Gen, 10th Gen)
-- Fire 7 (9th Gen)
+- Fire 7 (9th Gen, 12th Gen)
 
-| Linux/macOS | Windows |
-| ----------- | ------- |
-| ![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/Fire-Tools.png) | ![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/Fire-Tools%20Windows.png) |
+Linux/macOS | Windows
+:----------:|:-------:
+![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/Fire-Tools.png) | ![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/Fire-Tools%20Windows.png)
+
+## Setup
+Select instructions for your OS:
+
+- [Linux](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md#linux-installation-instructions)
+- [macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md#macos)
+- [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
 
 ## Installation Instructions
 After installation run update tool to get the latest version of scripts!
 
-Linux, WSL, & macOS:
-
+Linux/macOS:
 ``` shell
 curl -LO https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.tar.xz
 tar -xf Fire-Tools.tar.xz && rm Fire-Tools.tar.xz
@@ -38,16 +42,9 @@ cd Fire-Tools && ./ui.sh
 
 Windows:
 
-- Download [Latest Release](https://github.com/mrhaydendp/Fire-Tools/releases/latest/download/Fire-Tools.tar.xz)  
-- Extract With 7-Zip or Similar Application
-- Open the `Fire-Tools` Folder Then Right Click on `Fire-Tools.ps1` & Open in Powershell
-  
-## Setup
-
-Select Instructions for Your OS:
-- [Linux](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md#linux-installation-instructions)
-- [macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md#macos)
-- [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
+- Download [Latest Release](https://github.com/mrhaydendp/Fire-Tools/releases/latest/download/Fire-Tools.tar.xz)
+- Extract with 7-Zip or similar application
+- Open the Fire-Tools folder & right click on Fire-Tools.ps1 then Open in PowerShell
 
 ## Fire Tablet Prep
 
