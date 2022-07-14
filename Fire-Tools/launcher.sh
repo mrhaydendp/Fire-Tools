@@ -12,7 +12,7 @@ launcher=$(zenity --list \
 # Install Selected Launcher
 case "$launcher" in
     "Nova" | "Lawnchair")
-        adb install -g "$launcher";;
+        adb install -g "$launcher"*;;
     
     "Custom")
         launcher=$(zenity --file-selection) &&
