@@ -1,2 +1,2 @@
 ## Custom Batch Install
-To use the Batch-Install funtion drop your favorite apps `.apk` files into the Batch folder and the installer will batch install your apps for you.
+To use the Batch-Install function drop your favorite apps `.apk`/`.apkm` files into the Batch folder and the installer will install the apps for you.
