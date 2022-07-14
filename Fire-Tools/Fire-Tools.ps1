@@ -5,21 +5,24 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 }
 
 # Device Identifier Dictionary
-$device = (adb shell getprop ro.product.model)
-if ( $device -eq "KFKAWI" ){
-    $device = "Fire HD 8 (2018, 8th Gen)"
-} elseif ( $device -eq "KFMUWI" ){
-    $device = "Fire 7 (2019, 9th Gen)"
-} elseif ( $device -eq "KFMAWI" ){
-    $device = "Fire HD 10 (2019, 9th Gen)"
-} elseif ( $device -eq "KFONWI" ){
-    $device = "Fire HD 8 (2020, 10th Gen)"
-} elseif ( $device -like 'KFTR*WI' ){
-    $device = "Fire HD 10 (2021, 11th Gen)"
-} elseif ( $device -eq "P8AT8Z" ){
-    $device = "Fire 7 (2022, 12th Gen)"
-} else {
-    $device = "Unknown or Unsupported Device"
+$device = "Device not Detected"
+if (adb shell echo "Device Connected"){
+    $device = (adb shell getprop ro.product.model)
+    if ( $device -eq "KFKAWI" ){
+        $device = "Fire HD 8 (2018, 8th Gen)"
+    } elseif ( $device -eq "KFMUWI" ){
+        $device = "Fire 7 (2019, 9th Gen)"
+    } elseif ( $device -eq "KFMAWI" ){
+        $device = "Fire HD 10 (2019, 9th Gen)"
+    } elseif ( $device -eq "KFONWI" ){
+        $device = "Fire HD 8 (2020, 10th Gen)"
+    } elseif ( $device -like 'KFTR*WI' ){
+        $device = "Fire HD 10 (2021, 11th Gen)"
+    } elseif ( $device -eq "KFQUWI" ){
+        $device = "Fire 7 (2022, 12th Gen)"
+    } else {
+        $device = "Unsupported/Unknown Device"
+    }
 }
 
 function debloat {
@@ -31,15 +34,16 @@ function debloat {
     }
 
 }
+
 function appinstaller {
     if ($args[0] -like '*.apk'){
-        adb install -g $args[0] | Out-Host
+        adb install -r -g $args[0] | Out-Host
     }
     if ($args[0] -like '*.apkm'){
         Copy-Item $args -Destination $args".zip"
         Expand-Archive $args".zip" -DestinationPath .\Split
         $file = (Get-ChildItem .\Split\*.apk)
-        adb install-multiple -g $file | Out-Host
+        adb install-multiple -r -g $file | Out-Host
         Remove-Item -r .\Split
         Remove-Item $args".zip"
     }
@@ -50,7 +54,7 @@ Add-Type -AssemblyName System.Windows.Forms
 $tooltip = New-Object System.Windows.Forms.ToolTip
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $Form = New-Object System.Windows.Forms.Form
-$Form.Text = "Fire-Tools - $device"
+$Form.Text = "Fire Tools - $device"
 $Form.StartPosition = "CenterScreen"
 $Form.ClientSize = New-Object System.Drawing.Point(715,410)
 $Form.ForeColor = $theme[0]
@@ -225,7 +229,6 @@ $Disable = [IO.File]::ReadAllLines('.\Debloat.txt')
 # Disable Amazon apps
 $Debloat.Add_Click({
     Write-Host "Debloating Fire OS"
-    # Search System for Packages in Debloat.txt, If There Attempt to Disable It
     foreach ($array in $Disable){
         debloat Disable $array
     }
@@ -236,7 +239,7 @@ $Debloat.Add_Click({
     adb shell pm clear com.amazon.advertisingidsettings
     Write-Host "Disabling Location"
     adb shell settings put secure location_providers_allowed -network
-    Write-Host "Blocking Ads With Adguard DNS"
+    Write-Host "Blocking Ads With AdGuard DNS"
     adb shell settings put global private_dns_mode hostname
     adb shell settings put global private_dns_specifier "dns.adguard.com"
     Write-Host "Disabling Lockscreen Ads"
@@ -303,7 +306,7 @@ $GoogleServices.Add_Click({
     foreach ($array in $gapps) {
         appinstaller $array
     }
-    Write-Host "Successfully Installed Google Services"
+    Write-Host "Successfully Installed Google Apps, Re-run Tool if Play Store Crashes"
 })
 
 # List Packages & Extract Selected
@@ -371,7 +374,7 @@ $Update.Add_Click({
     Write-Host "Updating Fire-Tools & Debloat List"
     Start-BitsTransfer "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Fire-Tools.ps1"
     Start-BitsTransfer "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt"
-    Write-Host "Updates Complete! Please Relaunch Application"
+    Write-Host "Successfully Updated, Please Relaunch Application"
 })
 
 # Open My Website
