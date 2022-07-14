@@ -1,6 +1,13 @@
+## Updated Fire-Tools.ps1 (Windows) 07/14/2022
+- Updated device identifier dictionary to be more in line with Linux/macOS
+- Updated placeholder model number for Fire 7 2022
+- Added `-r` argument to appinstaller
+- Cleaned up comments and Write-Host messages
+- Updated titlebar with "Fire Tools" instead of "Fire-Tools"
+
 ## Updated ui.sh, launcher.sh, and debloat.sh (Linux/macOS) 07/13/2022
-- Added Alexa Cards to Debloat.txt
-- Switched to case for interface functions (ui, launcher, & debloat)
+- Added Alexa Cards to Debloat.txt (All)
+- Switched to case for interface functions
 - Simplified device identifier
 - Unknown devices are now "Unsupported/Unknown Devices"
 - Added `-r` argument to appinstaller
@@ -15,10 +22,3 @@
 ## Updated Debloat.txt (All) 06/07/2022
 - Added Amazon Usage Stats Map Proxy, Arcus Proxy, Amazon App Verification, Amazon Appstore Spotlight, and Cirrus Cloud
 - Updated IMDB TV name to its new name Freevee
-
-## Updated ui.sh & Fire-Tools.ps1 (All) 05/18/2022
-- Unidentified devices are now "Unknown or Unsupported Device" instead of "Unsupported Device"
-- Updater now deletes 'identifying-tablet-devices.html' to get a new cache after update (Linux/macOS)
-- Added upcoming Fire 7 (2022, 12th Gen) to identfier dictionary (Windows)
-- Updated UI theme to better match Windows 11's colors (Windows) 
-- Updated README.md in /Gapps
