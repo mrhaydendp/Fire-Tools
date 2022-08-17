@@ -17,19 +17,21 @@ opt=$(zenity --list \
 --title="Debloat" \
 --width=510 --height=400 \
 --column="Option" --column="Description" \
-    "Enable" "Enables all Amazon apps" \
-    "Disable" "Disables all Amazon apps" \
-    "Custom" "Disables selected apps")
+    "Enable" "Enable all Amazon apps" \
+    "Disable" "Disable all Amazon apps" \
+    "Custom" "Disable selected packages")
 
-# Debloat List
+# Debloat & Package List
 packages=$(awk '{print $1}' < Debloat.txt)
+adb shell pm list packages -s | cut -f 2 -d ":" > packagelist
 
-# Enable or Disable Packages & Features Based on Selection
+# Enable or Disable Packages (if Present) & Features Based on Selection
 case "$opt" in
     "Enable" | "Disable")
         for package in ${packages}
         do
-            debloat "$opt" "$package"
+            installed=$(grep -o "$package" < packagelist | head -n 1)
+            [ -n "$installed" ] && debloat "$opt" "$installed"
         done
         if [ "$opt" = "Enable" ]; then
             echo "Disabling Adguard DNS"
@@ -72,10 +74,11 @@ case "$opt" in
     
     "Custom")
         adb shell pm list packages -e | cut -f 2 -d ":" > packagelist
-        disable=$(zenity --list --width=500 --height=400 --column=Packages --multiple < packagelist) &&
-        echo "$disable" | tr '|' '\n' > Packages.txt &&
-        xargs -L1 adb shell pm disable-user -k < Packages.txt &&
-        echo "Successfully Disabled Package(s)";;
+        disable=$(zenity --list --width=500 --height=400 --column=Packages --multiple < packagelist | tr '|' '\n')
+        for package in ${disable}
+        do
+            debloat "Disable" "$package"
+        done;;
 esac
 
 exec ./ui.sh

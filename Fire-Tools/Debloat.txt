@@ -67,6 +67,7 @@ com.goodreads.kindle                             # Goodreads
 com.amazon.alta.h2clientservice                  # H2Application
 com.amazon.csapp                                 # Help
 com.here.odnp.service                            # HERE Positioning
+com.amazon.hybridadidservice                     # Hybrid Ad ID Service
 com.android.protips                              # Home Screen Tips
 com.amazon.imdb.tv.mobile.app                    # Freevee
 com.amazon.imp                                   # Identity Mobile Platform
