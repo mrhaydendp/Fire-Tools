@@ -5,15 +5,15 @@ Download Offical Fire Tablet drivers or universal adb drivers:
 - [Universal ADB Drivers](https://adb.clockworkmod.com/).
   
 ## ADB
-Simple Powershell script to grab latest ADB and make it accessible system-wide:
+Simple Powershell script to grab latest ADB and make it accessible system-wide for the current user:
 
 ``` powershell
 # Make Sure to Run with Admin Privileges
-# Grab Latest Release of Platform Tools (ADB) & Extract to C:
-Start-BitsTransfer "https://dl.google.com/android/repository/platform-tools-latest-windows.zip"; Expand-Archive .\platform-tools-latest-windows.zip C:\
+# Grab Latest Release of Platform Tools (ADB) & Extract to Home Directory
+Start-BitsTransfer "https://dl.google.com/android/repository/platform-tools-latest-windows.zip"; Expand-Archive .\platform-tools-latest-windows.zip ~
 
 # Add Env Variable to Access System-Wide & Cleanup .zip
-[Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";C:\platform-tools", [EnvironmentVariableTarget]::Machine)
+[Environment]::SetEnvironmentVariable("PATH", $Env:PATH + ";$HOME\platform-tools", [EnvironmentVariableTarget]::Machine)
 Remove-Item .\platform-tools-latest-windows.zip
 ```
 
