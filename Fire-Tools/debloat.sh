@@ -30,8 +30,7 @@ case "$opt" in
     "Enable" | "Disable")
         for package in ${packages}
         do
-            installed=$(grep -o "$package" < packagelist | head -n 1)
-            [ -n "$installed" ] && debloat "$opt" "$installed"
+            grep -q "$package" < packagelist && debloat "$opt" "$package"
         done
         if [ "$opt" = "Enable" ]; then
             echo "Disabling Adguard DNS"
