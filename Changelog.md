@@ -1,5 +1,5 @@
 ## Updated debloat.sh & Debloat.txt (Linux/macOS) 08/15/2022
-- Debloat tool now only disables packages that are present giving an up to 15% speed improvement
+- Debloat tool now only disables packages that are present giving an up to 33% overall speed improvement
 - Custom disable is more reliable as it now uses the debloat function 
 - Updated descriptions for debloat options
 - Added Hybrid Ad ID Service to Debloat.txt (All)
