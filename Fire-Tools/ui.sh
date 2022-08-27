@@ -56,8 +56,8 @@ case "$tool" in
         export ota="com.amazon.device.software.ota com.amazon.device.software.ota.override com.amazon.kindle.otter.oobe.forced.ota"
         for package in ${ota}
         do
-            adb shell pm disable-user -k "$package" ||
-            { echo "Failed to Disable OTA Updates"; exec ./ui.sh; }
+            adb shell pm disable-user -k "$package" || { echo "Failed to Disable OTA Updates";
+            exec ./ui.sh; }
         done
         echo "Successfully Disabled OTA Updates";;
 

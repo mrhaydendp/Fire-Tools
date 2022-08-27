@@ -64,10 +64,8 @@ case "$opt" in
             adb shell settings put global transition_animation_scale 0.50
             adb shell settings put global animator_duration_scale 0.50
             ram=$(adb shell grep "MemTotal" /proc/meminfo | awk '{print $2}')
-            if [ "$ram" -lt "1572864" ]; then
-                echo "Disabling Background Activities (< 1.5GB Ram)"
-                adb shell settings put global always_finish_activities 1
-            fi
+            [ "$ram" -lt "1500000" ] && { echo "Disabling Background Activities (< 1.5GB Ram)";
+            adb shell settings put global always_finish_activities 1; }
             echo "Successfully Debloated Fire OS"
         fi;;
     
