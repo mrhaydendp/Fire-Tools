@@ -1,3 +1,14 @@
+## Update Fire-Tools.ps1 (Windows) 09/02/2022
+- Removed device identifier for now & replaced with model number
+- Completely reformatted script
+- Shrunk script by 61 lines
+- Rewrote all button functions for speed and simplicity
+- Combined Debloat & Undo into one button function with arguments
+- Update tool is up to 36% faster
+- Custom Launcher now supports .apkm files
+- Update tool now uses modules so new scripts can be added over time
+- Removed Github & Website buttons
+
 ## Updated debloat.sh & ui.sh (Linux/macOS) 08/27/2022
 - Decreased complexity and further increased Debloat Tool speed by up to 33% from July version
 - Cleaned up & slimmed down ram check
@@ -15,13 +26,3 @@
 - Added `-r` argument to appinstaller
 - Cleaned up comments and Write-Host messages
 - Updated titlebar with "Fire Tools" instead of "Fire-Tools"
-
-## Updated ui.sh, launcher.sh, and debloat.sh (Linux/macOS) 07/13/2022
-- Added Alexa Cards to Debloat.txt (All)
-- Switched to case for interface functions
-- Simplified device identifier
-- Unknown devices are now "Unsupported/Unknown Devices"
-- Added `-r` argument to appinstaller
-- Fixed Disable OTA function not finishing
-- ui.sh now passes shellcheck without warnings
-- Fixed Nova & Lawnchair install
