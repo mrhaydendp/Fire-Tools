@@ -39,6 +39,7 @@ com.amazon.tv.launcher                           # Amazon VideoStore
 com.amazon.bioscope                              # Amazon VideoStore
 com.amazon.venezia                               # Amazon Appstore
 com.amazon.firespotlight                         # Amazon Appstore Spotlight
+com.amazon.appverification                       # Amazon App Verification
 com.fireos.arcus.proxy                           # Arcus Proxy
 com.amazon.nimh                                  # Arcus Android Client
 com.audible.application.kindle                   # Audible
@@ -91,6 +92,7 @@ com.amazon.tv.ottssocompanionapp                 # OttSsoCompanionApp
 com.amazon.photos                                # Prime Photos
 com.amazon.photos.importer                       # Photos Importer
 com.amazon.avod                                  # Prime Video
+com.amazon.pm                                    # Parental Monitoring Service
 com.svox.pico                                    # PicoTTS
 com.amazon.kindle.rdmdeviceadmin                 # Remote Device Management Application
 com.amazon.shpm                                  # Shipmode
