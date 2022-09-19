@@ -96,7 +96,6 @@ com.amazon.pm                                    # Parental Monitoring Service
 com.svox.pico                                    # PicoTTS
 com.amazon.kindle.rdmdeviceadmin                 # Remote Device Management Application
 com.amazon.shpm                                  # Shipmode
-com.amazon.cloud9                                # Silk Browser
 com.amazon.cloud9.contentservice                 # Silk Content Service
 com.amazon.cloud9.systembrowserprovider          # System Browser Provider
 com.android.quicksearchbox                       # Search
@@ -108,7 +107,6 @@ com.amazon.kindle.unifiedSearch                  # Unified Search
 com.amazon.logan                                 # Voice View
 com.amazon.weather                               # Weather
 com.kingsoft.office.amz                          # WPS Office for Amazon
-com.amazon.wallpaper                             # Wallpaper
 com.amazon.kindle.starsight                      # Wifi Reconnect
 com.amazon.whisperlink.core.android              # Whisperplay Daemon
 com.amazon.whisperplay.contracts                 # Whisperlink SDK

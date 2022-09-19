@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+version="2.3.1"
+latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version) &&
+{ [ "$version" != "$latest" ] && echo "A new version of Fire Tools is available"; }
+
 # Check for ADB
 command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
 
@@ -26,7 +30,7 @@ appinstaller () {
 
 # GUI Specs
 tool=$(zenity --list \
---title="Fire Tools - $device" \
+--title="Fire Tools v$version - $device" \
 --width=510 --height=400 \
 --column="Tool" --column="Description" \
     "Debloat" "Disable or restore Amazon apps" \
@@ -47,7 +51,8 @@ case "$tool" in
         do
             appinstaller "$gapps"
         done
-        echo "Successfully Installed Google Apps, Re-run Tool if Play Store Crashes";;
+        appinstaller ./Gapps/*Store*
+        echo "Successfully Installed Google Apps";;
 
     "Change Launcher")
         exec ./launcher.sh;;
