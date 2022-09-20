@@ -2,7 +2,7 @@
 
 version="2.3.1"
 latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version) &&
-{ [ "$version" != "$latest" ] && echo "A new version of Fire Tools is available"; }
+{ [ "$version" -lt "$latest" ] && echo "A new version of Fire Tools is available"; }
 
 # Check for ADB
 command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
