@@ -1,3 +1,10 @@
+## Update ui.sh, Fire-Tools.ps1, Debloat.txt (All) 09/20/2022
+- Re-introduced version numbers starting with 2.3.1
+- Fixed Google Services installer
+- Cleaned up and slimmed down Debloat & Appinstaller functions (Windows)
+- Updated README.md in Gapps folder with sources
+- Removed Silk Browser & Amazon Wallpaper from Debloat.txt because they are useful if you don't have replacements downloaded
+
 ## Update Fire-Tools.ps1 (Windows) 09/02/2022
 - Removed device identifier for now & replaced with model number
 - Completely reformatted script
@@ -19,10 +26,3 @@
 - Custom disable is more reliable as it now uses the debloat function 
 - Updated descriptions for debloat options
 - Added Hybrid Ad ID Service to Debloat.txt (All)
-
-## Updated Fire-Tools.ps1 (Windows) 07/14/2022
-- Updated device identifier dictionary to be more in line with Linux/macOS
-- Updated placeholder model number for Fire 7 2022
-- Added `-r` argument to appinstaller
-- Cleaned up comments and Write-Host messages
-- Updated titlebar with "Fire Tools" instead of "Fire-Tools"
