@@ -1,3 +1,10 @@
+# Check for Latest Fire-Tools Update
+$version = "2.3.1"
+$latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
+if ("$version" -lt "$latest"){
+    Write-Host "A new version of Fire Tools is available"
+}
+
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @("#ffffff","#202020","#323232")
 if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme"){
@@ -13,24 +20,19 @@ if (adb shell echo "Device Connected"){
 function debloat {
     if ($args[0] -eq "Debloat"){
         adb shell pm disable-user -k $args[1] | Out-Host
-    }
-    if ($args[0] -eq "Undo"){
+    } elseif ($args[0] -eq "Undo"){
         adb shell pm enable $args[1] | Out-Host
     }
-
 }
 
 function appinstaller {
-    if ($args[0] -like '*.apk'){
-        adb install -r -g $args[0] | Out-Host
-    }
-    if ($args[0] -like '*.apkm'){
-        Copy-Item $args -Destination $args".zip"
+    if ("$args" -like '*.apk'){
+        adb install -r -g "$args" | Out-Host
+    } elseif ("$args" -like '*.apkm'){
+        Copy-Item "$args" -Destination $args".zip"
         Expand-Archive $args".zip" -DestinationPath .\Split
-        $file = (Get-ChildItem .\Split\*.apk)
-        adb install-multiple -r -g $file | Out-Host
-        Remove-Item -r .\Split
-        Remove-Item $args".zip"
+        adb install-multiple -r -g (Get-ChildItem .\Split\*apk) | Out-Host
+        Remove-Item -r .\Split, $args".zip"
     }
 }
 
@@ -39,7 +41,7 @@ Add-Type -AssemblyName System.Windows.Forms
 $tooltip = New-Object System.Windows.Forms.ToolTip
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Fire Tools - $device"
+$form.Text = "Fire Tools v$version - $device"
 $form.StartPosition = "CenterScreen"
 $form.ClientSize = New-Object System.Drawing.Point(715,410)
 $form.ForeColor = $theme[0]
@@ -270,7 +272,8 @@ $googleservices.Add_Click{
     Get-ChildItem .\Gapps\Google*.apk* | ForEach-Object {
         appinstaller "$_"
     }
-    Write-Host "Successfully Installed Google Apps, Re-run Tool if Play Store Crashes"
+    appinstaller (Get-ChildItem .\Gapps\*Store*)
+    Write-Host "Successfully Installed Google Apps"
 }
 
 # Extract Apk from Selected Packages 
