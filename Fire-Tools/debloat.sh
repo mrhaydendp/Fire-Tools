@@ -30,8 +30,9 @@ case "$opt" in
     "Enable" | "Disable")
         for package in ${packages}
         do
-            grep -q "$package" < packagelist && debloat "$opt" "$package"
+            grep -q "$package" < packagelist && debloat "$opt" "$package" &
         done
+        wait
         if [ "$opt" = "Enable" ]; then
             echo "Disabling Adguard DNS"
             adb shell settings put global private_dns_mode -hostname
