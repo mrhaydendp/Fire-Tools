@@ -23,7 +23,7 @@ opt=$(zenity --list \
 
 # Debloat & Package List
 packages=$(awk '{print $1}' < Debloat.txt)
-adb shell pm list packages -s | cut -f 2 -d ":" > packagelist
+adb shell pm list packages -s > packagelist
 
 # Enable or Disable Packages (if Present) & Features Based on Selection
 case "$opt" in
@@ -35,7 +35,6 @@ case "$opt" in
         if [ "$opt" = "Enable" ]; then
             echo "Disabling Adguard DNS"
             adb shell settings put global private_dns_mode -hostname
-            adb shell settings put global private_dns_specifier -dns.adguard.com
             echo "Enabling Fire Launcher & OTA Updates"
             adb shell pm enable com.amazon.firelauncher
             adb shell pm enable com.amazon.device.software.ota
