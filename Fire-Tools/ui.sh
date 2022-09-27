@@ -10,7 +10,7 @@ device="Device not Detected"
 if (adb shell echo "Device Connected"); then
     model=$(adb shell getprop ro.product.model)
     [ -e identifying-tablet-devices.html ] || curl -o ./identifying-tablet-devices.html "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
-    device=$(grep -B 2 "$model" < identifying-tablet-devices.html | grep -E -o 'Fire (.*?)\)')
+    device=$(grep -B 2 "$model" < identifying-tablet-devices.html | grep -E -o "Kindle.Fire.(.*?)[G|g]en\)|Fire (.*?)[G|g]en\)")
     [ -z "$device" ] && device="Unsupported/Unknown Device"
 fi
 
