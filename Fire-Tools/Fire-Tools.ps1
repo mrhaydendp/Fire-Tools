@@ -21,6 +21,7 @@ if (adb shell echo "Device Connected"){
     }
 }
 
+# Change ADB Shell Arguments Based on Selection
 function debloat {
     if ($args[0] -eq "Debloat"){
         adb shell pm disable-user -k $args[1] | Out-Host
@@ -29,6 +30,7 @@ function debloat {
     }
 }
 
+# Change Application Installation Method Based on Filetype
 function appinstaller {
     if ("$args" -like '*.apk'){
         adb install -r -g "$args" | Out-Host
@@ -191,7 +193,7 @@ $update.Location = New-Object System.Drawing.Size(265,305)
 $update.FlatStyle = "0"
 $update.FlatAppearance.BorderSize = "0"
 $update.BackColor = $theme[2]
-$tooltip.SetToolTip($update, "Update Fire Tools' scripts")
+$tooltip.SetToolTip($update, "Grab the latest Fire-Tools scripts")
 $form.Controls.Add($update)
 
 # Multi-Buttons
