@@ -48,6 +48,10 @@ Windows:
 
 ## Fire Tablet Prep
 
+Run Through Setup Wizard:
+
+Select your language and set text size (if needed) then click the arrow. On the next page, select a random wireless network with a password, then click `Cancel`. You'll see a `Skip Setup` button on the bottom right, click it, then proceed to the next steps.
+
 Enable Developer Options & USB Debugging:
 
 Open Settings > Device Options > About Fire Tablet and tap `Serial Number` 7 times. Return to previous screen and tap on  `Developer Options` then flip on the switch. Finally scroll down to `USB Debugging` and turn it on.
