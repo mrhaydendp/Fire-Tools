@@ -1,3 +1,11 @@
+## Update ui.sh, debloat.sh, Fire-Tools.ps1, Debloat.txt (All) 10/01/2022
+- Removed problematic packages in debloat list & updated names
+- Switched to new Ubuntu-esque versioning scheme (22.10)
+- Moved update check to update tool so application launches faster
+- Simplified tablet identifier with regex & added feature to Windows
+- Removed unecessary lines in debloat proccess
+- Speed up debloat tool by ~ 4.8x, using sub-proccesses to disable multiple applications simultaneously (Linux/macOS)
+
 ## Update ui.sh, Fire-Tools.ps1, Debloat.txt (All) 09/20/2022
 - Re-introduced version numbers starting with 2.3.1
 - Fixed Google Services installer
@@ -20,9 +28,3 @@
 - Decreased complexity and further increased Debloat Tool speed by up to 33% from July version
 - Cleaned up & slimmed down ram check
 - Slight format change with '{}'
-
-## Updated debloat.sh & Debloat.txt (Linux/macOS) 08/15/2022
-- Debloat tool now only disables packages that are present giving an up to 15% speed improvement
-- Custom disable is more reliable as it now uses the debloat function 
-- Updated descriptions for debloat options
-- Added Hybrid Ad ID Service to Debloat.txt (All)

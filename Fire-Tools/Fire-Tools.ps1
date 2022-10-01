@@ -1,9 +1,4 @@
-# Check for Latest Fire-Tools Update
-$version = "2.3.1"
-$latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
-if ("$version" -lt "$latest"){
-    Write-Host "A new version of Fire Tools is available"
-}
+$version = "22.10"
 
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @("#ffffff","#202020","#323232")
@@ -11,12 +6,22 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
     $theme = @("#292929","#f3f3f3","#fbfbfb")
 }
 
-# Device Model Identifier
-$device = "Device not Detected"
+# Device Identifier (Find Product Name from Model Number -2 Lines)
+$device = "Device is Unknown/Undetected"
 if (adb shell echo "Device Connected"){
-    $device = adb shell getprop ro.product.model
+    $model = adb shell getprop ro.product.model
+    if (!(Test-Path .\identifying-tablet-devices.html)){
+        Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile identifying-tablet-devices.html
+    }
+    $line = Select-String "$model" .\identifying-tablet-devices.html
+    Select-String "Kindle.Fire.(.*?)Gen\)|Fire (.*?)Gen\)" .\identifying-tablet-devices.html | % {
+    if ( $_.LineNumber -eq $line.LineNumber - 2 ){
+        $device = ($_.Matches.Value)
+    }
+    }
 }
 
+# Change ADB Shell Arguments Based on Selection
 function debloat {
     if ($args[0] -eq "Debloat"){
         adb shell pm disable-user -k $args[1] | Out-Host
@@ -25,6 +30,7 @@ function debloat {
     }
 }
 
+# Change Application Installation Method Based on Filetype
 function appinstaller {
     if ("$args" -like '*.apk'){
         adb install -r -g "$args" | Out-Host
@@ -187,7 +193,7 @@ $update.Location = New-Object System.Drawing.Size(265,305)
 $update.FlatStyle = "0"
 $update.FlatAppearance.BorderSize = "0"
 $update.BackColor = $theme[2]
-$tooltip.SetToolTip($update, "Update Fire Tools' scripts")
+$tooltip.SetToolTip($update, "Grab the latest Fire-Tools scripts")
 $form.Controls.Add($update)
 
 # Multi-Buttons
@@ -208,7 +214,6 @@ $debloattool.Add_Click{
     if ($this.Text -eq "Undo"){
         Write-Host "Disabling Adguard DNS"
         adb shell settings put global private_dns_mode -hostname
-        adb shell settings put global private_dns_specifier -dns.adguard.com
         Write-Host "Enabling Fire Launcher & OTA Updates"
         adb shell pm enable com.amazon.firelauncher
         adb shell pm enable com.amazon.device.software.ota
@@ -316,12 +321,17 @@ $launchers.Add_Click{
 
 # Update Scripts
 $update.Add_Click{
-    Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
-    $modules = @("Fire-Tools.ps1", "Debloat.txt")
-    foreach ($module in $modules){
-        Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$module" -OutFile "$module"
+    $latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
+    if ("$version" -lt "$latest"){
+        Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
+        $modules = @("Fire-Tools.ps1", "Debloat.txt")
+        foreach ($module in $modules){
+            Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$module" -OutFile "$module"
+        }
+        Write-Host "Successfully Updated, Please Relaunch Application"
+    } else {
+        Write-Host "No Updates Available"
     }
-    Write-Host "Successfully Updated, Please Relaunch Application"
 }
 
 $form.ShowDialog()

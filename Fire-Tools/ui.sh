@@ -1,8 +1,6 @@
 #!/usr/bin/env sh
 
-version="2.3.1"
-latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version) &&
-{ [ "$version" != "$latest" ] && echo "A new version of Fire Tools is available"; }
+version="22.10"
 
 # Check for ADB
 command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
@@ -12,7 +10,7 @@ device="Device not Detected"
 if (adb shell echo "Device Connected"); then
     model=$(adb shell getprop ro.product.model)
     [ -e identifying-tablet-devices.html ] || curl -o ./identifying-tablet-devices.html "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
-    device=$(grep -B 2 "$model" < identifying-tablet-devices.html | grep "Fire" | awk '$0=$2' FS=">" RS="<")
+    device=$(grep -B 2 "$model" < identifying-tablet-devices.html | grep -E -o "Kindle.Fire.(.*?)[G|g]en\)|Fire (.*?)[G|g]en\)")
     [ -z "$device" ] && device="Unsupported/Unknown Device"
 fi
 
@@ -81,14 +79,17 @@ case "$tool" in
         echo "Finished Installing App(s)";;
 
     "Update")
-        echo "Latest Changelog:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
+        latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version)
+        [ "$version" != "$latest" ] && {
+        echo "Latest Changelogs:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
         export modules="Debloat.txt ui.sh debloat.sh launcher.sh"
         for module in ${modules}
         do
-            curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/"$module" > "$module"
+            curl -sSL "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$module" > "$module"
         done
-        rm ./identifying-tablet-devices.html
-        echo "Successfully Updated, Reloading Application...";;
+        rm ./identifying-tablet-devices.html --force
+        echo "Successfully Updated, Reloading Application..."
+        } || echo "No Updates Available";;
 esac
 
 # Exit to Menu When Tool Finishes
