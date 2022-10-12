@@ -1,7 +1,7 @@
 com.amazon.aca                                   # ACA Application
 com.amazon.advertisingidsettings                 # Advertising ID
 com.amazon.dee.app                               # Alexa
-amazon.speech.sim                                # Alexa
+amazon.speech.sim                                # Alexa Speech
 com.amazon.alexa.multimodal.gemini               # Alexa Cards
 com.amazon.cardinal                              # Alexa Video Player
 com.amazon.comms.kids                            # Alexa Communication
@@ -11,7 +11,11 @@ com.amazon.communication.discovery               # Amazon Communication Discover
 com.amazon.tcomm.client                          # Amazon Communication Services Client Library
 com.amazon.tcomm                                 # Amazon Communication Services
 com.amazon.tcomm.jackson                         # Amazon Communication Service Jackson19
+com.amazon.application.compatibility.enforcer    # Amazon Compatibility Enforcer
+com.amazon.dpcclient                             # Amazon DCPCClient Application
 com.amazon.client.metrics                        # Amazon Device Metrics
+com.amazon.dcp                                   # Amazon Device Middleware Debugging Tool
+com.amazon.dcpms.fos.service                     # DCPMSFOSService
 com.amazon.platform                              # Amazon Metrics Service Application
 com.amazon.device.sale.service                   # Amazon Sale Service
 com.amazon.device.sync.sdk.internal              # Amazon Sync SDK
@@ -44,11 +48,14 @@ com.android.calendar                             # Calendar
 com.android.providers.calendar                   # Calendar Storage
 com.android.calllogbackup                        # Call Logs Backup
 com.amazon.fireos.cirruscloud                    # Cirrus Cloud
+com.amazon.connectivitydiag                      # Connectivity Diagnostics
 com.android.contacts                             # Contacts
 com.android.providers.contacts                   # Contacts Storage
 com.amazon.dp.contacts                           # Contacts Sync Adapter
 com.amazon.providers.contentsupport              # Content Support Manager
 com.amazon.sync.service                          # Content Sync Framework
+com.amazon.dcp.contracts.framework.library       # DCP Contracts Framework
+com.amazon.dcp.contracts.library                 # DCP Platform Contacts
 com.amazon.kindle.otter.oobe                     # Device Setup
 com.amazon.diode                                 # Diode Apk
 com.amazon.smartgenie                            # Device Dashboard
@@ -57,8 +64,9 @@ com.amazon.zico                                  # Documents
 com.android.email                                # Email
 com.amazon.dp.fbcontacts                         # Facebook Sync Adapter
 com.goodreads.kindle                             # Goodreads
+com.amazon.alta.h2clientservice                  # H2Application
 com.amazon.csapp                                 # Help
-com.here.odnp.service                            # HERE Network Positioning
+com.here.odnp.service                            # HERE Positioning
 com.amazon.hybridadidservice                     # Hybrid Ad ID Service
 com.android.protips                              # Home Screen Tips
 com.amazon.imdb.tv.mobile.app                    # Freevee
@@ -74,7 +82,6 @@ com.amazon.geo.mapsv3.resources                  # Map API v3 Resources
 com.amazon.geo.mapsv3.services                   # Map API v3 Services
 com.amazon.kindle.personal_video                 # My Videos
 com.android.music                                # Music
-com.amazon.android.marketplace                   # Marketplace Service Reciever
 com.amazon.identity.auth.device.authorization    # Mobile Authentication Platform Android
 com.amazon.ods.kindleconnect                     # Mayday Screen Sharing
 com.amazon.media.session.monitor                 # MediaSession Monitor
@@ -92,6 +99,7 @@ com.amazon.cloud9.systembrowserprovider          # System Browser Provider
 com.android.quicksearchbox                       # Search
 com.amazon.kindle.kso                            # Special Offers
 com.amazon.sync.provider.ipc                     # Sync Provider Executor
+com.amazon.switchaccess.root                     # Switch Access
 com.amazon.securitysyncclient                    # SecuritySync Client
 com.amazon.kindle.unifiedSearch                  # Unified Search
 com.amazon.logan                                 # Voice View
