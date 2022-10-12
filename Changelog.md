@@ -1,4 +1,11 @@
-## Update ui.sh, debloat.sh, Fire-Tools.ps1, Debloat.txt (All) 10/01/2022
+## Updated Debloat.txt (All) 10/12/2022
+- Version bump (22.10.1)
+- Updated Package Names
+- Re-added DCP applications
+- Added Switch Access Root
+- Fixed #19
+
+## Updated ui.sh, debloat.sh, Fire-Tools.ps1, Debloat.txt (All) 10/01/2022
 - Removed problematic packages in debloat list & updated names
 - Switched to new Ubuntu-esque versioning scheme (22.10)
 - Moved update check to update tool so application launches faster
@@ -6,14 +13,14 @@
 - Removed unecessary lines in debloat proccess
 - Speed up debloat tool by ~ 4.8x, using sub-proccesses to disable multiple applications simultaneously (Linux/macOS)
 
-## Update ui.sh, Fire-Tools.ps1, Debloat.txt (All) 09/20/2022
+## Updated ui.sh, Fire-Tools.ps1, Debloat.txt (All) 09/20/2022
 - Re-introduced version numbers starting with 2.3.1
 - Fixed Google Services installer
 - Cleaned up and slimmed down Debloat & Appinstaller functions (Windows)
 - Updated README.md in Gapps folder with sources
 - Removed Silk Browser & Amazon Wallpaper from Debloat.txt because they are useful if you don't have replacements downloaded
 
-## Update Fire-Tools.ps1 (Windows) 09/02/2022
+## Updated Fire-Tools.ps1 (Windows) 09/02/2022
 - Removed device identifier for now & replaced with model number
 - Completely reformatted script
 - Shrunk script by 61 lines
@@ -23,8 +30,3 @@
 - Custom Launcher now supports .apkm files
 - Update tool now uses modules so new scripts can be added over time
 - Removed Github & Website buttons
-
-## Updated debloat.sh & ui.sh (Linux/macOS) 08/27/2022
-- Decreased complexity and further increased Debloat Tool speed by up to 33% from July version
-- Cleaned up & slimmed down ram check
-- Slight format change with '{}'
