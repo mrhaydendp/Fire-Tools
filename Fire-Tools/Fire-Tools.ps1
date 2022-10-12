@@ -1,4 +1,4 @@
-$version = "22.10"
+$version = "22.10.1"
 
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @("#ffffff","#202020","#323232")

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="22.10"
+version="22.10.1"
 
 # Check for ADB
 command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
