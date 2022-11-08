@@ -19,7 +19,8 @@ opt=$(zenity --list \
 --column="Option" --column="Description" \
     "Enable" "Enable all Amazon apps" \
     "Disable" "Disable all Amazon apps" \
-    "Custom" "Disable selected packages")
+    "Custom" "Disable selected packages" \
+    "Edit" "Open Debloat.txt in a text editor")
 
 # Debloat & Package List
 packages=$(awk '{print $1}' < Debloat.txt)
@@ -76,6 +77,10 @@ case "$opt" in
         do
             debloat "Disable" "$package"
         done;;
+
+    "Edit")
+        xdg-open ./Debloat.txt 2> /dev/null || open -e ./Debloat.txt
+        exec ./debloat.sh;
 esac
 
 exec ./ui.sh
