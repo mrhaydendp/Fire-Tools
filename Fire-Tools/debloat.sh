@@ -70,9 +70,9 @@ case "$opt" in
         fi;;
     
     "Custom")
-        adb shell pm list packages -e | cut -f 2 -d ":" > packagelist
-        disable=$(zenity --list --width=500 --height=400 --column=Packages --multiple < packagelist | tr '|' '\n')
-        for package in ${disable}
+        packages=$(adb shell pm list packages -e | cut -f2 -d:)
+        list=$(zenity --list --width=500 --height=400 --column=Packages --multiple $packages | tr '|' '\n')
+        for package in ${list}
         do
             debloat "Disable" "$package"
         done;;
