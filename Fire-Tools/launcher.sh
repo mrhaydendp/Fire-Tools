@@ -21,7 +21,7 @@ case "$launcher" in
             echo "adb install -g $launcher";;
         *.apkm)
             unzip "$launcher" -d ./Split
-            echo "adb install-multiple -g ./Split/*.apk"
+            adb install-multiple -g ./Split/*.apk
             rm -rf ./Split;;
         esac
 esac
