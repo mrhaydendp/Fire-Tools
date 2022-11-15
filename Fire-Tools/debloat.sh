@@ -19,7 +19,8 @@ opt=$(zenity --list \
 --column="Option" --column="Description" \
     "Enable" "Enable all Amazon apps" \
     "Disable" "Disable all Amazon apps" \
-    "Custom" "Disable selected packages")
+    "Custom" "Disable selected packages" \
+    "Edit" "Open Debloat.txt in a text editor")
 
 # Debloat & Package List
 packages=$(awk '{print $1}' < Debloat.txt)
@@ -70,12 +71,16 @@ case "$opt" in
         fi;;
     
     "Custom")
-        adb shell pm list packages -e | cut -f 2 -d ":" > packagelist
-        disable=$(zenity --list --width=500 --height=400 --column=Packages --multiple < packagelist | tr '|' '\n')
-        for package in ${disable}
+        packages=$(adb shell pm list packages -e | cut -f2 -d:)
+        list=$(zenity --list --width=500 --height=400 --column=Packages --multiple $packages | tr '|' '\n')
+        for package in ${list}
         do
             debloat "Disable" "$package"
         done;;
+
+    "Edit")
+        xdg-open ./Debloat.txt 2> /dev/null || open -e ./Debloat.txt
+        exec ./debloat.sh;
 esac
 
 exec ./ui.sh

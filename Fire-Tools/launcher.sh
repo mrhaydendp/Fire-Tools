@@ -16,7 +16,14 @@ case "$launcher" in
     
     "Custom")
         launcher=$(zenity --file-selection) &&
-        adb install -g "$launcher";;
+        case "$launcher" in
+        *.apk)
+            echo "adb install -g $launcher";;
+        *.apkm)
+            unzip "$launcher" -d ./Split
+            adb install-multiple -g ./Split/*.apk
+            rm -rf ./Split;;
+        esac
 esac
 
 # If a Launcher is Selected Disable Fire Launcher

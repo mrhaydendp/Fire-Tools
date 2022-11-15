@@ -1,4 +1,4 @@
-$version = "22.10.1"
+$version = "22.11"
 
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @("#ffffff","#202020","#323232")
@@ -103,25 +103,25 @@ $rebloat.BackColor = $theme[2]
 $tooltip.SetToolTip($rebloat, "Enable all Amazon apps")
 $form.Controls.Add($rebloat)
 
-$disableota = New-Object System.Windows.Forms.Button
-$disableota.Text = "Disable OTA"
-$disableota.Size = New-Object System.Drawing.Size(180,38)
-$disableota.Location = New-Object System.Drawing.Size(15,160)
-$disableota.FlatStyle = "0"
-$disableota.FlatAppearance.BorderSize = "0"
-$disableota.BackColor = $theme[2]
-$tooltip.SetToolTip($disableota, "Disable Fire OS updates")
-$form.Controls.Add($disableota)
-
 $customdebloat = New-Object System.Windows.Forms.Button
 $customdebloat.Text = "Custom Debloat"
 $customdebloat.Size = New-Object System.Drawing.Size(180,38)
-$customdebloat.Location = New-Object System.Drawing.Size(15,210)
+$customdebloat.Location = New-Object System.Drawing.Size(15,160)
 $customdebloat.FlatStyle = "0"
 $customdebloat.FlatAppearance.BorderSize = "0"
 $customdebloat.BackColor = $theme[2]
 $tooltip.SetToolTip($customdebloat, "Disable selected packages")
 $form.Controls.Add($customdebloat)
+
+$editdebloat = New-Object System.Windows.Forms.Button
+$editdebloat.Text = "Edit"
+$editdebloat.Size = New-Object System.Drawing.Size(180,38)
+$editdebloat.Location = New-Object System.Drawing.Size(15,210)
+$editdebloat.FlatStyle = "0"
+$editdebloat.FlatAppearance.BorderSize = "0"
+$editdebloat.BackColor = $theme[2]
+$tooltip.SetToolTip($editdebloat, "Open Debloat.txt in preferred text editor")
+$form.Controls.Add($editdebloat)
 
 # Buttons - Utilities
 $googleservices = New-Object System.Windows.Forms.Button
@@ -144,10 +144,20 @@ $apkextract.BackColor = $theme[2]
 $tooltip.SetToolTip($apkextract, "Extract .apk(s) from installed applications")
 $form.Controls.Add($apkextract)
 
+$disableota = New-Object System.Windows.Forms.Button
+$disableota.Text = "Disable OTA"
+$disableota.Size = New-Object System.Drawing.Size(180,38)
+$disableota.Location = New-Object System.Drawing.Size(265,160)
+$disableota.FlatStyle = "0"
+$disableota.FlatAppearance.BorderSize = "0"
+$disableota.BackColor = $theme[2]
+$tooltip.SetToolTip($disableota, "Disable Fire OS updates")
+$form.Controls.Add($disableota)
+
 $batchinstall = New-Object System.Windows.Forms.Button
 $batchinstall.Text = "Batch Install"
 $batchinstall.Size = New-Object System.Drawing.Size(180,38)
-$batchinstall.Location = New-Object System.Drawing.Size(265,160)
+$batchinstall.Location = New-Object System.Drawing.Size(265,210)
 $batchinstall.FlatStyle = "0"
 $batchinstall.FlatAppearance.BorderSize = "0"
 $batchinstall.BackColor = $theme[2]
@@ -250,26 +260,19 @@ $debloattool.Add_Click{
     }
 }
 
-# Disable OTA Packages
-$disableota.Add_Click{
-    $ota = @("com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota")
-    foreach ($package in $ota){
-        debloat Debloat "$package"
-    }
-    Write-Host "Successfully Disabled OTA Updates"
-}
-
 # Disable Selected Package(s)
 $customdebloat.Add_Click{
-    adb shell pm list packages -e | Out-File Packages.txt
-    $list = Get-Content ".\Packages.txt" | ForEach-Object {
+    adb shell pm list packages -e | ForEach-Object {
         $_.split(":")[1]
-    }
-    $disable = $list | Out-GridView -OutputMode Multiple
-    foreach ($array in $disable) {
-        debloat Debloat "$array"
+    } | Out-GridView -Title "Disable Selected Package(s) (Ctrl + Click to Select Multiple)" -OutputMode Multiple | ForEach-Object {
+        debloat Debloat "$_"
     }
     Write-Host "Successfully Disabled Selected Package(s)"
+}
+
+# Open Debloat.txt in Text Editor
+$editdebloat.Add_Click{
+    .\Debloat.txt
 }
 
 # Install Google Services
@@ -283,17 +286,25 @@ $googleservices.Add_Click{
 
 # Extract Apk from Selected Packages 
 $apkextract.Add_Click{
-    adb shell pm list packages | Out-File Packages.txt
-    $list = Get-Content ".\Packages.txt" | ForEach-Object {
+    New-Item .\Extracted -Type Directory -Force
+    $extract = (adb shell pm list packages | ForEach-Object {
         $_.split(":")[1]
+    } | Out-GridView -Title "Select Application to Extract" -OutputMode Single)
+    if ("$extract") {
+        adb shell pm path "$extract" | ForEach-Object {
+            adb pull $_.split(":")[1] .\Extracted
+        }
+        Write-Host "Successfully Extracted Selected Apk"
     }
-    $Extract = $list | Out-GridView -OutputMode Single
-    adb shell pm path $Extract | Out-File .\Packages.txt
-    $Extract = Get-Content ".\Packages.txt" | ForEach-Object {
-        $_.split(":")[1]
+}
+
+# Disable OTA Packages
+$disableota.Add_Click{
+    $ota = @("com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota")
+    foreach ($package in $ota){
+        debloat Debloat "$package"
     }
-    adb pull $Extract
-    Write-Host "Extracted Selected Apk"
+    Write-Host "Successfully Disabled OTA Updates"
 }
 
 # Batch Installer

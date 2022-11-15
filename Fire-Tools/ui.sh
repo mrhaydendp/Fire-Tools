@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="22.10.1"
+version="22.11"
 
 # Check for ADB
 command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
@@ -65,11 +65,10 @@ case "$tool" in
         echo "Successfully Disabled OTA Updates";;
 
     "Apk Extractor")
-        adb shell pm list packages | cut -f 2 -d ":" > packagelist
-        package=$(zenity --list --width=500 --height=400 --column=Packages < packagelist) &&
-        adb shell pm path "$package" | cut -f 2 -d ":" > Packages.txt &&
-        xargs -L1 adb pull < Packages.txt &&
-        echo "Finished Extracting App(s)";;
+        mkdir ./Extracted >/dev/null 2>&1
+        packages=$(adb shell pm list packages | cut -f2 -d:)
+        list=$(zenity --list --width=500 --height=400 --column=Packages $packages) &&
+        adb shell pm path "$list" | cut -f2 -d: | xargs -I % adb pull % ./Extracted;;
 
     "Batch Installer")
         for apps in ./Batch/*.apkm
