@@ -290,10 +290,12 @@ $apkextract.Add_Click{
     $extract = (adb shell pm list packages | ForEach-Object {
         $_.split(":")[1]
     } | Out-GridView -Title "Select Application to Extract" -OutputMode Single)
-    adb shell pm path "$extract" | ForEach-Object {
-        adb pull $_.split(":")[1] .\Extracted
+    if ("$extract") {
+        adb shell pm path "$extract" | ForEach-Object {
+            adb pull $_.split(":")[1] .\Extracted
+        }
+        Write-Host "Successfully Extracted Selected Apk"
     }
-    Write-Host "Successfully Extracted Selected Apk"
 }
 
 # Disable OTA Packages
