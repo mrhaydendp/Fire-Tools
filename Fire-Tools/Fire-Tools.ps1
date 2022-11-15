@@ -280,17 +280,14 @@ $googleservices.Add_Click{
 
 # Extract Apk from Selected Packages 
 $apkextract.Add_Click{
-    adb shell pm list packages | Out-File Packages.txt
-    $list = Get-Content ".\Packages.txt" | ForEach-Object {
+    New-Item .\Extracted -Type Directory -Force
+    $extract = (adb shell pm list packages | ForEach-Object {
         $_.split(":")[1]
+    } | Out-GridView -Title "Select Application to Extract" -OutputMode Single)
+    adb shell pm path "$extract" | ForEach-Object {
+        adb pull $_.split(":")[1] .\Extracted
     }
-    $Extract = $list | Out-GridView -OutputMode Single
-    adb shell pm path $Extract | Out-File .\Packages.txt
-    $Extract = Get-Content ".\Packages.txt" | ForEach-Object {
-        $_.split(":")[1]
-    }
-    adb pull $Extract
-    Write-Host "Extracted Selected Apk"
+    Write-Host "Successfully Extracted Selected Apk"
 }
 
 # Batch Installer
