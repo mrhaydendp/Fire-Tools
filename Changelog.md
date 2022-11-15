@@ -1,3 +1,11 @@
+## Updated ui.sh, launcher.sh, debloat.sh, Fire-Tools.ps1, Debloat.txt (All) 11/15/2022
+- Version bump (22.11)
+- Rewrote apk extractor function to be more reliable and output extracted apks in "Extracted" folder
+- Simplified and rewrote custom disable function
+- Added support for app bundles when selecting a custom launcher
+- Added Edit feature to open Debloat.txt in your preferred text editor
+- Alphabetized Debloat List
+
 ## Updated Debloat.txt (All) 10/12/2022
 - Version bump (22.10.1)
 - Updated Package Names
@@ -19,14 +27,3 @@
 - Cleaned up and slimmed down Debloat & Appinstaller functions (Windows)
 - Updated README.md in Gapps folder with sources
 - Removed Silk Browser & Amazon Wallpaper from Debloat.txt because they are useful if you don't have replacements downloaded
-
-## Updated Fire-Tools.ps1 (Windows) 09/02/2022
-- Removed device identifier for now & replaced with model number
-- Completely reformatted script
-- Shrunk script by 61 lines
-- Rewrote all button functions for speed and simplicity
-- Combined Debloat & Undo into one button function with arguments
-- Update tool is up to 36% faster
-- Custom Launcher now supports .apkm files
-- Update tool now uses modules so new scripts can be added over time
-- Removed Github & Website buttons
