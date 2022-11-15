@@ -1,4 +1,4 @@
-$version = "22.10.1"
+$version = "22.11"
 
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @("#ffffff","#202020","#323232")
@@ -261,13 +261,10 @@ $disableota.Add_Click{
 
 # Disable Selected Package(s)
 $customdebloat.Add_Click{
-    adb shell pm list packages -e | Out-File Packages.txt
-    $list = Get-Content ".\Packages.txt" | ForEach-Object {
+    adb shell pm list packages -e | ForEach-Object {
         $_.split(":")[1]
-    }
-    $disable = $list | Out-GridView -OutputMode Multiple
-    foreach ($array in $disable) {
-        debloat Debloat "$array"
+    } | Out-GridView -Title "Disable Selected Package(s) (Ctrl + Click to Select Multiple)" -OutputMode Multiple | ForEach-Object {
+        debloat Debloat "$_"
     }
     Write-Host "Successfully Disabled Selected Package(s)"
 }
