@@ -14,7 +14,7 @@ if (adb shell echo "Device Connected"){
         Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile identifying-tablet-devices.html
     }
     $line = Select-String "$model" .\identifying-tablet-devices.html
-    Select-String "Kindle.Fire.(.*?)Gen\)|Fire (.*?)Gen\)" .\identifying-tablet-devices.html | % {
+    Select-String "Kindle|Fire) (.*?)[G|g]en\)" .\identifying-tablet-devices.html | % {
     if ( $_.LineNumber -eq $line.LineNumber - 2 ){
         $device = ($_.Matches.Value)
     }
