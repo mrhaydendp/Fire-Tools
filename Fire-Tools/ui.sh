@@ -6,12 +6,12 @@ version="22.12"
 command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
 
 # If Device is Connected Identify Using Amazon Docs Page
-device="Device not Detected"
+device="Not Detected"
 if (adb shell echo "Device Connected"); then
     model=$(adb shell getprop ro.product.model)
     [ -e identifying-tablet-devices.html ] || curl -o ./identifying-tablet-devices.html "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
     device=$(grep -B 2 "$model" < identifying-tablet-devices.html | grep -E -o "(Kindle|Fire) (.*?)[G|g]en\)")
-    [ -z "$device" ] && device="Unsupported/Unknown Device"
+    [ -z "$device" ] && device="Unknown/Unsupported"
 fi
 
 # Change Application Installation Method Based on Filetype
@@ -28,7 +28,8 @@ appinstaller () {
 
 # GUI Specs
 tool=$(zenity --list \
---title="Fire Tools v$version - $device" \
+--title="Fire Tools v$version" \
+--text="Device: $device" \
 --width=510 --height=400 \
 --column="Tool" --column="Description" \
     "Debloat" "Disable or restore Amazon apps" \
