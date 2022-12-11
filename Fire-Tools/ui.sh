@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="22.11"
+version="22.12"
 
 # Check for ADB
 command -v adb >/dev/null 2>&1 || { echo >&2 "This application requires ADB to be installed, Exiting..."; exit 1; }
@@ -36,6 +36,7 @@ tool=$(zenity --list \
     "Change Launcher" "Replace Fire Launcher with alternatives" \
     "Disable OTA" "Disable Fire OS updates" \
     "Apk Extractor" "Extract .apk(s) from installed applications" \
+    "Custom DNS" "Change Private DNS server" \
     "Batch Installer" "Install all .apk(m) files in the Batch folder" \
     "Update" "Grab the latest Fire-Tools scripts")
 
@@ -77,6 +78,14 @@ case "$tool" in
         done
         echo "Finished Installing App(s)";;
 
+    "Custom DNS")
+        server=$(zenity --entry --width=400 --height=200 --title="Input Custom Private DNS (DoT)" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net")
+        [ -z "$server" ] || {
+            adb shell settings put global private_dns_mode hostname &&
+            adb shell settings put global private_dns_specifier "$server" &&
+            echo "Successfully Changed Private DNS to: $server" ||
+            echo "Failed to Set Private DNS"
+        };;
     "Update")
         latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version)
         [ "$version" != "$latest" ] && {
