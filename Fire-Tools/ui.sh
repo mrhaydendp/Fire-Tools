@@ -69,10 +69,12 @@ case "$tool" in
         echo "Successfully Disabled OTA Updates";;
 
     "Apk Extractor")
-        mkdir ./Extracted >/dev/null 2>&1
         packages=$(adb shell pm list packages | cut -f2 -d:)
-        list=$(zenity --list --width=500 --height=400 --column=Packages $packages) &&
-        adb shell pm path "$list" | cut -f2 -d: | xargs -I % adb pull % ./Extracted;;
+        list=$(zenity --list --width=500 --height=400 --column=Packages $packages)
+        [ -z "$list" ] || {
+            mkdir ./Extracted >/dev/null 2>&1
+            adb shell pm path "$list" | cut -f2 -d: | xargs -I % adb pull % ./Extracted
+        };;
 
     "Batch Installer")
         for apps in ./Batch/*.apkm
