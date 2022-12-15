@@ -1,4 +1,4 @@
-$version = "22.11"
+$version = "22.12"
 
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @("#ffffff","#202020","#323232")
@@ -7,17 +7,17 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 }
 
 # Device Identifier (Find Product Name from Model Number -2 Lines)
-$device = "Device is Unknown/Undetected"
+$device = "Unknown/Undetected"
 if (adb shell echo "Device Connected"){
     $model = adb shell getprop ro.product.model
     if (!(Test-Path .\identifying-tablet-devices.html)){
         Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile identifying-tablet-devices.html
     }
     $line = Select-String "$model" .\identifying-tablet-devices.html
-    Select-String "Kindle|Fire) (.*?)[G|g]en\)" .\identifying-tablet-devices.html | % {
-    if ( $_.LineNumber -eq $line.LineNumber - 2 ){
-        $device = ($_.Matches.Value)
-    }
+    Select-String "(Kindle|Fire) (.*?)[G|g]en\)" .\identifying-tablet-devices.html | % {
+        if ( $_.LineNumber -eq $line.LineNumber - 2 ){
+            $device = ($_.Matches.Value)
+        }
     }
 }
 
@@ -47,7 +47,7 @@ Add-Type -AssemblyName System.Windows.Forms
 $tooltip = New-Object System.Windows.Forms.ToolTip
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Fire Tools v$version - $device"
+$form.Text = "Fire Tools v$version Device: $device"
 $form.StartPosition = "CenterScreen"
 $form.ClientSize = New-Object System.Drawing.Point(715,410)
 $form.ForeColor = $theme[0]
