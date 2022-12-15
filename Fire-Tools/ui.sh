@@ -26,20 +26,22 @@ appinstaller () {
     esac
 }
 
-# GUI Specs
-tool=$(zenity --list \
---title="Fire Tools v$version" \
---text="Device: $device" \
---width=510 --height=400 \
---column="Tool" --column="Description" \
-    "Debloat" "Disable or restore Amazon apps" \
-    "Google Services" "Install Google Play" \
-    "Change Launcher" "Replace Fire Launcher with alternatives" \
-    "Disable OTA" "Disable Fire OS updates" \
-    "Apk Extractor" "Extract .apk(s) from installed applications" \
-    "Custom DNS" "Change Private DNS server" \
-    "Batch Installer" "Install all .apk(m) files in the Batch folder" \
-    "Update" "Grab the latest Fire-Tools scripts")
+# Invoke Tools by Adding Their Names After ./ui.sh (Ex: ./ui.sh Update), Else Resort to UI
+tool="$1"
+[ -n "$1" ] || {
+    tool=$(zenity --list \
+    --title="Fire Tools v$version - $device" \
+    --text="Device: $device" \
+    --width=510 --height=400 \
+    --column="Tool" --column="Description" \
+        "Debloat" "Disable or restore Amazon apps" \
+        "Google Services" "Install Google Play" \
+        "Change Launcher" "Replace Fire Launcher with alternatives" \
+        "Disable OTA" "Disable Fire OS updates" \
+        "Apk Extractor" "Extract .apk(s) from installed applications" \
+        "Batch Installer" "Install all .apk(m) files in the Batch folder" \
+        "Update" "Grab the latest Fire-Tools scripts")
+}
 
 # Tool Functions
 case "$tool" in
