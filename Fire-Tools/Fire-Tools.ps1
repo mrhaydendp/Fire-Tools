@@ -317,13 +317,16 @@ $batchinstall.Add_Click{
 
 # Set Selection as Default Launcher
 $launchers.Add_Click{
-    debloat Debloat com.amazon.firelauncher
     if ($this.Text -eq "Custom Launcher"){
         $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
         $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
         [void]$FileBrowser.ShowDialog()
-        appinstaller $FileBrowser.FileName
+        if ($FileBrowser.FileName){
+            adb shell pm disable-user -k com.amazon.firelauncher
+            appinstaller $FileBrowser.FileName
+        }
     } else {
+        adb shell pm disable-user -k com.amazon.firelauncher
         $package = ($this.Text)
         appinstaller (Get-ChildItem $package*.apk)
     }
@@ -335,9 +338,8 @@ $update.Add_Click{
     $latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
     if ("$version" -lt "$latest"){
         Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
-        $modules = @("Fire-Tools.ps1", "Debloat.txt")
-        foreach ($module in $modules){
-            Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$module" -OutFile "$module"
+        @("Fire-Tools.ps1", "Debloat.txt") | % {
+            Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$_" -OutFile "$_"
         }
         Write-Host "Successfully Updated, Please Relaunch Application"
     } else {
