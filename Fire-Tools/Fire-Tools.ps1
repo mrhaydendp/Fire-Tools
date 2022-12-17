@@ -75,13 +75,6 @@ $label2.Location = New-Object System.Drawing.Size(500,15)
 $label2.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
 $form.Controls.Add($label2)
 
-$label3 = New-Object System.Windows.Forms.Label
-$label3.Text = "Miscellaneous"
-$label3.Size = New-Object System.Drawing.Size(170,30)
-$label3.Location = New-Object System.Drawing.Size(273,260)
-$label3.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
-$form.Controls.Add($label3)
-
 # Buttons - Debloat
 $debloat = New-Object System.Windows.Forms.Button
 $debloat.Text = "Debloat"
@@ -164,6 +157,26 @@ $batchinstall.BackColor = $theme[2]
 $tooltip.SetToolTip($batchinstall, "Install all .apk(m) files in the Batch folder")
 $form.Controls.Add($batchinstall)
 
+$customdns = New-Object System.Windows.Forms.Button
+$customdns.Text = "Custom DNS"
+$customdns.Size = New-Object System.Drawing.Size(180,38)
+$customdns.Location = New-Object System.Drawing.Size(265,260)
+$customdns.FlatStyle = "0"
+$customdns.FlatAppearance.BorderSize = "0"
+$customdns.BackColor = $theme[2]
+$tooltip.SetToolTip($customdns, "Change Private DNS (DoT) provider")
+$form.Controls.Add($customdns)
+
+$update = New-Object System.Windows.Forms.Button
+$update.Text = "Update Scripts"
+$update.Size = New-Object System.Drawing.Size(180,38)
+$update.Location = New-Object System.Drawing.Size(265,310)
+$update.FlatStyle = "0"
+$update.FlatAppearance.BorderSize = "0"
+$update.BackColor = $theme[2]
+$tooltip.SetToolTip($update, "Grab the latest Fire-Tools scripts")
+$form.Controls.Add($update)
+
 # Buttons - Custom Launchers
 $lawnchair = New-Object System.Windows.Forms.Button
 $lawnchair.Text = "Lawnchair"
@@ -194,17 +207,6 @@ $customlauncher.FlatAppearance.BorderSize = "0"
 $customlauncher.BackColor = $theme[2]
 $tooltip.SetToolTip($customlauncher, "Select a launcher .apk(m) from File Explorer")
 $form.Controls.Add($customlauncher)
-
-# Buttons - Miscellaneous
-$update = New-Object System.Windows.Forms.Button
-$update.Text = "Update Scripts"
-$update.Size = New-Object System.Drawing.Size(180,38)
-$update.Location = New-Object System.Drawing.Size(265,305)
-$update.FlatStyle = "0"
-$update.FlatAppearance.BorderSize = "0"
-$update.BackColor = $theme[2]
-$tooltip.SetToolTip($update, "Grab the latest Fire-Tools scripts")
-$form.Controls.Add($update)
 
 # Multi-Buttons
 $debloattool = $debloat, $rebloat
@@ -315,6 +317,32 @@ $batchinstall.Add_Click{
     Write-Host "Successfully Installed Application(s)"
 }
 
+# Set Private DNS (DoT) provider
+$customdns.Add_Click{
+    $providers = @(
+        "dns.adguard.com"
+        "security.cloudflare-dns.com"
+        "dns.quad9.net"
+    ) | Out-GridView -Title "Select Private DNS (DoT) Provider" -OutputMode Single | % {
+        adb shell settings put global private_dns_mode hostname
+        adb shell settings put global private_dns_specifier "$_"
+    }
+}
+
+# Update Scripts
+$update.Add_Click{
+    $latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
+    $status = "No Updates Available"
+    if ("$version" -lt "$latest"){
+        Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
+        @("Fire-Tools.ps1", "Debloat.txt") | % {
+            Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$_" -OutFile "$_"
+        }
+        $status = "Successfully Updated, Please Re-launch Application"
+    }
+    Write-Host "$status"
+}
+
 # Set Selection as Default Launcher
 $launchers.Add_Click{
     if ($this.Text -eq "Custom Launcher"){
@@ -331,20 +359,6 @@ $launchers.Add_Click{
         appinstaller (Get-ChildItem $package*.apk)
     }
     Write-Host "Successfully Changed Default Launcher"
-}
-
-# Update Scripts
-$update.Add_Click{
-    $latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
-    if ("$version" -lt "$latest"){
-        Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
-        @("Fire-Tools.ps1", "Debloat.txt") | % {
-            Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$_" -OutFile "$_"
-        }
-        Write-Host "Successfully Updated, Please Relaunch Application"
-    } else {
-        Write-Host "No Updates Available"
-    }
 }
 
 $form.ShowDialog()
