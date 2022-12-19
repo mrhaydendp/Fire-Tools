@@ -1,3 +1,15 @@
+## Updated ui.sh, Fire-Tools.ps1, version (All) 12/19/2022
+- Version bump (22.12)
+- Added Custom DNS (Private DNS) changer
+- Added ability to call tools from cli (Ex: ./ui.sh Update) (Linux/macOS)
+- Moved device name to subtext (Linux/macOS)
+- Swapped "- $device" with "Device: $device" for better readability (Windows)
+- Optimized regex code to match device easier
+- Apk Extractor now only makes "Extracted" folder when a package is selected
+- Fire Launcher won't be disabled now if you don't pick a custom launcher from the file picker (Windows)
+- Simplified update tool (Windows)
+- Removed "Miscellaneous" category and moved update tool to Utilities (Windows)
+
 ## Updated ui.sh, launcher.sh, debloat.sh, Fire-Tools.ps1, Debloat.txt (All) 11/15/2022
 - Version bump (22.11)
 - Rewrote apk extractor function to be more reliable and output extracted apks in "Extracted" folder
@@ -6,24 +18,17 @@
 - Added Edit feature to open Debloat.txt in your preferred text editor
 - Alphabetized Debloat List
 
-## Updated Debloat.txt (All) 10/12/2022
+## Updated Debloat.txt, version (All) 10/12/2022
 - Version bump (22.10.1)
 - Updated Package Names
 - Re-added DCP applications
 - Added Switch Access Root
 - Fixed #19
 
-## Updated ui.sh, debloat.sh, Fire-Tools.ps1, Debloat.txt (All) 10/01/2022
+## Updated ui.sh, debloat.sh, Fire-Tools.ps1, Debloat.txt, version (All) 10/01/2022
 - Removed problematic packages in debloat list & updated names
 - Switched to new Ubuntu-esque versioning scheme (22.10)
 - Moved update check to update tool so application launches faster
 - Simplified tablet identifier with regex & added feature to Windows
 - Removed unecessary lines in debloat proccess
 - Speed up debloat tool by ~ 4.8x, using sub-proccesses to disable multiple applications simultaneously (Linux/macOS)
-
-## Updated ui.sh, Fire-Tools.ps1, Debloat.txt (All) 09/20/2022
-- Re-introduced version numbers starting with 2.3.1
-- Fixed Google Services installer
-- Cleaned up and slimmed down Debloat & Appinstaller functions (Windows)
-- Updated README.md in Gapps folder with sources
-- Removed Silk Browser & Amazon Wallpaper from Debloat.txt because they are useful if you don't have replacements downloaded
