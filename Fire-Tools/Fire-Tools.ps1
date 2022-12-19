@@ -326,6 +326,7 @@ $customdns.Add_Click{
     ) | Out-GridView -Title "Select Private DNS (DoT) Provider" -OutputMode Single | % {
         adb shell settings put global private_dns_mode hostname
         adb shell settings put global private_dns_specifier "$_"
+        Write-Host "Successfully Changed Private DNS to: $_"
     }
 }
 
