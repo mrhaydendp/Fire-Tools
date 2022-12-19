@@ -40,7 +40,7 @@ tool="$1"
         "Disable OTA" "Disable Fire OS updates" \
         "Apk Extractor" "Extract .apk(s) from installed applications" \
         "Batch Installer" "Install all .apk(m) files in the Batch folder" \
-        "Custom DNS" "Change Private DNS provider" \
+        "Custom DNS" "Change Private DNS (DoT) provider" \
         "Update" "Grab the latest Fire-Tools scripts")
 }
 
@@ -85,7 +85,7 @@ case "$tool" in
         echo "Finished Installing App(s)";;
 
     "Custom DNS")
-        server=$(zenity --entry --width=400 --height=200 --title="Input Preferred Private DNS (DoT) Server" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net")
+        server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net")
         [ -z "$server" ] || {
             adb shell settings put global private_dns_mode hostname &&
             adb shell settings put global private_dns_specifier "$server" &&
