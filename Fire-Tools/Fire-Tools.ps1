@@ -288,11 +288,11 @@ $googleservices.Add_Click{
 
 # Extract Apk from Selected Packages 
 $apkextract.Add_Click{
-    New-Item .\Extracted -Type Directory -Force
     $extract = (adb shell pm list packages | ForEach-Object {
         $_.split(":")[1]
     } | Out-GridView -Title "Select Application to Extract" -OutputMode Single)
     if ("$extract") {
+        New-Item .\Extracted -Type Directory -Force
         adb shell pm path "$extract" | ForEach-Object {
             adb pull $_.split(":")[1] .\Extracted
         }
