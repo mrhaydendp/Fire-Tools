@@ -30,7 +30,7 @@ appinstaller () {
 tool="$1"
 [ -n "$1" ] || {
     tool=$(zenity --list \
-    --title="Fire Tools v$version - $device" \
+    --title="Fire Tools v$version" \
     --text="Device: $device" \
     --width=510 --height=400 \
     --column="Tool" --column="Description" \
