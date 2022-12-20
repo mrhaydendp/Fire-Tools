@@ -1,4 +1,4 @@
-$version = "22.11"
+$version = "22.12"
 
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @("#ffffff","#202020","#323232")
@@ -7,17 +7,17 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 }
 
 # Device Identifier (Find Product Name from Model Number -2 Lines)
-$device = "Device is Unknown/Undetected"
+$device = "Unknown/Undetected"
 if (adb shell echo "Device Connected"){
     $model = adb shell getprop ro.product.model
     if (!(Test-Path .\identifying-tablet-devices.html)){
         Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile identifying-tablet-devices.html
     }
     $line = Select-String "$model" .\identifying-tablet-devices.html
-    Select-String "Kindle.Fire.(.*?)Gen\)|Fire (.*?)Gen\)" .\identifying-tablet-devices.html | % {
-    if ( $_.LineNumber -eq $line.LineNumber - 2 ){
-        $device = ($_.Matches.Value)
-    }
+    Select-String "(Kindle|Fire) (.*?)[G|g]en\)" .\identifying-tablet-devices.html | % {
+        if ( $_.LineNumber -eq $line.LineNumber - 2 ){
+            $device = ($_.Matches.Value)
+        }
     }
 }
 
@@ -47,7 +47,7 @@ Add-Type -AssemblyName System.Windows.Forms
 $tooltip = New-Object System.Windows.Forms.ToolTip
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Fire Tools v$version - $device"
+$form.Text = "Fire Tools v$version Device: $device"
 $form.StartPosition = "CenterScreen"
 $form.ClientSize = New-Object System.Drawing.Point(715,410)
 $form.ForeColor = $theme[0]
@@ -74,13 +74,6 @@ $label2.Size = New-Object System.Drawing.Size(220,30)
 $label2.Location = New-Object System.Drawing.Size(500,15)
 $label2.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
 $form.Controls.Add($label2)
-
-$label3 = New-Object System.Windows.Forms.Label
-$label3.Text = "Miscellaneous"
-$label3.Size = New-Object System.Drawing.Size(170,30)
-$label3.Location = New-Object System.Drawing.Size(273,260)
-$label3.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
-$form.Controls.Add($label3)
 
 # Buttons - Debloat
 $debloat = New-Object System.Windows.Forms.Button
@@ -164,6 +157,26 @@ $batchinstall.BackColor = $theme[2]
 $tooltip.SetToolTip($batchinstall, "Install all .apk(m) files in the Batch folder")
 $form.Controls.Add($batchinstall)
 
+$customdns = New-Object System.Windows.Forms.Button
+$customdns.Text = "Custom DNS"
+$customdns.Size = New-Object System.Drawing.Size(180,38)
+$customdns.Location = New-Object System.Drawing.Size(265,260)
+$customdns.FlatStyle = "0"
+$customdns.FlatAppearance.BorderSize = "0"
+$customdns.BackColor = $theme[2]
+$tooltip.SetToolTip($customdns, "Change Private DNS (DoT) provider")
+$form.Controls.Add($customdns)
+
+$update = New-Object System.Windows.Forms.Button
+$update.Text = "Update Scripts"
+$update.Size = New-Object System.Drawing.Size(180,38)
+$update.Location = New-Object System.Drawing.Size(265,310)
+$update.FlatStyle = "0"
+$update.FlatAppearance.BorderSize = "0"
+$update.BackColor = $theme[2]
+$tooltip.SetToolTip($update, "Grab the latest Fire-Tools scripts")
+$form.Controls.Add($update)
+
 # Buttons - Custom Launchers
 $lawnchair = New-Object System.Windows.Forms.Button
 $lawnchair.Text = "Lawnchair"
@@ -194,17 +207,6 @@ $customlauncher.FlatAppearance.BorderSize = "0"
 $customlauncher.BackColor = $theme[2]
 $tooltip.SetToolTip($customlauncher, "Select a launcher .apk(m) from File Explorer")
 $form.Controls.Add($customlauncher)
-
-# Buttons - Miscellaneous
-$update = New-Object System.Windows.Forms.Button
-$update.Text = "Update Scripts"
-$update.Size = New-Object System.Drawing.Size(180,38)
-$update.Location = New-Object System.Drawing.Size(265,305)
-$update.FlatStyle = "0"
-$update.FlatAppearance.BorderSize = "0"
-$update.BackColor = $theme[2]
-$tooltip.SetToolTip($update, "Grab the latest Fire-Tools scripts")
-$form.Controls.Add($update)
 
 # Multi-Buttons
 $debloattool = $debloat, $rebloat
@@ -286,11 +288,11 @@ $googleservices.Add_Click{
 
 # Extract Apk from Selected Packages 
 $apkextract.Add_Click{
-    New-Item .\Extracted -Type Directory -Force
     $extract = (adb shell pm list packages | ForEach-Object {
         $_.split(":")[1]
     } | Out-GridView -Title "Select Application to Extract" -OutputMode Single)
     if ("$extract") {
+        New-Item .\Extracted -Type Directory -Force
         adb shell pm path "$extract" | ForEach-Object {
             adb pull $_.split(":")[1] .\Extracted
         }
@@ -315,34 +317,49 @@ $batchinstall.Add_Click{
     Write-Host "Successfully Installed Application(s)"
 }
 
-# Set Selection as Default Launcher
-$launchers.Add_Click{
-    debloat Debloat com.amazon.firelauncher
-    if ($this.Text -eq "Custom Launcher"){
-        $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
-        $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
-        [void]$FileBrowser.ShowDialog()
-        appinstaller $FileBrowser.FileName
-    } else {
-        $package = ($this.Text)
-        appinstaller (Get-ChildItem $package*.apk)
+# Set Private DNS (DoT) provider
+$customdns.Add_Click{
+    $providers = @(
+        "dns.adguard.com"
+        "security.cloudflare-dns.com"
+        "dns.quad9.net"
+    ) | Out-GridView -Title "Select Private DNS (DoT) Provider" -OutputMode Single | % {
+        adb shell settings put global private_dns_mode hostname
+        adb shell settings put global private_dns_specifier "$_"
+        Write-Host "Successfully Changed Private DNS to: $_"
     }
-    Write-Host "Successfully Changed Default Launcher"
 }
 
 # Update Scripts
 $update.Add_Click{
     $latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
+    $status = "No Updates Available"
     if ("$version" -lt "$latest"){
         Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
-        $modules = @("Fire-Tools.ps1", "Debloat.txt")
-        foreach ($module in $modules){
-            Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$module" -OutFile "$module"
+        @("Fire-Tools.ps1", "Debloat.txt") | % {
+            Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$_" -OutFile "$_"
         }
-        Write-Host "Successfully Updated, Please Relaunch Application"
-    } else {
-        Write-Host "No Updates Available"
+        $status = "Successfully Updated, Please Re-launch Application"
     }
+    Write-Host "$status"
+}
+
+# Set Selection as Default Launcher
+$launchers.Add_Click{
+    if ($this.Text -eq "Custom Launcher"){
+        $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
+        $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
+        [void]$FileBrowser.ShowDialog()
+        if ($FileBrowser.FileName){
+            adb shell pm disable-user -k com.amazon.firelauncher
+            appinstaller $FileBrowser.FileName
+        }
+    } else {
+        adb shell pm disable-user -k com.amazon.firelauncher
+        $package = ($this.Text)
+        appinstaller (Get-ChildItem $package*.apk)
+    }
+    Write-Host "Successfully Changed Default Launcher"
 }
 
 $form.ShowDialog()
