@@ -37,7 +37,7 @@ Linux/macOS:
 ``` shell
 curl -LO https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.tar.xz
 tar -xf Fire-Tools.tar.xz && rm Fire-Tools.tar.xz
-cd Fire-Tools && ./ui.sh
+cd Fire-Tools && ./ui.sh Update
 ```
 
 Windows:
