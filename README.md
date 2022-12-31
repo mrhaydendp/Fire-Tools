@@ -1,7 +1,7 @@
 # Fire Tools
-Fire Tools is a powerful tool that debloats and installs Google services on your Amazon Fire Tablet to make it feel snappier and improve usability. Additionally it supports custom launchers such as Nova, Lawnchair, or any `.apk`. If you need to install multiple apps quickly there's a batch installer. It's as easy as dropping all your APKs & Split APKs in the Batch folder and clicking the Batch Install button!
+Fire Tools is a powerful collection of tools that debloat and install Google services on your Fire Tablet to make it feel snappier and improve usability. Additionally it supports custom launchers such as Nova, Lawnchair, or any `.apk`. If you need to install multiple apps quickly there's a batch installer. It's as easy as dropping all your .apk(m)s in the Batch folder and clicking the Batch Install button!
 
-**Fire OS 7.3.2.2+ Users: Custom Launchers will not work & some packages won't be disabled during debloat**
+**Fire OS 7.3.2.2+ Users: Some functions may not work, such as Custom Launcher, but most packages will still be disabled**
 
 **Note: This tool requires USB Debugging to be enabled**
 
