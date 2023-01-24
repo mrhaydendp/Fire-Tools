@@ -26,9 +26,9 @@ Linux/macOS | Windows
 ## Setup
 Select instructions for your OS:
 
-- [Linux](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md#linux-installation-instructions)
-- [macOS](https://github.com/mrhaydendp/Fire-Tools/blob/main/Linux-Instructions.md#macos)
-- [Windows](https://github.com/mrhaydendp/Fire-Tools/blob/main/Windows-Instructions.md)
+- [Linux](Setup-Instructions.md#linux)
+- [macOS](Setup-Instructions.md#macos)
+- [Windows](Setup-Instructions.md#windows)
 
 ## Installation Instructions
 After installation run update tool to get the latest version of scripts!
