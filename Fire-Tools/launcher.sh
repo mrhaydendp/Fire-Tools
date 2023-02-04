@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+adb shell pm list packages -3 > installed
+
 # GUI Specs
 launcher=$(zenity --list \
 --title="Custom Launcher" \
@@ -21,15 +23,17 @@ case "$launcher" in
             echo "adb install -g $launcher";;
         *.apkm)
             unzip "$launcher" -d ./Split
-            adb install-multiple -g ./Split/*.apk
+            adb install-multiple -r -g ./Split/*.apk
             rm -rf ./Split;;
         esac
 esac
 
-# If a Launcher is Selected Disable Fire Launcher
+# If a Launcher is Selected Disable Fire Launcher & Enable Widgets
 [ -z "$launcher" ] || {
+    adb shell pm list packages -3 > installed.changed;
+    launcher=$(diff installed* | grep "<" |awk -F: '{print $2}');
+    [ -z "$launcher" ] || adb shell appwidget grantbind --package "$launcher";
+    rm installed* --force;
     adb shell pm disable-user -k com.amazon.firelauncher;
     echo "Successfully set Custom Launcher"; 
-    }
-
-exec ./ui.sh
+}
