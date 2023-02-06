@@ -31,9 +31,11 @@ esac
 # If a Launcher is Selected Disable Fire Launcher & Enable Widgets
 [ -z "$launcher" ] || {
     adb shell pm list packages -3 > installed.changed;
-    launcher=$(diff installed* | grep "<" |awk -F: '{print $2}');
+    launcher=$(diff installed* | awk -F : '/</  {print $2}');
     [ -z "$launcher" ] || adb shell appwidget grantbind --package "$launcher";
     rm installed* --force;
     adb shell pm disable-user -k com.amazon.firelauncher;
     echo "Successfully set Custom Launcher"; 
 }
+
+exec ./ui.sh
