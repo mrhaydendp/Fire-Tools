@@ -53,8 +53,7 @@ case "$tool" in
         exec ./debloat.sh;;
 
     "Google Services")
-        for gapps in ./Gapps/Google*.apk*
-        do
+        for gapps in ./Gapps/Google*.apk*; do
             appinstaller "$gapps"
         done
         appinstaller ./Gapps/*Store*
@@ -65,8 +64,7 @@ case "$tool" in
 
     "Disable OTA")
         export ota="com.amazon.device.software.ota com.amazon.device.software.ota.override com.amazon.kindle.otter.oobe.forced.ota"
-        for package in ${ota}
-        do
+        for package in ${ota}; do
             adb shell pm disable-user -k "$package" || { echo "Failed to Disable OTA Updates"; exec ./ui.sh; }
         done
         echo "Successfully Disabled OTA Updates";;
@@ -80,8 +78,7 @@ case "$tool" in
         };;
 
     "Batch Installer")
-        for apps in ./Batch/*.apk*
-        do
+        for apps in ./Batch/*.apk*;
             appinstaller "$apps"
         done
         echo "Finished Installing App(s)";;
@@ -100,8 +97,7 @@ case "$tool" in
         [ "$version" != "$latest" ] && {
         echo "Latest Changelogs:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
         export modules="Debloat.txt ui.sh debloat.sh launcher.sh"
-        for module in ${modules}
-        do
+        for module in ${modules};
             curl -LO "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$module"
         done
         rm ./ft-identifying-tablet-devices.html --force
