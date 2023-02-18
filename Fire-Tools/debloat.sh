@@ -18,7 +18,7 @@ opt=$(zenity --list \
 --width=510 --height=400 \
 --column="Option" --column="Description" \
     "Enable" "Enable all Amazon apps" \
-    "Disable" "Disable all Amazon apps" \
+    "Disable" "Disable Amazon bloat" \
     "Custom" "Disable selected packages" \
     "Edit" "Open Debloat.txt in a text editor")
 
@@ -29,19 +29,18 @@ adb shell pm list packages -s > packagelist
 # Enable or Disable Packages (if Present) & Features Based on Selection
 case "$opt" in
     "Enable" | "Disable")
-        for package in ${packages}
-        do
+        for package in ${packages}; do
             grep -q "$package" < packagelist && debloat "$opt" "$package" &
         done
         wait
         if [ "$opt" = "Enable" ]; then
             echo "Disabling Adguard DNS"
             adb shell settings put global private_dns_mode -hostname
-            echo "Enabling Fire Launcher & OTA Updates"
-            adb shell pm enable com.amazon.firelauncher
-            adb shell pm enable com.amazon.device.software.ota
-            adb shell pm enable com.amazon.device.software.ota.override
-            adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
+            export core=("com.amazon.firelauncher com.amazon.device.software.ota com.amazon.device.software.ota.override com.amazon.kindle.otter.oobe.forced.ota")
+            for package in ${core}; do
+                adb shell pm enable "$package" 2> /dev/null ||
+                echo "Failed to Enable: $package"
+            done
             echo "Enabling Background Activities"
             adb shell settings put global always_finish_activities 0
             echo "Successfully Enabled Fire OS Bloat"
@@ -73,14 +72,13 @@ case "$opt" in
     "Custom")
         packages=$(adb shell pm list packages -e | cut -f2 -d:)
         list=$(zenity --list --width=500 --height=400 --column=Packages --multiple $packages | tr '|' '\n')
-        for package in ${list}
-        do
+        for package in ${list}; do
             debloat "Disable" "$package"
         done;;
 
     "Edit")
         xdg-open ./Debloat.txt 2> /dev/null || open -e ./Debloat.txt
         exec ./debloat.sh;
-esac
+    esac
 
 exec ./ui.sh

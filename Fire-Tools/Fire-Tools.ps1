@@ -1,4 +1,10 @@
-$version = "22.12"
+$version = "23.02"
+
+# Check if ADB is Installed
+if (!(adb --version)){
+    Write-Host "ADB not Found, Exiting..."
+    pause; exit
+}
 
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @("#ffffff","#202020","#323232")
@@ -11,10 +17,10 @@ $device = "Unknown/Undetected"
 if (adb shell echo "Device Connected"){
     $model = adb shell getprop ro.product.model
     if (!(Test-Path .\identifying-tablet-devices.html)){
-        Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile identifying-tablet-devices.html
+        Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile ft-identifying-tablet-devices.html
     }
-    $line = Select-String "$model" .\identifying-tablet-devices.html
-    Select-String "(Kindle|Fire) (.*?)[G|g]en\)" .\identifying-tablet-devices.html | % {
+    $line = Select-String "$model" .\ft-identifying-tablet-devices.html
+    Select-String "(Kindle|Fire) (.*?)[G|g]en\)" .\ft-identifying-tablet-devices.html | % {
         if ( $_.LineNumber -eq $line.LineNumber - 2 ){
             $device = ($_.Matches.Value)
         }
@@ -33,7 +39,7 @@ function debloat {
 # Change Application Installation Method Based on Filetype
 function appinstaller {
     if ("$args" -like '*.apk'){
-        adb install -r -g "$args" | Out-Host
+        adb install -g "$args" | Out-Host
     } elseif ("$args" -like '*.apkm'){
         Copy-Item "$args" -Destination $args".zip"
         Expand-Archive $args".zip" -DestinationPath .\Split
@@ -288,15 +294,14 @@ $googleservices.Add_Click{
 
 # Extract Apk from Selected Packages 
 $apkextract.Add_Click{
-    $extract = (adb shell pm list packages | ForEach-Object {
+    $extract = (adb shell pm list packages | % {
         $_.split(":")[1]
     } | Out-GridView -Title "Select Application to Extract" -OutputMode Single)
-    if ("$extract") {
-        New-Item .\Extracted -Type Directory -Force
-        adb shell pm path "$extract" | ForEach-Object {
-            adb pull $_.split(":")[1] .\Extracted
+    if ("$extract"){
+        New-Item -Type Directory .\Extracted\"$extract" -Force
+        adb shell pm path "$extract" | % {
+            adb pull $_.split(":")[1] .\Extracted\"$extract"
         }
-        Write-Host "Successfully Extracted Selected Apk"
     }
 }
 
@@ -346,20 +351,25 @@ $update.Add_Click{
 
 # Set Selection as Default Launcher
 $launchers.Add_Click{
-    if ($this.Text -eq "Custom Launcher"){
-        $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
-        $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
-        [void]$FileBrowser.ShowDialog()
-        if ($FileBrowser.FileName){
-            adb shell pm disable-user -k com.amazon.firelauncher
-            appinstaller $FileBrowser.FileName
-        }
-    } else {
+adb shell pm list packages -3 | Out-File installed
+if ($this.Text -eq "Custom Launcher"){
+    $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
+    $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
+    [void]$FileBrowser.ShowDialog()
+    if ($FileBrowser.FileName){
         adb shell pm disable-user -k com.amazon.firelauncher
-        $package = ($this.Text)
-        appinstaller (Get-ChildItem $package*.apk)
+        appinstaller $FileBrowser.FileName
     }
-    Write-Host "Successfully Changed Default Launcher"
+} else {
+    adb shell pm disable-user -k com.amazon.firelauncher
+    $package = ($this.Text)
+    appinstaller (Get-ChildItem $package*.apk)
+}
+adb shell pm list packages -3 | Out-File installed.changed
+Compare-Object (Get-Content installed) (Get-Content installed.changed) | Select -ExpandProperty inputobject | % {
+    adb shell appwidget grantbind --package $_.split(":")[1]
+}
+Write-Host "Successfully Changed Default Launcher"
 }
 
 $form.ShowDialog()

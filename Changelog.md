@@ -1,3 +1,14 @@
+## Updated ui.sh, launcher.sh, Fire-Tools.ps1, version (All) 2/19/2023
+- Updated comments (Linux/macOS)
+- Added dependency check
+- Simplified caching of Amazon dev website
+- Removed `-r` tag for adb install command
+- Updated tool descriptions (Linux/macOS)
+- Extracted apks now go into their own folder
+- Fixed batch installer not installing .apk files (Linux/macOS)
+- Simplified update tool downloads (Linux/macOS)
+- Widgets will now be automatically enabled for any launcher
+
 ## Updated ui.sh, Fire-Tools.ps1, version (All) 12/19/2022
 - Version bump (22.12)
 - Added Custom DNS (Private DNS) changer
@@ -24,11 +35,3 @@
 - Re-added DCP applications
 - Added Switch Access Root
 - Fixed #19
-
-## Updated ui.sh, debloat.sh, Fire-Tools.ps1, Debloat.txt, version (All) 10/01/2022
-- Removed problematic packages in debloat list & updated names
-- Switched to new Ubuntu-esque versioning scheme (22.10)
-- Moved update check to update tool so application launches faster
-- Simplified tablet identifier with regex & added feature to Windows
-- Removed unecessary lines in debloat proccess
-- Speed up debloat tool by ~ 4.8x, using sub-proccesses to disable multiple applications simultaneously (Linux/macOS)
