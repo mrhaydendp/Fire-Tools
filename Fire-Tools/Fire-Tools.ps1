@@ -351,20 +351,25 @@ $update.Add_Click{
 
 # Set Selection as Default Launcher
 $launchers.Add_Click{
-    if ($this.Text -eq "Custom Launcher"){
-        $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
-        $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
-        [void]$FileBrowser.ShowDialog()
-        if ($FileBrowser.FileName){
-            adb shell pm disable-user -k com.amazon.firelauncher
-            appinstaller $FileBrowser.FileName
-        }
-    } else {
+adb shell pm list packages -3 | Out-File installed
+if ($this.Text -eq "Custom Launcher"){
+    $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
+    $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
+    [void]$FileBrowser.ShowDialog()
+    if ($FileBrowser.FileName){
         adb shell pm disable-user -k com.amazon.firelauncher
-        $package = ($this.Text)
-        appinstaller (Get-ChildItem $package*.apk)
+        appinstaller $FileBrowser.FileName
     }
-    Write-Host "Successfully Changed Default Launcher"
+} else {
+    adb shell pm disable-user -k com.amazon.firelauncher
+    $package = ($this.Text)
+    appinstaller (Get-ChildItem $package*.apk)
+}
+adb shell pm list packages -3 | Out-File installed.changed
+Compare-Object (Get-Content installed) (Get-Content installed.changed) | Select -ExpandProperty inputobject | % {
+    adb shell appwidget grantbind --package $_.split(":")[1]
+}
+Write-Host "Successfully Changed Default Launcher"
 }
 
 $form.ShowDialog()
