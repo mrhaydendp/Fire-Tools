@@ -1,4 +1,10 @@
-$version = "22.12"
+$version = "23.02"
+
+# Check if ADB is Installed
+if (!(adb --version)){
+    Write-Host "ADB not Found, Exiting..."
+    pause; exit
+}
 
 # Set Theme Based on AppsUseLightTheme Prefrence
 $theme = @("#ffffff","#202020","#323232")
@@ -11,10 +17,10 @@ $device = "Unknown/Undetected"
 if (adb shell echo "Device Connected"){
     $model = adb shell getprop ro.product.model
     if (!(Test-Path .\identifying-tablet-devices.html)){
-        Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile identifying-tablet-devices.html
+        Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile ft-identifying-tablet-devices.html
     }
-    $line = Select-String "$model" .\identifying-tablet-devices.html
-    Select-String "(Kindle|Fire) (.*?)[G|g]en\)" .\identifying-tablet-devices.html | % {
+    $line = Select-String "$model" .\ft-identifying-tablet-devices.html
+    Select-String "(Kindle|Fire) (.*?)[G|g]en\)" .\ft-identifying-tablet-devices.html | % {
         if ( $_.LineNumber -eq $line.LineNumber - 2 ){
             $device = ($_.Matches.Value)
         }
@@ -33,7 +39,7 @@ function debloat {
 # Change Application Installation Method Based on Filetype
 function appinstaller {
     if ("$args" -like '*.apk'){
-        adb install -r -g "$args" | Out-Host
+        adb install -g "$args" | Out-Host
     } elseif ("$args" -like '*.apkm'){
         Copy-Item "$args" -Destination $args".zip"
         Expand-Archive $args".zip" -DestinationPath .\Split
@@ -288,15 +294,14 @@ $googleservices.Add_Click{
 
 # Extract Apk from Selected Packages 
 $apkextract.Add_Click{
-    $extract = (adb shell pm list packages | ForEach-Object {
+    $extract = (adb shell pm list packages | % {
         $_.split(":")[1]
     } | Out-GridView -Title "Select Application to Extract" -OutputMode Single)
-    if ("$extract") {
-        New-Item .\Extracted -Type Directory -Force
-        adb shell pm path "$extract" | ForEach-Object {
-            adb pull $_.split(":")[1] .\Extracted
+    if ("$extract"){
+        New-Item -Type Directory .\Extracted\"$extract" -Force
+        adb shell pm path "$extract" | % {
+            adb pull $_.split(":")[1] .\Extracted\"$extract"
         }
-        Write-Host "Successfully Extracted Selected Apk"
     }
 }
 
