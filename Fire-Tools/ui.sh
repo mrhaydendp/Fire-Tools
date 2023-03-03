@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="23.02"
+version="23.03"
 
 # Check for Dependencies
 export dependencies="adb zenity"
@@ -53,7 +53,8 @@ case "$tool" in
         exec ./debloat.sh;;
 
     "Google Services")
-        for gapps in ./Gapps/Google*.apk*; do
+        for gapps in ./Gapps/Google*.apk*
+        do
             appinstaller "$gapps"
         done
         appinstaller ./Gapps/*Store*
@@ -78,7 +79,8 @@ case "$tool" in
         };;
 
     "Batch Installer")
-        for apps in ./Batch/*.apk*;
+        for apps in ./Batch/*.apk*
+        do
             appinstaller "$apps"
         done
         echo "Finished Installing App(s)";;
@@ -97,7 +99,7 @@ case "$tool" in
         [ "$version" != "$latest" ] && {
         echo "Latest Changelogs:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
         export modules="Debloat.txt ui.sh debloat.sh launcher.sh"
-        for module in ${modules};
+        for module in ${modules}; do
             curl -LO "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$module"
         done
         rm ./ft-identifying-tablet-devices.html --force

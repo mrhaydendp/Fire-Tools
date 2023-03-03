@@ -1,3 +1,8 @@
+## Updated ui.sh, debloat.sh, version (Linux/macOS) 3/3/2023
+- Version bump (23.03)
+- Fixed `; do` and `; then` statements
+- Fixed debloat.sh
+
 ## Updated ui.sh, launcher.sh, Fire-Tools.ps1, version (All) 2/19/2023
 - Updated comments (Linux/macOS)
 - Added dependency check
@@ -28,10 +33,3 @@
 - Added support for app bundles when selecting a custom launcher
 - Added Edit feature to open Debloat.txt in your preferred text editor
 - Alphabetized Debloat List
-
-## Updated Debloat.txt, version (All) 10/12/2022
-- Version bump (22.10.1)
-- Updated Package Names
-- Re-added DCP applications
-- Added Switch Access Root
-- Fixed #19
