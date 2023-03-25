@@ -1,7 +1,9 @@
-$version = "23.02"
+$version = "23.03.1"
 
 # Check if ADB is Installed
-if (!(adb --version)){
+try{
+    adb --version
+} catch{
     Write-Host "ADB not Found, Exiting..."
     pause; exit
 }
@@ -338,15 +340,15 @@ $customdns.Add_Click{
 # Update Scripts
 $update.Add_Click{
     $latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
-    $status = "No Updates Available"
     if ("$version" -lt "$latest"){
         Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
         @("Fire-Tools.ps1", "Debloat.txt") | % {
             Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$_" -OutFile "$_"
         }
-        $status = "Successfully Updated, Please Re-launch Application"
+        Write-Host "`nUpdates Complete, Please Re-launch Application"
+        pause; $form.Close()
     }
-    Write-Host "$status"
+    Write-Host "`nNo Updates Available"
 }
 
 # Set Selection as Default Launcher
