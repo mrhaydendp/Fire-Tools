@@ -296,13 +296,13 @@ $googleservices.Add_Click{
 
 # Extract Apk from Selected Packages 
 $apkextract.Add_Click{
-    $extract = (adb shell pm list packages | % {
+    $extracted = (adb shell pm list packages | % {
         $_.split(":")[1]
-    } | Out-GridView -Title "Select Application to Extract" -OutputMode Single)
-    if ("$extract"){
-        New-Item -Type Directory .\Extracted\"$extract" -Force
-        adb shell pm path "$extract" | % {
-            adb pull $_.split(":")[1] .\Extracted\"$extract"
+    } | Out-GridView -Title "Select Application(s) to Extract" -OutputMode Multiple)
+    foreach ($package in $extracted){
+        New-Item -Type Directory .\Extracted\"$package" -Force
+        adb shell pm path "$package" | % {
+        adb pull $_.split(":")[1] .\Extracted\"$package"
         }
     }
 }
