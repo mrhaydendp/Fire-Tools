@@ -38,8 +38,7 @@ case "$opt" in
             adb shell settings put global private_dns_mode -hostname
             export core="com.amazon.firelauncher com.amazon.device.software.ota com.amazon.device.software.ota.override com.amazon.kindle.otter.oobe.forced.ota"
             for package in ${core}; do
-                adb shell pm enable "$package" 2> /dev/null ||
-                echo "Failed to Enable: $package"
+                debloat Enable "$package"
             done
             echo "Enabling Background Activities"
             adb shell settings put global always_finish_activities 0
