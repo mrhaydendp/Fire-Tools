@@ -234,11 +234,11 @@ $debloattool.Add_Click{
     if ($this.Text -eq "Undo"){
         Write-Host "Disabling Adguard DNS"
         adb shell settings put global private_dns_mode -hostname
-        Write-Host "Enabling Fire Launcher & OTA Updates"
-        adb shell pm enable com.amazon.firelauncher
-        adb shell pm enable com.amazon.device.software.ota
-        adb shell pm enable com.amazon.device.software.ota.override
-        adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
+        Write-Host "Enabling Core Apps"
+        $core = @("firelauncher","device.software.ota","device.software.ota.override","kindle.otter.oobe.forced.ota")
+        foreach ($package in $core){
+            debloat Undo "com.amazon.$_"
+        }
         Write-Host "Enabling Background Activities"
         adb shell settings put global always_finish_activities 0
         Write-Host "Successfully Enabled Fire OS Bloat"
