@@ -1,4 +1,4 @@
-## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, version (All) 04/06/2023
+## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, Debloat.txt, version (All) 04/06/2023
 - Version bump (23.04)
 - Apk Extractor can now extract multiple .APKs
 - Launcher3/Quickstep will be disabled to prevent launcher dialog from showing up
