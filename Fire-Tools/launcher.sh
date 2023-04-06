@@ -19,7 +19,7 @@ case "$launcher" in
         launcher=$(zenity --file-selection) &&
         case "$launcher" in
         *.apk)
-            echo "adb install -g $launcher";;
+            adb install -g "$launcher";;
         *.apkm)
             unzip "$launcher" -d ./Split
             adb install-multiple -r -g ./Split/*.apk
