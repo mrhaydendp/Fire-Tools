@@ -36,9 +36,10 @@ case "$opt" in
         if [ "$opt" = "Enable" ]; then
             echo "Disabling Adguard DNS"
             adb shell settings put global private_dns_mode -hostname
-            export core="com.amazon.firelauncher com.amazon.device.software.ota com.amazon.device.software.ota.override com.amazon.kindle.otter.oobe.forced.ota"
+            echo "Enabling Core Apps"
+            export core="firelauncher device.software.ota device.software.ota.override kindle.otter.oobe.forced.ota"
             for package in ${core}; do
-                debloat Enable "$package"
+                debloat Enable "com.amazon.$package"
             done
             echo "Enabling Background Activities"
             adb shell settings put global always_finish_activities 0
