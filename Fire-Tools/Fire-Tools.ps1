@@ -1,7 +1,9 @@
-$version = "23.02"
+$version = "23.04"
 
 # Check if ADB is Installed
-if (!(adb --version)){
+try{
+    adb --version
+} catch{
     Write-Host "ADB not Found, Exiting..."
     pause; exit
 }
@@ -16,7 +18,7 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 $device = "Unknown/Undetected"
 if (adb shell echo "Device Connected"){
     $model = adb shell getprop ro.product.model
-    if (!(Test-Path .\identifying-tablet-devices.html)){
+    if (!(Test-Path .\ft-identifying-tablet-devices.html)){
         Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile ft-identifying-tablet-devices.html
     }
     $line = Select-String "$model" .\ft-identifying-tablet-devices.html
@@ -232,11 +234,11 @@ $debloattool.Add_Click{
     if ($this.Text -eq "Undo"){
         Write-Host "Disabling Adguard DNS"
         adb shell settings put global private_dns_mode -hostname
-        Write-Host "Enabling Fire Launcher & OTA Updates"
-        adb shell pm enable com.amazon.firelauncher
-        adb shell pm enable com.amazon.device.software.ota
-        adb shell pm enable com.amazon.device.software.ota.override
-        adb shell pm enable com.amazon.kindle.otter.oobe.forced.ota
+        Write-Host "Enabling Core Apps"
+        $core = @("firelauncher","device.software.ota","device.software.ota.override","kindle.otter.oobe.forced.ota")
+        foreach ($package in $core){
+            debloat Undo "com.amazon.$package"
+        }
         Write-Host "Enabling Background Activities"
         adb shell settings put global always_finish_activities 0
         Write-Host "Successfully Enabled Fire OS Bloat"
@@ -294,13 +296,13 @@ $googleservices.Add_Click{
 
 # Extract Apk from Selected Packages 
 $apkextract.Add_Click{
-    $extract = (adb shell pm list packages | % {
+    $extracted = (adb shell pm list packages | % {
         $_.split(":")[1]
-    } | Out-GridView -Title "Select Application to Extract" -OutputMode Single)
-    if ("$extract"){
-        New-Item -Type Directory .\Extracted\"$extract" -Force
-        adb shell pm path "$extract" | % {
-            adb pull $_.split(":")[1] .\Extracted\"$extract"
+    } | Out-GridView -Title "Select Application(s) to Extract" -OutputMode Multiple)
+    foreach ($package in $extracted){
+        New-Item -Type Directory .\Extracted\"$package" -Force
+        adb shell pm path "$package" | % {
+        adb pull $_.split(":")[1] .\Extracted\"$package" | Out-Host
         }
     }
 }
@@ -338,38 +340,41 @@ $customdns.Add_Click{
 # Update Scripts
 $update.Add_Click{
     $latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
-    $status = "No Updates Available"
     if ("$version" -lt "$latest"){
         Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
         @("Fire-Tools.ps1", "Debloat.txt") | % {
             Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$_" -OutFile "$_"
         }
-        $status = "Successfully Updated, Please Re-launch Application"
+        Write-Host "`nUpdates Complete, Please Re-launch Application"
+        pause; $form.Close()
     }
-    Write-Host "$status"
+    Write-Host "`nNo Updates Available"
 }
 
 # Set Selection as Default Launcher
 $launchers.Add_Click{
-adb shell pm list packages -3 | Out-File installed
-if ($this.Text -eq "Custom Launcher"){
-    $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
-    $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
-    [void]$FileBrowser.ShowDialog()
-    if ($FileBrowser.FileName){
-        adb shell pm disable-user -k com.amazon.firelauncher
-        appinstaller $FileBrowser.FileName
+    adb shell pm list packages -3 | Out-File installed
+    if ($this.Text -eq "Custom Launcher"){
+        $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
+        $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
+        [void]$FileBrowser.ShowDialog()
+        if ($FileBrowser.FileName){
+            appinstaller $FileBrowser.FileName
+        }
+    } else {
+        $package = ($this.Text)
+        appinstaller (Get-ChildItem $package*.apk)
     }
-} else {
-    adb shell pm disable-user -k com.amazon.firelauncher
-    $package = ($this.Text)
-    appinstaller (Get-ChildItem $package*.apk)
-}
-adb shell pm list packages -3 | Out-File installed.changed
-Compare-Object (Get-Content installed) (Get-Content installed.changed) | Select -ExpandProperty inputobject | % {
-    adb shell appwidget grantbind --package $_.split(":")[1]
-}
-Write-Host "Successfully Changed Default Launcher"
+    adb shell pm list packages -3 | Out-File installed.changed
+    Compare-Object (Get-Content installed) (Get-Content installed.changed) | Select -ExpandProperty inputobject | % {
+        if ($_.split(":")[1]){
+            Remove-Item installed*
+            adb shell appwidget grantbind --package $_.split(":")[1]
+            adb shell pm disable-user -k com.android.launcher3
+            adb shell pm disable-user -k com.amazon.firelauncher
+            Write-Host "Installed Launcher:" $_.split(":")[1]
+        }
+    }
 }
 
 $form.ShowDialog()

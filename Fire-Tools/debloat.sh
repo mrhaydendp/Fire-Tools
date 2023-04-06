@@ -36,10 +36,10 @@ case "$opt" in
         if [ "$opt" = "Enable" ]; then
             echo "Disabling Adguard DNS"
             adb shell settings put global private_dns_mode -hostname
-            export core="com.amazon.firelauncher com.amazon.device.software.ota com.amazon.device.software.ota.override com.amazon.kindle.otter.oobe.forced.ota"
+            echo "Enabling Core Apps"
+            export core="firelauncher device.software.ota device.software.ota.override kindle.otter.oobe.forced.ota"
             for package in ${core}; do
-                adb shell pm enable "$package" 2> /dev/null ||
-                echo "Failed to Enable: $package"
+                debloat Enable "com.amazon.$package"
             done
             echo "Enabling Background Activities"
             adb shell settings put global always_finish_activities 0
@@ -64,8 +64,10 @@ case "$opt" in
             adb shell settings put global transition_animation_scale 0.50
             adb shell settings put global animator_duration_scale 0.50
             ram=$(adb shell grep "MemTotal" /proc/meminfo | awk '{print $2}')
-            [ "$ram" -lt "1500000" ] && { echo "Disabling Background Activities (< 1.5GB Ram)";
-            adb shell settings put global always_finish_activities 1; }
+            [ "$ram" -lt "1500000" ] && {
+                echo "Disabling Background Activities (< 1.5GB Ram)"
+                adb shell settings put global always_finish_activities 1
+            }
             echo "Successfully Debloated Fire OS"
         fi;;
     
@@ -77,7 +79,8 @@ case "$opt" in
         done;;
 
     "Edit")
-        xdg-open ./Debloat.txt 2> /dev/null || open -e ./Debloat.txt
+        [ "$OSTYPE" = "darwin"  ] && open -e ./Debloat.txt ||
+        xdg-open ./Debloat.txt
         exec ./debloat.sh;
     esac
 

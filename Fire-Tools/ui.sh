@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="23.03"
+version="23.04"
 
 # Check for Dependencies
 export dependencies="adb zenity"
@@ -53,8 +53,7 @@ case "$tool" in
         exec ./debloat.sh;;
 
     "Google Services")
-        for gapps in ./Gapps/Google*.apk*
-        do
+        for gapps in ./Gapps/Google*.apk*; do
             appinstaller "$gapps"
         done
         appinstaller ./Gapps/*Store*
@@ -72,11 +71,11 @@ case "$tool" in
 
     "Apk Extractor")
         packages=$(adb shell pm list packages | cut -f2 -d:)
-        list=$(zenity --list --width=500 --height=400 --column=Packages $packages)
-        [ -z "$list" ] || {
-            mkdir -p ./Extracted/"$list"
-            adb shell pm path "$list" | cut -f2 -d: | xargs -I % adb pull % ./Extracted/"$list"
-        };;
+        list=$(zenity --list --width=500 --height=400 --column=Packages  --multiple $packages | tr '|' '\n')
+        for package in ${list}; do
+            mkdir -p ./Extracted/"$package"
+            adb shell pm path "$package" | cut -f2 -d: | xargs -I % adb pull % ./Extracted/"$package"
+        done;;
 
     "Batch Installer")
         for apps in ./Batch/*.apk*

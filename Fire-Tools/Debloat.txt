@@ -47,6 +47,7 @@ com.android.bookmarkprovider                     # Bookmarks Provider
 com.android.calendar                             # Calendar
 com.android.providers.calendar                   # Calendar Storage
 com.android.calllogbackup                        # Call Logs Backup
+com.android.launcher3                            # Stock Android Launcher (Non-Functional)
 com.amazon.fireos.cirruscloud                    # Cirrus Cloud
 com.amazon.connectivitydiag                      # Connectivity Diagnostics
 com.android.contacts                             # Contacts
