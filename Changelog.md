@@ -1,6 +1,7 @@
 ## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, version (All) 04/06/2023
 - Version bump (23.04)
 - Apk Extractor can now extract multiple .APKs
+- Launcher3/Quickstep will be disabled to prevent launcher dialog from showing up
 - Rewrote launchers function to reduce redundant code & simplify enabling widgets
 - Fire Launcher will now only be disabled after the selected launcher successfully installs
 - Terminal output now shows which launcher was installed
