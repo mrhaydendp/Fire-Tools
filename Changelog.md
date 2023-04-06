@@ -1,9 +1,21 @@
-## Updated ui.sh, debloat.sh, version (Linux/macOS) 3/3/2023
+## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, version (All) 04/06/2023
+- Version bump (23.04)
+- Apk Extractor can now extract multiple .APKs
+- Rewrote launchers function to reduce redundant code & simplify enabling widgets
+- Fire Launcher will now only be disabled after the selected launcher successfully installs
+- Terminal output now shows which launcher was installed
+- Terminal output now shows "Enabling Core Apps" when enabling Fire Launcher & OTA
+- Fixed ADB check (Windows)
+- Application now prompts to close to apply updates (Windows)
+- Added padding to update status text (Windows)
+
+## Updated ui.sh, debloat.sh, version (Linux/macOS) 03/03/2023
 - Version bump (23.03)
 - Fixed `; do` and `; then` statements
 - Fixed debloat.sh
 
 ## Updated ui.sh, launcher.sh, Fire-Tools.ps1, version (All) 2/19/2023
+- Version bump (23.02)
 - Updated comments (Linux/macOS)
 - Added dependency check
 - Simplified caching of Amazon dev website
@@ -25,11 +37,3 @@
 - Fire Launcher won't be disabled now if you don't pick a custom launcher from the file picker (Windows)
 - Simplified update tool (Windows)
 - Removed "Miscellaneous" category and moved update tool to Utilities (Windows)
-
-## Updated ui.sh, launcher.sh, debloat.sh, Fire-Tools.ps1, Debloat.txt (All) 11/15/2022
-- Version bump (22.11)
-- Rewrote apk extractor function to be more reliable and output extracted apks in "Extracted" folder
-- Simplified and rewrote custom disable function
-- Added support for app bundles when selecting a custom launcher
-- Added Edit feature to open Debloat.txt in your preferred text editor
-- Alphabetized Debloat List
