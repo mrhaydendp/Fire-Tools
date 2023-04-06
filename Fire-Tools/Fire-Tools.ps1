@@ -18,7 +18,7 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 $device = "Unknown/Undetected"
 if (adb shell echo "Device Connected"){
     $model = adb shell getprop ro.product.model
-    if (!(Test-Path .\identifying-tablet-devices.html)){
+    if (!(Test-Path .\ft-identifying-tablet-devices.html)){
         Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile ft-identifying-tablet-devices.html
     }
     $line = Select-String "$model" .\ft-identifying-tablet-devices.html
@@ -237,7 +237,7 @@ $debloattool.Add_Click{
         Write-Host "Enabling Core Apps"
         $core = @("firelauncher","device.software.ota","device.software.ota.override","kindle.otter.oobe.forced.ota")
         foreach ($package in $core){
-            debloat Undo "com.amazon.$_"
+            debloat Undo "com.amazon.$package"
         }
         Write-Host "Enabling Background Activities"
         adb shell settings put global always_finish_activities 0
@@ -302,7 +302,7 @@ $apkextract.Add_Click{
     foreach ($package in $extracted){
         New-Item -Type Directory .\Extracted\"$package" -Force
         adb shell pm path "$package" | % {
-        adb pull $_.split(":")[1] .\Extracted\"$package"
+        adb pull $_.split(":")[1] .\Extracted\"$package" | Out-Host
         }
     }
 }
@@ -370,6 +370,7 @@ $launchers.Add_Click{
         if ($_.split(":")[1]){
             Remove-Item installed*
             adb shell appwidget grantbind --package $_.split(":")[1]
+            adb shell pm disable-user -k com.android.launcher3
             adb shell pm disable-user -k com.amazon.firelauncher
             Write-Host "Installed Launcher:" $_.split(":")[1]
         }
