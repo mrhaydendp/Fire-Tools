@@ -1,4 +1,4 @@
-$version = "23.04"
+$version = "23.05"
 
 # Check if ADB is Installed
 try{
@@ -291,7 +291,10 @@ $googleservices.Add_Click{
         appinstaller "$_"
     }
     appinstaller (Get-ChildItem .\Gapps\*Store*)
-    Write-Host "Successfully Installed Google Apps"
+    $installed = (adb shell pm list packages com.android.vending)
+    if ($installed){
+        Write-Host "Successfully Installed Google Apps"
+    }
 }
 
 # Extract Apk from Selected Packages 
