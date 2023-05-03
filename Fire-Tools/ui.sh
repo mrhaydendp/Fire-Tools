@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="23.04"
+version="23.05"
 
 # Check for Dependencies
 export dependencies="adb zenity"
@@ -57,8 +57,9 @@ case "$tool" in
             appinstaller "$gapps"
         done
         appinstaller ./Gapps/*Store*
-        echo "Successfully Installed Google Apps";;
-
+        installed=$(adb shell pm list packages com.android.vending)
+        [ -n "$installed" ] && echo "Play Store Successfully Installed";;
+        
     "Change Launcher")
         exec ./launcher.sh;;
 
