@@ -8,9 +8,9 @@ for dependency in ${dependencies}; do
     "$dependency" --version >/dev/null || { echo "Error Dependency Required: $dependency"; exit 1; }
 done
 
-# If Device is Connected Identify Using Amazon Docs Page (Cache Until Next Update)
+# If Device is Running Fire OS Identify Using Amazon Docs Page (Cache Until Next Update)
 device="Not Detected"
-if (adb shell echo "Device Connected"); then
+if (adb shell pm list features | grep -q "fireos"); then
     model=$(adb shell getprop ro.product.model)
     [ -e ft-identifying-tablet-devices.html ] || curl -O "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
     device=$(grep -B 2 "$model" < ft-identifying-tablet-devices.html | grep -E -o "(Kindle|Fire) (.*?)[G|g]en\)")
@@ -58,8 +58,8 @@ case "$tool" in
         done
         appinstaller ./Gapps/*Store*
         installed=$(adb shell pm list packages com.android.vending)
-        [ -n "$installed" ] && echo "Play Store Successfully Installed";;
-        
+        [ -n "$installed" ] && echo "Successfully Installed Google Apps";;
+
     "Change Launcher")
         exec ./launcher.sh;;
 
