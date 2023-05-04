@@ -87,13 +87,13 @@ case "$tool" in
 
     "Custom DNS")
         server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net")
-        [ -z "$server" ] || {
-            adb shell settings put global private_dns_mode hostname &&
-            adb shell settings put global private_dns_specifier "$server" &&
-            echo "Successfully Changed Private DNS to: $server" ||
-            echo "Failed to Set Private DNS"
-        };;
-
+        [ -z "$server" ] ||
+        if (ping -q -c 1 "$server" > /dev/null); then
+            adb shell settings put global private_dns_mode hostname
+            adb shell settings put global private_dns_specifier "$server"
+            echo "Successfully Changed Private DNS to: $server"
+        fi;;
+        
     "Update")
         latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version)
         [ "$version" != "$latest" ] && {
