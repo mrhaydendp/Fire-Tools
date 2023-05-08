@@ -87,7 +87,7 @@ case "$tool" in
 
     "Custom DNS")
         server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net")
-        [ -z "$server" ] ||
+        echo "$server" | grep -q "dns" &&
         if (ping -q -c 1 "$server" > /dev/null 2>&1); then
             adb shell settings put global private_dns_mode hostname
             adb shell settings put global private_dns_specifier "$server"
