@@ -16,14 +16,14 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 
 # Device Identifier (Find Product Name from Model Number -2 Lines)
 $device = "Unknown/Undetected"
-if (adb shell echo "Device Connected"){
-    $model = adb shell getprop ro.product.model
+if (adb shell pm list features | Select-String -Quiet "fireos"){
+    $model = (adb shell getprop ro.product.model)
     if (!(Test-Path .\ft-identifying-tablet-devices.html)){
         Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile ft-identifying-tablet-devices.html
     }
-    $line = Select-String "$model" .\ft-identifying-tablet-devices.html
-    Select-String "(Kindle|Fire) (.*?)[G|g]en\)" .\ft-identifying-tablet-devices.html | % {
-        if ( $_.LineNumber -eq $line.LineNumber - 2 ){
+    $modelLine = (Select-String -Pattern "$model" -Path .\ft-identifying-tablet-devices.html).LineNumber
+    Select-String -Pattern "(Kindle|Fire) (.*?)[Gg]en\)" -Path .\ft-identifying-tablet-devices.html | % {
+        if ($_.LineNumber -eq ($modelLine - 2)){
             $device = ($_.Matches.Value)
         }
     }
