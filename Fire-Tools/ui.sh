@@ -22,7 +22,7 @@ appinstaller () {
     *.apk)
         adb install -g "$1";;
     *.apkm)
-        unzip "$1" -d ./Split
+        unzip "$1" -d ./Split >/dev/null
         adb install-multiple -r -g ./Split/*.apk
         rm -rf ./Split;;
     esac
@@ -57,7 +57,8 @@ case "$tool" in
         done
         appinstaller ./Gapps/*Store*
         installed=$(adb shell pm list packages com.android.vending)
-        [ -n "$installed" ] && echo "Successfully Installed Google Apps";;
+        [ -n "$installed" ] && echo "Successfully Installed Google Apps" ||
+        echo "Failed to Install Google Apps";;
 
     "Change Launcher")
         exec ./launcher.sh;;
