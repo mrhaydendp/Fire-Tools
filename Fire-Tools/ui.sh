@@ -9,12 +9,11 @@ for dependency in ${dependencies}; do
 done
 
 # If Device is Running Fire OS Identify Using Amazon Docs Page (Cache Until Next Update)
-device="Not Detected"
+device="Unknown/Unsupported"
 if (adb shell pm list features | grep -q "fireos"); then
     model=$(adb shell getprop ro.product.model)
     [ -e ft-identifying-tablet-devices.html ] || curl -O "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
     device=$(grep -B 2 "$model" < ft-identifying-tablet-devices.html | grep -E -o "(Kindle|Fire) (.*?)[G|g]en\)")
-    [ -z "$device" ] && device="Unknown/Unsupported"
 fi
 
 # Change Application Installation Method Based on Filetype
@@ -79,9 +78,9 @@ case "$tool" in
         done;;
 
     "Batch Installer")
-        for apps in ./Batch/*.apk*
+        for app in ./Batch/*.apk*
         do
-            appinstaller "$apps"
+            appinstaller "$app"
         done
         echo "Finished Installing App(s)";;
 
@@ -109,5 +108,5 @@ case "$tool" in
         } || echo "No Updates Available";;
 esac
 
-# Exit to Menu When Tool Finishes
+# Exit to Menu When a Tool Finishes
 [ -z "$tool" ] || exec ./ui.sh
