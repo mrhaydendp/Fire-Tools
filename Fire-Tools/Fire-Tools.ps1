@@ -1,11 +1,15 @@
+Add-Type -AssemblyName System.Windows.Forms
 $version = "23.05"
 
 # Check if ADB is Installed
 try{
     adb --version
 } catch{
-    Write-Host "ADB not Found, Exiting..."
-    pause; exit
+    $answer = [System.Windows.Forms.MessageBox]::Show("Would you like to open the Docs to help get it installed?","ADB not Found","YesNo")
+    if ("$answer" -eq "Yes"){
+        Start-Process "https://github.com/mrhaydendp/Fire-Tools/blob/main/Setup-Instructions.md#adb"
+    }
+    exit
 }
 
 # Set Theme Based on AppsUseLightTheme Prefrence
@@ -51,7 +55,6 @@ function appinstaller {
 }
 
 # GUI Specs
-Add-Type -AssemblyName System.Windows.Forms
 $tooltip = New-Object System.Windows.Forms.ToolTip
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $form = New-Object System.Windows.Forms.Form
