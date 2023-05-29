@@ -29,7 +29,7 @@ esac
 
 # If a Launcher is Installed Enable Widgets & Disable Fire Launcher
 adb shell pm list packages -3 > installed.changed
-launcher=$(diff installed* | grep ":" | cut -f2 -d:)
+launcher=$(diff installed* | grep -E -o "[a-z0-9]*(\.[a-z0-9]+)+[a-z0-9]")
 [ -z "$launcher" ] || {
     adb shell appwidget grantbind --package "$launcher"
     rm installed* --force

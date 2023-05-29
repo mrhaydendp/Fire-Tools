@@ -1,11 +1,15 @@
-$version = "23.04"
+Add-Type -AssemblyName System.Windows.Forms
+$version = "23.05"
 
-# Check if ADB is Installed
+# Check if ADB is Installed. If not, Open Documentation
 try{
     adb --version
 } catch{
-    Write-Host "ADB not Found, Exiting..."
-    pause; exit
+    $answer = [System.Windows.Forms.MessageBox]::Show("Would you like to open the Docs to help get it installed?","ADB not Found","YesNo")
+    if ("$answer" -eq "Yes"){
+        Start-Process "https://github.com/mrhaydendp/Fire-Tools/blob/main/Setup-Instructions.md#adb"
+    }
+    exit
 }
 
 # Set Theme Based on AppsUseLightTheme Prefrence
@@ -16,14 +20,14 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 
 # Device Identifier (Find Product Name from Model Number -2 Lines)
 $device = "Unknown/Undetected"
-if (adb shell echo "Device Connected"){
-    $model = adb shell getprop ro.product.model
+if (adb shell pm list features | Select-String -Quiet "fireos"){
+    $model = (adb shell getprop ro.product.model)
     if (!(Test-Path .\ft-identifying-tablet-devices.html)){
         Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile ft-identifying-tablet-devices.html
     }
-    $line = Select-String "$model" .\ft-identifying-tablet-devices.html
-    Select-String "(Kindle|Fire) (.*?)[G|g]en\)" .\ft-identifying-tablet-devices.html | % {
-        if ( $_.LineNumber -eq $line.LineNumber - 2 ){
+    $modelLine = (Select-String -Pattern "$model" -Path .\ft-identifying-tablet-devices.html).LineNumber
+    Select-String -Pattern "(Kindle|Fire) (.*?)[Gg]en\)" -Path .\ft-identifying-tablet-devices.html | % {
+        if ($_.LineNumber -eq ($modelLine - 2)){
             $device = ($_.Matches.Value)
         }
     }
@@ -51,7 +55,6 @@ function appinstaller {
 }
 
 # GUI Specs
-Add-Type -AssemblyName System.Windows.Forms
 $tooltip = New-Object System.Windows.Forms.ToolTip
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $form = New-Object System.Windows.Forms.Form
@@ -291,7 +294,10 @@ $googleservices.Add_Click{
         appinstaller "$_"
     }
     appinstaller (Get-ChildItem .\Gapps\*Store*)
-    Write-Host "Successfully Installed Google Apps"
+    $installed = (adb shell pm list packages com.android.vending)
+    if ($installed){
+        Write-Host "Successfully Installed Google Apps"
+    }
 }
 
 # Extract Apk from Selected Packages 

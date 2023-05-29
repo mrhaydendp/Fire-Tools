@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="23.04"
+version="23.05"
 
 # Check for Dependencies
 export dependencies="adb zenity"
@@ -8,13 +8,12 @@ for dependency in ${dependencies}; do
     "$dependency" --version >/dev/null || { echo "Error Dependency Required: $dependency"; exit 1; }
 done
 
-# If Device is Connected Identify Using Amazon Docs Page (Cache Until Next Update)
-device="Not Detected"
-if (adb shell echo "Device Connected"); then
+# If Device is Running Fire OS Identify Using Amazon Docs Page (Cache Until Next Update)
+device="Unknown/Unsupported"
+if (adb shell pm list features | grep -q "fireos"); then
     model=$(adb shell getprop ro.product.model)
     [ -e ft-identifying-tablet-devices.html ] || curl -O "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
     device=$(grep -B 2 "$model" < ft-identifying-tablet-devices.html | grep -E -o "(Kindle|Fire) (.*?)[G|g]en\)")
-    [ -z "$device" ] && device="Unknown/Unsupported"
 fi
 
 # Change Application Installation Method Based on Filetype
@@ -23,7 +22,7 @@ appinstaller () {
     *.apk)
         adb install -g "$1";;
     *.apkm)
-        unzip "$1" -d ./Split
+        unzip "$1" -d ./Split >/dev/null
         adb install-multiple -r -g ./Split/*.apk
         rm -rf ./Split;;
     esac
@@ -57,7 +56,9 @@ case "$tool" in
             appinstaller "$gapps"
         done
         appinstaller ./Gapps/*Store*
-        echo "Successfully Installed Google Apps";;
+        installed=$(adb shell pm list packages com.android.vending)
+        [ -n "$installed" ] && echo "Successfully Installed Google Apps" ||
+        echo "Failed to Install Google Apps";;
 
     "Change Launcher")
         exec ./launcher.sh;;
@@ -78,20 +79,22 @@ case "$tool" in
         done;;
 
     "Batch Installer")
-        for apps in ./Batch/*.apk*
+        for app in ./Batch/*.apk*
         do
-            appinstaller "$apps"
+            appinstaller "$app"
         done
         echo "Finished Installing App(s)";;
 
     "Custom DNS")
         server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net")
-        [ -z "$server" ] || {
-            adb shell settings put global private_dns_mode hostname &&
-            adb shell settings put global private_dns_specifier "$server" &&
-            echo "Successfully Changed Private DNS to: $server" ||
-            echo "Failed to Set Private DNS"
-        };;
+        echo "$server" | grep -q "dns" &&
+        if (ping -q -c 1 "$server" > /dev/null 2>&1); then
+            adb shell settings put global private_dns_mode hostname
+            adb shell settings put global private_dns_specifier "$server"
+            echo "Successfully Changed Private DNS to: $server"
+        else
+            echo "Error: $server is Not a Valid DoT Address"
+        fi;;
 
     "Update")
         latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version)
@@ -106,5 +109,5 @@ case "$tool" in
         } || echo "No Updates Available";;
 esac
 
-# Exit to Menu When Tool Finishes
+# Exit to Menu When a Tool Finishes
 [ -z "$tool" ] || exec ./ui.sh

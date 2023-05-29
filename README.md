@@ -1,5 +1,5 @@
 # Fire Tools
-Fire Tools is a powerful collection of tools that debloat and install Google services on your Fire Tablet to make it feel snappier and improve usability. Additionally it supports custom launchers such as Nova, Lawnchair, or any `.apk`. If you need to install multiple apps quickly there's a batch installer. It's as easy as dropping all your .apk(m)s in the Batch folder and clicking the Batch Install button!
+Fire Tools is a powerful collection of tools that helps debloat and install Google services on your Fire Tablet to make it feel snappier and improve usability. Additionally, it supports custom launchers such as Nova, Lawnchair, or any `.apk(m)`. If you need to install multiple apps quickly, there's a batch installer. It's as easy as dropping all your `.apk(m)`s in the Batch folder and clicking the Batch Install button!
 
 **Fire OS 7.3.2.2+ Users: Some functions may not work, such as Custom Launcher, but most packages will still be disabled**
 
@@ -12,6 +12,7 @@ Fire Tools is a powerful collection of tools that debloat and install Google ser
 - Disable OTA Updates
 - Apk Extractor
 - Split Apk Support (aka App Bundles)
+- Private DNS Switcher
 - Built in Update Tool
 
 ## Officially Supported Devices
@@ -35,13 +36,24 @@ After installation run update tool to get the latest version of scripts!
 
 Linux/macOS:
 ``` shell
+# Download Latest Release, Extract, & Remove File. Then, Run & Update Scripts
 curl -LO https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.tar.xz
 tar -xf Fire-Tools.tar.xz && rm Fire-Tools.tar.xz
 cd Fire-Tools && ./ui.sh Update
 ```
 
-Windows:
+Windows Powershell:
+``` powershell
+# Download Latest Release & Open with 7-Zip. Else, Open Directory in Explorer
+Start-BitsTransfer "https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.tar.xz"
+try {
+    & "$env:ProgramFiles\7-Zip\7zFM.exe" Fire-Tools.tar.xz
+} catch {
+    explorer.exe .
+}
+```
 
+Manual:
 - Download [Latest Release](https://github.com/mrhaydendp/Fire-Tools/releases/latest/download/Fire-Tools.tar.xz)
 - Extract with 7-Zip or similar application
 - Open the Fire-Tools folder & right click on Fire-Tools.ps1 then Open in PowerShell
