@@ -1,3 +1,12 @@
+## Updated ui.sh, launcher.sh, Fire-Tools.ps1, version (All) 05/29/2023
+- Version bump (23.05)
+- Added Play Store check before showing success & error message
+- Tablet identifier will only run if device is running Fire OS
+- Custom DNS now checks for "dns" in the URL and runs a ping test before being set
+- Swapped to regex for formatting custom launcher diff (Linux/macOS)
+- Silenced output of split apk extraction
+- If ADB is not found, you will be asked to open the ADB installation instructions page (Windows)
+
 ## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, Debloat.txt, version (All) 04/06/2023
 - Version bump (23.04)
 - Apk Extractor can now extract multiple .APKs
@@ -26,15 +35,3 @@
 - Fixed batch installer not installing .apk files (Linux/macOS)
 - Simplified update tool downloads (Linux/macOS)
 - Widgets will now be automatically enabled for any launcher
-
-## Updated ui.sh, Fire-Tools.ps1, version (All) 12/19/2022
-- Version bump (22.12)
-- Added Custom DNS (Private DNS) changer
-- Added ability to call tools from cli (Ex: ./ui.sh Update) (Linux/macOS)
-- Moved device name to subtext (Linux/macOS)
-- Swapped "- $device" with "Device: $device" for better readability (Windows)
-- Optimized regex code to match device easier
-- Apk Extractor now only makes "Extracted" folder when a package is selected
-- Fire Launcher won't be disabled now if you don't pick a custom launcher from the file picker (Windows)
-- Simplified update tool (Windows)
-- Removed "Miscellaneous" category and moved update tool to Utilities (Windows)
