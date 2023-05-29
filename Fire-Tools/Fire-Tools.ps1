@@ -1,7 +1,7 @@
 Add-Type -AssemblyName System.Windows.Forms
 $version = "23.05"
 
-# Check if ADB is Installed
+# Check if ADB is Installed. If not, Open Documentation
 try{
     adb --version
 } catch{
