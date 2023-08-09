@@ -1,24 +1,23 @@
-Add-Type -AssemblyName System.Windows.Forms
-$version = "23.05"
+$version = "23.08"
 
-# Check if ADB is Installed. If not, Open Documentation
-try{
-    adb --version
-} catch{
-    $answer = [System.Windows.Forms.MessageBox]::Show("Would you like to open the Docs to help get it installed?","ADB not Found","YesNo")
-    if ("$answer" -eq "Yes"){
+# Check if ADB is installed. If not, open documentation
+try {
+    adb --version; ""
+} catch {
+    $option = Read-Host "Error: ADB was not Found`nWould you like to open the Docs to help get it installed? (Y/n)"
+    if ("$option" -ne "n"){
         Start-Process "https://github.com/mrhaydendp/Fire-Tools/blob/main/Setup-Instructions.md#adb"
     }
-    exit
+    Write-Host "Exiting..."; exit
 }
 
-# Set Theme Based on AppsUseLightTheme Prefrence
+# Set application theme based on AppsUseLightTheme prefrence
 $theme = @("#ffffff","#202020","#323232")
 if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme"){
     $theme = @("#292929","#f3f3f3","#fbfbfb")
 }
 
-# Device Identifier (Find Product Name from Model Number -2 Lines)
+# Device identifier (find product name from model number -3 lines)
 $device = "Unknown/Undetected"
 if (adb shell pm list features | Select-String -Quiet "fireos"){
     $model = (adb shell getprop ro.product.model)
@@ -26,11 +25,8 @@ if (adb shell pm list features | Select-String -Quiet "fireos"){
         Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile ft-identifying-tablet-devices.html
     }
     $modelLine = (Select-String -Pattern "$model" -Path .\ft-identifying-tablet-devices.html).LineNumber
-    Select-String -Pattern "(Kindle|Fire) (.*?)[Gg]en\)" -Path .\ft-identifying-tablet-devices.html | % {
-        if ($_.LineNumber -eq ($modelLine - 2)){
-            $device = ($_.Matches.Value)
-        }
-    }
+    $device = (Get-Content .\ft-identifying-tablet-devices.html | Select -Index ("$modelLine" - 3) | Select-String "(Kindle|Fire) (.*?)[Gg]en\)").Matches.Value
+    Write-Host "Device Detected: $device"
 }
 
 # Change ADB Shell Arguments Based on Selection
@@ -55,14 +51,15 @@ function appinstaller {
 }
 
 # GUI Specs
-$tooltip = New-Object System.Windows.Forms.ToolTip
+Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Fire Tools v$version Device: $device"
+$form.Text = "Fire Tools v$version | Device: $device"
 $form.StartPosition = "CenterScreen"
 $form.ClientSize = New-Object System.Drawing.Point(715,410)
 $form.ForeColor = $theme[0]
 $form.BackColor = $theme[1]
+$tooltip = New-Object System.Windows.Forms.ToolTip
 
 # Categories
 $label = New-Object System.Windows.Forms.Label
@@ -94,7 +91,7 @@ $debloat.Location = New-Object System.Drawing.Size(15,60)
 $debloat.FlatStyle = "0"
 $debloat.FlatAppearance.BorderSize = "0"
 $debloat.BackColor = $theme[2]
-$tooltip.SetToolTip($debloat, "Disable all Amazon apps")
+$tooltip.SetToolTip($debloat, "Disable pre-installed bloatware")
 $form.Controls.Add($debloat)
 
 $rebloat = New-Object System.Windows.Forms.Button
@@ -104,7 +101,7 @@ $rebloat.Location = New-Object System.Drawing.Size(15,110)
 $rebloat.FlatStyle = "0"
 $rebloat.FlatAppearance.BorderSize = "0"
 $rebloat.BackColor = $theme[2]
-$tooltip.SetToolTip($rebloat, "Enable all Amazon apps")
+$tooltip.SetToolTip($rebloat, "Enable pre-installed bloatware")
 $form.Controls.Add($rebloat)
 
 $customdebloat = New-Object System.Windows.Forms.Button
@@ -114,7 +111,7 @@ $customdebloat.Location = New-Object System.Drawing.Size(15,160)
 $customdebloat.FlatStyle = "0"
 $customdebloat.FlatAppearance.BorderSize = "0"
 $customdebloat.BackColor = $theme[2]
-$tooltip.SetToolTip($customdebloat, "Disable selected packages")
+$tooltip.SetToolTip($customdebloat, "Select packages to disable")
 $form.Controls.Add($customdebloat)
 
 $editdebloat = New-Object System.Windows.Forms.Button
@@ -135,7 +132,7 @@ $googleservices.Location = New-Object System.Drawing.Size(265,60)
 $googleservices.FlatStyle = "0"
 $googleservices.FlatAppearance.BorderSize = "0"
 $googleservices.BackColor = $theme[2]
-$tooltip.SetToolTip($googleservices, "Install Google Play Services")
+$tooltip.SetToolTip($googleservices, "Install Google Services")
 $form.Controls.Add($googleservices)
 
 $apkextract = New-Object System.Windows.Forms.Button
@@ -196,7 +193,7 @@ $lawnchair.Location = New-Object System.Drawing.Size(515,60)
 $lawnchair.FlatStyle = "0"
 $lawnchair.FlatAppearance.BorderSize = "0"
 $lawnchair.BackColor = $theme[2]
-$tooltip.SetToolTip($lawnchair, "Set Lawnchair as default launcher")
+$tooltip.SetToolTip($lawnchair, "Install Lawnchair and set as default launcher")
 $form.Controls.Add($lawnchair)
 
 $novalauncher = New-Object System.Windows.Forms.Button
@@ -206,7 +203,7 @@ $novalauncher.Location = New-Object System.Drawing.Size(515,110)
 $novalauncher.FlatStyle = "0"
 $novalauncher.FlatAppearance.BorderSize = "0"
 $novalauncher.BackColor = $theme[2]
-$tooltip.SetToolTip($novalauncher, "Set Nova Launcher as default launcher")
+$tooltip.SetToolTip($novalauncher, "Install Nova Launcher and set as default launcher")
 $form.Controls.Add($novalauncher)
 
 $customlauncher = New-Object System.Windows.Forms.Button
@@ -216,7 +213,7 @@ $customlauncher.Location = New-Object System.Drawing.Size(515,160)
 $customlauncher.FlatStyle = "0"
 $customlauncher.FlatAppearance.BorderSize = "0"
 $customlauncher.BackColor = $theme[2]
-$tooltip.SetToolTip($customlauncher, "Select a launcher .apk(m) from File Explorer")
+$tooltip.SetToolTip($customlauncher, "Select an .apk(m) from Explorer to be the default launcher")
 $form.Controls.Add($customlauncher)
 
 # Multi-Buttons
@@ -224,7 +221,7 @@ $debloattool = $debloat, $rebloat
 $launchers = $lawnchair, $novalauncher, $customlauncher
 
 # Deboat & Package List
-$disable = [IO.File]::ReadAllLines('.\Debloat.txt')
+$disable = Get-Content .\Debloat.txt
 adb shell pm list packages -s | Out-File packagelist
 
 # Enable or Disable Packages (if Present) & Features Based on Selection
