@@ -29,34 +29,25 @@ if (adb shell pm list features | Select-String -Quiet "fireos"){
     Write-Host "Device Detected: $device"
 }
 
-# Change ADB Shell Arguments Based on Selection
-function debloat {
-    if ($args[0] -eq "Debloat"){
-        adb shell pm disable-user -k $args[1] | Out-Host
-    } elseif ($args[0] -eq "Undo"){
-        adb shell pm enable $args[1] | Out-Host
-    }
-}
-
 # Change Application Installation Method Based on Filetype
 function appinstaller {
     if ("$args" -like '*.apk'){
         adb install -g "$args" | Out-Host
-    } elseif ("$args" -like '*.apkm'){
-        Copy-Item "$args" -Destination $args".zip"
-        Expand-Archive $args".zip" -DestinationPath .\Split
+    } elseif ("$args" -like '*.apk*'){
+        Copy-Item "$args" -Destination "$args.zip"
+        Expand-Archive "$args.zip" -DestinationPath .\Split
         adb install-multiple -r -g (Get-ChildItem .\Split\*apk) | Out-Host
-        Remove-Item -r .\Split, $args".zip"
+        Remove-Item -r .\Split, "$args.zip"
     }
 }
 
-# GUI Specs
+# GUI specs
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Fire Tools v$version | Device: $device"
 $form.StartPosition = "CenterScreen"
-$form.ClientSize = New-Object System.Drawing.Point(715,410)
+$form.ClientSize = New-Object System.Drawing.Point(800,430)
 $form.ForeColor = $theme[0]
 $form.BackColor = $theme[1]
 $tooltip = New-Object System.Windows.Forms.ToolTip
@@ -64,185 +55,180 @@ $tooltip = New-Object System.Windows.Forms.ToolTip
 # Categories
 $label = New-Object System.Windows.Forms.Label
 $label.Text = "Debloat"
-$label.Size = New-Object System.Drawing.Size(120,30)
-$label.Location = New-Object System.Drawing.Size(60,15)
+$label.Size = New-Object System.Drawing.Size(100,30)
+$label.Location = New-Object System.Drawing.Size(65,10)
 $label.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
-$form.Controls.Add($label)
+
+$label1 = New-Object System.Windows.Forms.Label
+$label1.Text = "Installed Packages"
+$label1.Size = New-Object System.Drawing.Size(220,30)
+$label1.Location = New-Object System.Drawing.Size(525,10)
+$label1.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
 
 $label2 = New-Object System.Windows.Forms.Label
 $label2.Text = "Utilities"
-$label2.Size = New-Object System.Drawing.Size(120,30)
-$label2.Location = New-Object System.Drawing.Size(310,15)
-$label2.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
-$form.Controls.Add($label2)
-
-$label2 = New-Object System.Windows.Forms.Label
-$label2.Text = "Custom Launchers"
 $label2.Size = New-Object System.Drawing.Size(220,30)
-$label2.Location = New-Object System.Drawing.Size(500,15)
+$label2.Location = New-Object System.Drawing.Size(295,10)
 $label2.Font = New-Object System.Drawing.Font('Microsoft Sans Serif',18)
-$form.Controls.Add($label2)
 
-# Buttons - Debloat
+# Buttons
+$installedlist = New-Object System.Windows.Forms.ListBox
+$installedlist.Size = New-Object System.Drawing.Size(300,200)
+$installedlist.Location = New-Object System.Drawing.Size(480,50)
+$installedlist.SelectionMode = "MultiExtended"
+$installedlist.ForeColor = $theme[0]
+$installedlist.BackColor = $theme[2]
+$tooltip.SetToolTip($installedlist, "CTRL + Click to Select Multiple Items")
+
 $debloat = New-Object System.Windows.Forms.Button
 $debloat.Text = "Debloat"
 $debloat.Size = New-Object System.Drawing.Size(180,38)
-$debloat.Location = New-Object System.Drawing.Size(15,60)
+$debloat.Location = New-Object System.Drawing.Size(20,50)
 $debloat.FlatStyle = "0"
 $debloat.FlatAppearance.BorderSize = "0"
 $debloat.BackColor = $theme[2]
 $tooltip.SetToolTip($debloat, "Disable pre-installed bloatware")
-$form.Controls.Add($debloat)
 
 $rebloat = New-Object System.Windows.Forms.Button
 $rebloat.Text = "Undo"
 $rebloat.Size = New-Object System.Drawing.Size(180,38)
-$rebloat.Location = New-Object System.Drawing.Size(15,110)
+$rebloat.Location = New-Object System.Drawing.Size(20,100)
 $rebloat.FlatStyle = "0"
 $rebloat.FlatAppearance.BorderSize = "0"
 $rebloat.BackColor = $theme[2]
 $tooltip.SetToolTip($rebloat, "Enable pre-installed bloatware")
-$form.Controls.Add($rebloat)
 
-$customdebloat = New-Object System.Windows.Forms.Button
-$customdebloat.Text = "Custom Debloat"
-$customdebloat.Size = New-Object System.Drawing.Size(180,38)
-$customdebloat.Location = New-Object System.Drawing.Size(15,160)
-$customdebloat.FlatStyle = "0"
-$customdebloat.FlatAppearance.BorderSize = "0"
-$customdebloat.BackColor = $theme[2]
-$tooltip.SetToolTip($customdebloat, "Select packages to disable")
-$form.Controls.Add($customdebloat)
+$edit = New-Object System.Windows.Forms.Button
+$edit.Text = "Edit"
+$edit.Size = New-Object System.Drawing.Size(180,38)
+$edit.Location = New-Object System.Drawing.Size(20,150)
+$edit.FlatStyle = "0"
+$edit.FlatAppearance.BorderSize = "0"
+$edit.BackColor = $theme[2]
+$tooltip.SetToolTip($edit, "Open Debloat.txt in preferred text editor")
 
-$editdebloat = New-Object System.Windows.Forms.Button
-$editdebloat.Text = "Edit"
-$editdebloat.Size = New-Object System.Drawing.Size(180,38)
-$editdebloat.Location = New-Object System.Drawing.Size(15,210)
-$editdebloat.FlatStyle = "0"
-$editdebloat.FlatAppearance.BorderSize = "0"
-$editdebloat.BackColor = $theme[2]
-$tooltip.SetToolTip($editdebloat, "Open Debloat.txt in preferred text editor")
-$form.Controls.Add($editdebloat)
+$dnsServers = New-Object System.Windows.Forms.ComboBox
+$dnsServers.Text = "Select DNS Server"
+$dnsServers.Size = New-Object System.Drawing.Size(180,38)
+$dnsServers.Location = New-Object System.Drawing.Size(20,276)
+$dnsServers.ForeColor = $theme[0]
+$dnsServers.BackColor = $theme[2]
+$dnsServers.FlatStyle = "0"
+$dnsServers.Items.AddRange(@("dns.adguard.com","dns.quad9.net","security.cloudflare-dns.com","None"))
+$tooltip.SetToolTip($dnsServers, "Select DoT provider or type one in")
 
-# Buttons - Utilities
+$customdns = New-Object System.Windows.Forms.Button
+$customdns.Text = "Set Custom DNS"
+$customdns.Size = New-Object System.Drawing.Size(180,38)
+$customdns.Location = New-Object System.Drawing.Size(20,310)
+$customdns.FlatStyle = "0"
+$customdns.FlatAppearance.BorderSize = "0"
+$customdns.BackColor = $theme[2]
+
 $googleservices = New-Object System.Windows.Forms.Button
-$googleservices.Text = "Install Google Apps"
+$googleservices.Text = "Install Google Services"
 $googleservices.Size = New-Object System.Drawing.Size(180,38)
-$googleservices.Location = New-Object System.Drawing.Size(265,60)
+$googleservices.Location = New-Object System.Drawing.Size(250,50)
 $googleservices.FlatStyle = "0"
 $googleservices.FlatAppearance.BorderSize = "0"
 $googleservices.BackColor = $theme[2]
-$tooltip.SetToolTip($googleservices, "Install Google Services")
-$form.Controls.Add($googleservices)
-
-$apkextract = New-Object System.Windows.Forms.Button
-$apkextract.Text = "Apk Extractor"
-$apkextract.Size = New-Object System.Drawing.Size(180,38)
-$apkextract.Location = New-Object System.Drawing.Size(265,110)
-$apkextract.FlatStyle = "0"
-$apkextract.FlatAppearance.BorderSize = "0"
-$apkextract.BackColor = $theme[2]
-$tooltip.SetToolTip($apkextract, "Extract .apk(s) from installed applications")
-$form.Controls.Add($apkextract)
-
-$disableota = New-Object System.Windows.Forms.Button
-$disableota.Text = "Disable OTA"
-$disableota.Size = New-Object System.Drawing.Size(180,38)
-$disableota.Location = New-Object System.Drawing.Size(265,160)
-$disableota.FlatStyle = "0"
-$disableota.FlatAppearance.BorderSize = "0"
-$disableota.BackColor = $theme[2]
-$tooltip.SetToolTip($disableota, "Disable Fire OS updates")
-$form.Controls.Add($disableota)
+$tooltip.SetToolTip($googleservices, "Install: Google Services, Play, & Account Manager")
 
 $batchinstall = New-Object System.Windows.Forms.Button
 $batchinstall.Text = "Batch Install"
 $batchinstall.Size = New-Object System.Drawing.Size(180,38)
-$batchinstall.Location = New-Object System.Drawing.Size(265,210)
+$batchinstall.Location = New-Object System.Drawing.Size(250,100)
 $batchinstall.FlatStyle = "0"
 $batchinstall.FlatAppearance.BorderSize = "0"
 $batchinstall.BackColor = $theme[2]
 $tooltip.SetToolTip($batchinstall, "Install all .apk(m) files in the Batch folder")
-$form.Controls.Add($batchinstall)
 
-$customdns = New-Object System.Windows.Forms.Button
-$customdns.Text = "Custom DNS"
-$customdns.Size = New-Object System.Drawing.Size(180,38)
-$customdns.Location = New-Object System.Drawing.Size(265,260)
-$customdns.FlatStyle = "0"
-$customdns.FlatAppearance.BorderSize = "0"
-$customdns.BackColor = $theme[2]
-$tooltip.SetToolTip($customdns, "Change Private DNS (DoT) provider")
-$form.Controls.Add($customdns)
+$disableota = New-Object System.Windows.Forms.Button
+$disableota.Text = "Disable OTA"
+$disableota.Size = New-Object System.Drawing.Size(180,38)
+$disableota.Location = New-Object System.Drawing.Size(250,150)
+$disableota.FlatStyle = "0"
+$disableota.FlatAppearance.BorderSize = "0"
+$disableota.BackColor = $theme[2]
+$tooltip.SetToolTip($disableota, "Disable Fire OS updates")
 
 $update = New-Object System.Windows.Forms.Button
-$update.Text = "Update Scripts"
+$update.Text = "Check for Updates"
 $update.Size = New-Object System.Drawing.Size(180,38)
-$update.Location = New-Object System.Drawing.Size(265,310)
+$update.Location = New-Object System.Drawing.Size(250,200)
 $update.FlatStyle = "0"
 $update.FlatAppearance.BorderSize = "0"
 $update.BackColor = $theme[2]
 $tooltip.SetToolTip($update, "Grab the latest Fire-Tools scripts")
-$form.Controls.Add($update)
 
-# Buttons - Custom Launchers
-$lawnchair = New-Object System.Windows.Forms.Button
-$lawnchair.Text = "Lawnchair"
-$lawnchair.Size = New-Object System.Drawing.Size(180,38)
-$lawnchair.Location = New-Object System.Drawing.Size(515,60)
-$lawnchair.FlatStyle = "0"
-$lawnchair.FlatAppearance.BorderSize = "0"
-$lawnchair.BackColor = $theme[2]
-$tooltip.SetToolTip($lawnchair, "Install Lawnchair and set as default launcher")
-$form.Controls.Add($lawnchair)
-
-$novalauncher = New-Object System.Windows.Forms.Button
-$novalauncher.Text = "Nova Launcher"
-$novalauncher.Size = New-Object System.Drawing.Size(180,38)
-$novalauncher.Location = New-Object System.Drawing.Size(515,110)
-$novalauncher.FlatStyle = "0"
-$novalauncher.FlatAppearance.BorderSize = "0"
-$novalauncher.BackColor = $theme[2]
-$tooltip.SetToolTip($novalauncher, "Install Nova Launcher and set as default launcher")
-$form.Controls.Add($novalauncher)
+$launchers = New-Object System.Windows.Forms.ComboBox
+$launchers.Text = "Select Launcher"
+$launchers.Size = New-Object System.Drawing.Size(180,38)
+$launchers.Location = New-Object System.Drawing.Size(250,276)
+$launchers.ForeColor = $theme[0]
+$launchers.BackColor = $theme[2]
+$launchers.FlatStyle = "0"
+$launchers.Items.AddRange(@("Nova Launcher","Lawnchair","Custom"))
 
 $customlauncher = New-Object System.Windows.Forms.Button
-$customlauncher.Text = "Custom Launcher"
+$customlauncher.Text = "Set Custom Launcher"
 $customlauncher.Size = New-Object System.Drawing.Size(180,38)
-$customlauncher.Location = New-Object System.Drawing.Size(515,160)
+$customlauncher.Location = New-Object System.Drawing.Size(250,310)
 $customlauncher.FlatStyle = "0"
 $customlauncher.FlatAppearance.BorderSize = "0"
 $customlauncher.BackColor = $theme[2]
-$tooltip.SetToolTip($customlauncher, "Select an .apk(m) from Explorer to be the default launcher")
-$form.Controls.Add($customlauncher)
 
-# Multi-Buttons
-$debloattool = $debloat, $rebloat
-$launchers = $lawnchair, $novalauncher, $customlauncher
+$disableselected = New-Object System.Windows.Forms.Button
+$disableselected.Text = "Disable Selected"
+$disableselected.Size = New-Object System.Drawing.Size(180,38)
+$disableselected.Location = New-Object System.Drawing.Size(540,260)
+$disableselected.FlatStyle = "0"
+$disableselected.FlatAppearance.BorderSize = "0"
+$disableselected.BackColor = $theme[2]
 
-# Deboat & Package List
+$enableselected = New-Object System.Windows.Forms.Button
+$enableselected.Text = "Enable Selected"
+$enableselected.Size = New-Object System.Drawing.Size(180,38)
+$enableselected.Location = New-Object System.Drawing.Size(540,310)
+$enableselected.FlatStyle = "0"
+$enableselected.FlatAppearance.BorderSize = "0"
+$enableselected.BackColor = $theme[2]
+
+$extractselected = New-Object System.Windows.Forms.Button
+$extractselected.Text = "Extract Selected"
+$extractselected.Size = New-Object System.Drawing.Size(180,38)
+$extractselected.Location = New-Object System.Drawing.Size(540,360)
+$extractselected.FlatStyle = "0"
+$extractselected.FlatAppearance.BorderSize = "0"
+$extractselected.BackColor = $theme[2]
+
+# Multi-button
+$debloatTool = $debloat, $rebloat
+
+# Debloat & package list
 $disable = Get-Content .\Debloat.txt
-adb shell pm list packages -s | Out-File packagelist
+adb shell pm list packages | Out-File packagelist
+Get-Content .\packagelist | % { $installedlist.Items.AddRange($_.split(":")[1]) | Out-Null }
 
-# Enable or Disable Packages (if Present) & Features Based on Selection
-$debloattool.Add_Click{
-    foreach ($array in $disable){
-        if (Select-String -Quiet $array.split(' #')[0] .\packagelist){
-            debloat $this.Text "$array"
-        }
-    }
+# Enable or disable packages (if present) & features based on selection
+$debloatTool.Add_Click{
     if ($this.Text -eq "Undo"){
-        Write-Host "Disabling Adguard DNS"
-        adb shell settings put global private_dns_mode -hostname
-        Write-Host "Enabling Core Apps"
-        $core = @("firelauncher","device.software.ota","device.software.ota.override","kindle.otter.oobe.forced.ota")
-        foreach ($package in $core){
-            debloat Undo "com.amazon.$package"
+        Write-Host "Enabling Bloat"
+        $disabled = (adb shell pm list packages -d)
+        foreach ($package in $disabled){
+            adb shell pm enable $package.split(":")[1] | Out-Host
         }
+        Write-Host "Disabling Private DNS"
+        adb shell settings put global private_dns_mode -hostname
         Write-Host "Enabling Background Activities"
         adb shell settings put global always_finish_activities 0
-        Write-Host "Successfully Enabled Fire OS Bloat"
+        Write-Host "Successfully Enabled Fire OS Bloat`n"
     } else {
+        foreach ($package in $disable){
+            if (Select-String -Quiet $package.split(' #')[0] .\packagelist){
+                adb shell pm disable-user -k "$package" | Out-Host
+            }
+        }
         Write-Host "Disabling Telemetry & Resetting Advertising ID"
         adb shell settings put secure limit_ad_tracking 1
         adb shell settings put secure usage_metrics_marketing_enabled 0
@@ -266,23 +252,27 @@ $debloattool.Add_Click{
         Write-Host "Disabling Background Activities (< 1.5GB Ram)"
         adb shell settings put global always_finish_activities 1
         }
-        Write-Host "Successfully Debloated Fire OS"
+        Write-Host "Successfully Debloated Fire OS`n"
     }
 }
 
-# Disable Selected Package(s)
-$customdebloat.Add_Click{
-    adb shell pm list packages -e | ForEach-Object {
-        $_.split(":")[1]
-    } | Out-GridView -Title "Disable Selected Package(s) (Ctrl + Click to Select Multiple)" -OutputMode Multiple | ForEach-Object {
-        debloat Debloat "$_"
-    }
-    Write-Host "Successfully Disabled Selected Package(s)"
-}
+# Open Debloat.txt in preferred text editor
+$edit.Add_Click{.\Debloat.txt}
 
-# Open Debloat.txt in Text Editor
-$editdebloat.Add_Click{
-    .\Debloat.txt
+# Set Private DNS provider to selected server
+$customdns.Add_Click{
+    if ($dnsServers.SelectedItem -eq "None"){
+        Write-Host "Disabling Private DNS"
+        adb shell settings put global private_dns_mode -hostname
+    } elseif ($dnsServers.Text | Select-String -Quiet "dns(\.|[a-z])"){
+        if (Test-Connection -Count 1 -Quiet $dnsServers.Text){
+            adb shell settings put global private_dns_mode hostname
+            adb shell settings put global private_dns_specifier $dnsServers.Text
+            Write-Host "Successfully Changed Private DNS to:" $dnsServers.Text`n
+        } else {
+            Write-Host "Invalid DoT Address:" $dnsServers.Text`n
+        }
+    }
 }
 
 # Install Google Services
@@ -291,56 +281,34 @@ $googleservices.Add_Click{
         appinstaller "$_"
     }
     appinstaller (Get-ChildItem .\Gapps\*Store*)
-    $installed = (adb shell pm list packages com.android.vending)
-    if ($installed){
-        Write-Host "Successfully Installed Google Apps"
+    $status = "Failed to Install Google Apps"
+    if (adb shell pm list packages -3 | Select-String "google"){
+        $status = "Successfully Installed Google Apps"
     }
+    Write-Host "$status`n"
 }
 
-# Extract Apk from Selected Packages 
-$apkextract.Add_Click{
-    $extracted = (adb shell pm list packages | % {
-        $_.split(":")[1]
-    } | Out-GridView -Title "Select Application(s) to Extract" -OutputMode Multiple)
-    foreach ($package in $extracted){
-        New-Item -Type Directory .\Extracted\"$package" -Force
-        adb shell pm path "$package" | % {
-        adb pull $_.split(":")[1] .\Extracted\"$package" | Out-Host
-        }
-    }
-}
-
-# Disable OTA Packages
-$disableota.Add_Click{
-    $ota = @("com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota")
-    foreach ($package in $ota){
-        debloat Debloat "$package"
-    }
-    Write-Host "Successfully Disabled OTA Updates"
-}
-
-# Batch Installer
+# Install all .apk(m) files in Batch folder
 $batchinstall.Add_Click{
     Get-ChildItem .\Batch\*.apk* | ForEach-Object {
         appinstaller "$_"
     }
-    Write-Host "Successfully Installed Application(s)"
 }
 
-# Set Private DNS (DoT) provider
-$customdns.Add_Click{
-    $providers = @(
-        "dns.adguard.com"
-        "security.cloudflare-dns.com"
-        "dns.quad9.net"
-    ) | Out-GridView -Title "Select Private DNS (DoT) Provider" -OutputMode Single | % {
-        adb shell settings put global private_dns_mode hostname
-        adb shell settings put global private_dns_specifier "$_"
-        Write-Host "Successfully Changed Private DNS to: $_"
+# Disable OTA apps and check
+$disableota.Add_Click{
+    $ota = @("com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota")
+    foreach ($package in $ota){
+        adb shell pm disable-user -k "$package"
     }
+    $status = "Failed to Disable OTA Updates"
+    if (adb shell pm list packages -d | Select-String "com.amazon.device.software.ota"){
+        $status = "Successfully Disabled OTA Updates"
+    }
+    Write-Host "$status`n"
 }
 
-# Update Scripts
+# Check for updates, if available get changelog & scripts
 $update.Add_Click{
     $latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
     if ("$version" -lt "$latest"){
@@ -351,33 +319,58 @@ $update.Add_Click{
         Write-Host "`nUpdates Complete, Please Re-launch Application"
         pause; $form.Close()
     }
-    Write-Host "`nNo Updates Available"
+    Write-Host "No Updates Available`n"
 }
 
-# Set Selection as Default Launcher
-$launchers.Add_Click{
-    adb shell pm list packages -3 | Out-File installed
-    if ($this.Text -eq "Custom Launcher"){
+# Install selected launcher & disable stock. If custom, open file picker
+$customlauncher.Add_Click{
+    if ($launchers.SelectedItem -eq "Custom"){
         $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
+        $FileBrowser.Title = "Select Launcher .apk(m)"
         $FileBrowser.filter = "Apk (*.apk)| *.apk|Apkm (*.apkm)| *.apkm"
         [void]$FileBrowser.ShowDialog()
         if ($FileBrowser.FileName){
             appinstaller $FileBrowser.FileName
         }
     } else {
-        $package = ($this.Text)
-        appinstaller (Get-ChildItem $package*.apk)
+        $launcher = $launchers.SelectedItem
+        appinstaller (Get-ChildItem "$launcher*.apk")
     }
-    adb shell pm list packages -3 | Out-File installed.changed
-    Compare-Object (Get-Content installed) (Get-Content installed.changed) | Select -ExpandProperty inputobject | % {
-        if ($_.split(":")[1]){
-            Remove-Item installed*
-            adb shell appwidget grantbind --package $_.split(":")[1]
-            adb shell pm disable-user -k com.android.launcher3
-            adb shell pm disable-user -k com.amazon.firelauncher
-            Write-Host "Installed Launcher:" $_.split(":")[1]
+    if (Get-Content .\packagelist){
+        (Compare-Object (Get-Content .\packagelist) (adb shell pm list packages)).inputobject | % {
+            if ("$_"){
+                adb shell appwidget grantbind --package $_.split(":")[1]
+                adb shell pm disable-user -k com.android.launcher3
+                adb shell pm disable-user -k com.amazon.firelauncher
+                Write-Host "Installed Launcher:" $_.split(":")[1]`n
+            }
         }
     }
 }
 
+# Disable selected packages
+$disableselected.Add_Click{
+    foreach ($package in $installedlist.SelectedItems){
+        adb shell pm disable-user -k "$package" | Out-Host
+    }
+}
+
+# Enable selected packages
+$enableselected.Add_Click{
+    foreach ($package in $installedlist.SelectedItems){
+        adb shell pm enable "$package" | Out-Host
+    }
+}
+
+# Extract selected packages to Extracted\packagename
+$extractselected.Add_Click{
+    foreach ($package in $installedlist.SelectedItems){
+        New-Item -Type Directory .\Extracted\"$package" -Force
+        adb shell pm path "$package" | % {
+            adb pull $_.split(":")[1] .\Extracted\"$package" | Out-Host
+        }
+    }
+}
+
+$form.Controls.AddRange(@($label,$label1,$label2,$debloat,$rebloat,$edit,$dnsServers,$customdns,$googleservices,$batchinstall,$disableota,$update,$launchers,$customlauncher,$installedlist,$disableselected,$enableselected,$extractselected))
 $form.ShowDialog()
