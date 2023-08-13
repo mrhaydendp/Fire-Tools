@@ -29,6 +29,19 @@ if (adb shell pm list features | Select-String -Quiet "fireos"){
     Write-Host "Device Detected: $device"
 }
 
+function debloat {
+    $option = ("disable-user -k","Disable")
+    if ($args[0] -eq "Undo"){
+        $option = @("enable","Enable")
+    }
+    adb shell pm $option[0] $args[1] 2> .\error
+    $status = "$($option[1])d: $($args[1])"
+    if (Get-Content .\error){
+        $status = "Failed to $($option[1]): $($args[1])"
+    }
+    Write-Host "$status"
+}
+
 # Change Application Installation Method Based on Filetype
 function appinstaller {
     if ("$args" -like '*.apk'){
@@ -212,23 +225,16 @@ Get-Content .\packagelist | % { $installedlist.Items.AddRange($_.split(":")[1]) 
 
 # Enable or disable packages (if present) & features based on selection
 $debloatTool.Add_Click{
+    foreach ($package in $disable){
+        debloat $this.text $package.split(" #")[0]
+    }
     if ($this.Text -eq "Undo"){
-        Write-Host "Enabling Bloat"
-        $disabled = (adb shell pm list packages -d)
-        foreach ($package in $disabled){
-            adb shell pm enable $package.split(":")[1] | Out-Host
-        }
         Write-Host "Disabling Private DNS"
         adb shell settings put global private_dns_mode -hostname
         Write-Host "Enabling Background Activities"
         adb shell settings put global always_finish_activities 0
         Write-Host "Successfully Enabled Fire OS Bloat`n"
     } else {
-        foreach ($package in $disable){
-            if (Select-String -Quiet $package.split(' #')[0] .\packagelist){
-                adb shell pm disable-user -k "$package" | Out-Host
-            }
-        }
         Write-Host "Disabling Telemetry & Resetting Advertising ID"
         adb shell settings put secure limit_ad_tracking 1
         adb shell settings put secure usage_metrics_marketing_enabled 0
@@ -268,9 +274,9 @@ $customdns.Add_Click{
         if (Test-Connection -Count 1 -Quiet $dnsServers.Text){
             adb shell settings put global private_dns_mode hostname
             adb shell settings put global private_dns_specifier $dnsServers.Text
-            Write-Host "Successfully Changed Private DNS to:" $dnsServers.Text`n
+            Write-Host "Successfully Changed Private DNS to: $($dnsServers.Text)`n"
         } else {
-            Write-Host "Invalid DoT Address:" $dnsServers.Text`n
+            Write-Host "Error: $($dnsServers.Text) is not a Valid DoT Address`n"
         }
     }
 }
@@ -340,9 +346,8 @@ $customlauncher.Add_Click{
         (Compare-Object (Get-Content .\packagelist) (adb shell pm list packages)).inputobject | % {
             if ("$_"){
                 adb shell appwidget grantbind --package $_.split(":")[1]
-                adb shell pm disable-user -k com.android.launcher3
-                adb shell pm disable-user -k com.amazon.firelauncher
-                Write-Host "Installed Launcher:" $_.split(":")[1]`n
+                debloat debloat com.amazon.firelauncher
+                Write-Host "Installed Launcher: $($_.split(":")[1])`n"
             }
         }
     }
@@ -351,14 +356,14 @@ $customlauncher.Add_Click{
 # Disable selected packages
 $disableselected.Add_Click{
     foreach ($package in $installedlist.SelectedItems){
-        adb shell pm disable-user -k "$package" | Out-Host
+        debloat debloat "$package"
     }
 }
 
 # Enable selected packages
 $enableselected.Add_Click{
     foreach ($package in $installedlist.SelectedItems){
-        adb shell pm enable "$package" | Out-Host
+        debloat undo "$package"
     }
 }
 
@@ -374,3 +379,6 @@ $extractselected.Add_Click{
 
 $form.Controls.AddRange(@($label,$label1,$label2,$debloat,$rebloat,$edit,$dnsServers,$customdns,$googleservices,$batchinstall,$disableota,$update,$launchers,$customlauncher,$installedlist,$disableselected,$enableselected,$extractselected))
 $form.ShowDialog()
+
+# Cleanup Temp Files
+Remove-Item .\error,.\packagelist -ErrorAction SilentlyContinue
