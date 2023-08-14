@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="23.05"
+version="23.08"
 
 # Check for Dependencies
 export dependencies="adb zenity"
@@ -97,8 +97,9 @@ case "$tool" in
         fi;;
 
     "Update")
-        latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version)
-        [ "$version" != "$latest" ] && {
+        latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version | cut -c 1,2,4,5)
+        version=$(echo "$version" | cut -c 1,2,4,5)
+        [ "$version" -lt "$latest" ] && {
         echo "Latest Changelogs:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
         export modules="Debloat.txt ui.sh debloat.sh launcher.sh"
         for module in ${modules}; do
