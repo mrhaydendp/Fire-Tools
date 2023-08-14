@@ -86,7 +86,12 @@ case "$tool" in
         echo "Finished Installing App(s)";;
 
     "Custom DNS")
-        server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net")
+        server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net\n- None")
+        echo "$server" | grep -q --ignore-case "None" && {
+            adb shell settings put global private_dns_mode -hostname
+            exec ./ui.sh
+            echo "Disabled Private DNS"
+        }
         echo "$server" | grep -q "dns" &&
         if (ping -q -c 1 "$server" > /dev/null 2>&1); then
             adb shell settings put global private_dns_mode hostname
