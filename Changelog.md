@@ -1,3 +1,25 @@
+## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, Debloat.txt, version (All) 08/16/2023
+- Version bump (23.08)
+- Stopped disabling launcher3 because it disables recents button functionality
+- Updates are now only installed if version is lower than latest (Linux/macOS)
+- Added option to disable Private DNS by typing "None" into textbar (Linux/macOS)
+- Fixed error when editing Debloat.txt on MacOS (Linux/macOS)
+- Fixed code formatting (Linux/macOS)
+- Redesigned UI (Windows)
+- Updated comments (Windows)
+- Cleaned up terminal output (Windows)
+- Revamped debloat function with cleaner output (Windows)
+- Simplified device identifier (Windows)
+- Cleaned up appinstaller (Windows)
+- Added "|" to seperate version from device model in titlebar (Windows)
+- Made window size bigger (Windows)
+- Added list of selectable installed packages to disable, enable, or extract (Windows)
+- Made custom launchers a dropdown list instead of multiple buttons (Windows)
+- Made custom DNS a dropdown list instead of opening gridview (Windows)
+- Custom DNS now pings server to make sure its valid before setting (Windows)
+- Added abiltiy to type in custom DNS provider (Windows)
+- Updated Google Services tooltip (Windows)
+
 ## Updated ui.sh, launcher.sh, Fire-Tools.ps1, version (All) 05/29/2023
 - Version bump (23.05)
 - Added Play Store check before showing success & error message
@@ -23,15 +45,3 @@
 - Version bump (23.03)
 - Fixed `; do` and `; then` statements
 - Fixed debloat.sh
-
-## Updated ui.sh, launcher.sh, Fire-Tools.ps1, version (All) 2/19/2023
-- Version bump (23.02)
-- Updated comments (Linux/macOS)
-- Added dependency check
-- Simplified caching of Amazon dev website
-- Removed `-r` tag for adb install command
-- Updated tool descriptions (Linux/macOS)
-- Extracted apks now go into their own folder
-- Fixed batch installer not installing .apk files (Linux/macOS)
-- Simplified update tool downloads (Linux/macOS)
-- Widgets will now be automatically enabled for any launcher
