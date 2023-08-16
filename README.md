@@ -22,7 +22,7 @@ Fire Tools is a powerful collection of tools that helps debloat and install Goog
 
 Linux/macOS | Windows
 :----------:|:-------:
-![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/Fire-Tools.png) | ![](https://github.com/mrhaydendp/Fire-Tools/raw/main/Pictures/Fire-Tools%20Windows.png)
+![Linux/macOS Screenshot](/Pictures/Fire-Tools.png) | ![Windows Screenshot](/Pictures/Fire-Tools%20Windows.png)
 
 ## Setup
 Select instructions for your OS:
@@ -68,7 +68,7 @@ Enable Developer Options & USB Debugging:
 
 Open Settings > Device Options > About Fire Tablet and tap `Serial Number` 7 times. Return to previous screen and tap on  `Developer Options` then flip on the switch. Finally scroll down to `USB Debugging` and turn it on.
 
-![Enable USB Debugging](https://github.com/mrhaydendp/Fire-Tools/blob/main/Pictures/Enable%20USB%20Debugging.gif?raw=true)
+![Enable USB Debugging](/Pictures/Enable%20USB%20Debugging.gif)
 
 Now get a USB cable that supports data transfer (preferrably the one in the box) and plug it into the computer. 
 
