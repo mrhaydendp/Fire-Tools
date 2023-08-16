@@ -1,24 +1,22 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a report to help improve Fire Tools
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
-## Describe the bug:
+## Describe the Bug:
 A clear and concise description of what the bug is.
 
-## To Reproduce:
+## Steps to Reproduce:
 Steps to reproduce the behavior:
 
-- Go to '...'
-- Click on '....'
-- Scroll down to '....'
-- See error
+- Select 'button/option'
+- Select other 'button/option'
+- Error occured 'error'
 
-## Expected behavior:
+## Expected Behavior:
 A clear and concise description of what you expected to happen.
 
 ## Platform:
@@ -27,7 +25,7 @@ A clear and concise description of what you expected to happen.
 
 ## Device:
 - Model [e.g. Fire 7 (9th Gen), Fire HD 8 (8th Gen)]
-- Version  [e.g. Fire OS 7.3.2.3]
+- Fire OS Version  [e.g. Fire OS 7.3.2.3]
 
-## Additional context:
+## Additional Context (Optional):
 Add any other context about the problem here.
