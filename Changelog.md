@@ -1,6 +1,8 @@
 ## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, Debloat.txt, version (All) 08/16/2023
 - Version bump (23.08)
 - Stopped disabling launcher3 because it disables recents button functionality
+- Device and Fire OS version will now be shown in terminal
+- Apk extractor will now tell you which apk is currently being extracted
 - Updates are now only installed if version is lower than latest (Linux/macOS)
 - Added option to disable Private DNS by typing "None" into textbar (Linux/macOS)
 - Fixed error when editing Debloat.txt on MacOS (Linux/macOS)
