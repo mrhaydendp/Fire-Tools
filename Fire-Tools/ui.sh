@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="23.05"
+version="23.08"
 
 # Check for Dependencies
 export dependencies="adb zenity"
@@ -14,6 +14,9 @@ if (adb shell pm list features | grep -q "fireos"); then
     model=$(adb shell getprop ro.product.model)
     [ -e ft-identifying-tablet-devices.html ] || curl -O "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
     device=$(grep -B 2 "$model" < ft-identifying-tablet-devices.html | grep -E -o "(Kindle|Fire) (.*?)[G|g]en\)")
+    fireos=$(adb shell getprop ro.build.version.name | grep -E -o "Fire OS (.*?)\.[1-9] ")
+    echo "Device Detected: $device"
+    echo "Software Version: $fireos\n"
 fi
 
 # Change Application Installation Method Based on Filetype
@@ -74,6 +77,7 @@ case "$tool" in
         packages=$(adb shell pm list packages | cut -f2 -d:)
         list=$(zenity --list --width=500 --height=400 --column=Packages  --multiple $packages | tr '|' '\n')
         for package in ${list}; do
+            echo "Extracting: $package"
             mkdir -p ./Extracted/"$package"
             adb shell pm path "$package" | cut -f2 -d: | xargs -I % adb pull % ./Extracted/"$package"
         done;;
@@ -86,7 +90,12 @@ case "$tool" in
         echo "Finished Installing App(s)";;
 
     "Custom DNS")
-        server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net")
+        server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net\n- None")
+        echo "$server" | grep -q --ignore-case "None" && {
+            adb shell settings put global private_dns_mode -hostname
+            exec ./ui.sh
+            echo "Disabled Private DNS"
+        }
         echo "$server" | grep -q "dns" &&
         if (ping -q -c 1 "$server" > /dev/null 2>&1); then
             adb shell settings put global private_dns_mode hostname
@@ -97,8 +106,9 @@ case "$tool" in
         fi;;
 
     "Update")
-        latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version)
-        [ "$version" != "$latest" ] && {
+        latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version | cut -c 1,2,4,5)
+        version=$(echo "$version" | cut -c 1,2,4,5)
+        [ "$version" -lt "$latest" ] && {
         echo "Latest Changelogs:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
         export modules="Debloat.txt ui.sh debloat.sh launcher.sh"
         for module in ${modules}; do

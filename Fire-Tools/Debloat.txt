@@ -15,7 +15,7 @@ com.amazon.communication.discovery               # Amazon Communication Discover
 com.amazon.tcomm.jackson                         # Amazon Communication Service (Jackson19)
 com.amazon.tcomm                                 # Amazon Communication Services
 com.amazon.tcomm.client                          # Amazon Communication Services Client Library
-com.amazon.application.compatibility.enforcer    # Amazon Compatibility Enforcer
+com.amazon.application.compatibility.enforcer    # Amazon Enforcer
 com.amazon.dpcclient                             # Amazon DCPCClient Application
 com.amazon.dp.logger                             # Amazon DP Logger
 com.amazon.device.messaging                      # Amazon Device Messaging (ADM)
@@ -47,7 +47,6 @@ com.android.bookmarkprovider                     # Bookmarks Provider
 com.android.calendar                             # Calendar
 com.android.providers.calendar                   # Calendar Storage
 com.android.calllogbackup                        # Call Logs Backup
-com.android.launcher3                            # Stock Android Launcher (Non-Functional)
 com.amazon.fireos.cirruscloud                    # Cirrus Cloud
 com.amazon.connectivitydiag                      # Connectivity Diagnostics
 com.android.contacts                             # Contacts

@@ -79,9 +79,9 @@ case "$opt" in
         done;;
 
     "Edit")
-        [ "$OSTYPE" = "darwin"  ] && open -e ./Debloat.txt ||
+        [ "$OSTYPE" = "darwin"  ] && { open -e ./Debloat.txt; exec ./debloat.sh; }
         xdg-open ./Debloat.txt
-        exec ./debloat.sh;
-    esac
+        exec ./debloat.sh;;
+esac
 
 exec ./ui.sh

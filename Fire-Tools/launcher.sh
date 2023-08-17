@@ -33,7 +33,6 @@ launcher=$(diff installed* | grep -E -o "[a-z0-9]*(\.[a-z0-9]+)+[a-z0-9]")
 [ -z "$launcher" ] || {
     adb shell appwidget grantbind --package "$launcher"
     rm installed* --force
-    adb shell pm disable-user -k com.android.launcher3
     adb shell pm disable-user -k com.amazon.firelauncher
     echo "Installed Launcher: $launcher"
 }
