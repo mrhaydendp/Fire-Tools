@@ -27,6 +27,7 @@ if (adb shell pm list features | Select-String -Quiet "fireos"){
     $modelLine = (Select-String -Pattern "$model" -Path .\ft-identifying-tablet-devices.html).LineNumber
     $device = (Get-Content .\ft-identifying-tablet-devices.html | Select -Index ("$modelLine" - 3) | Select-String "(Kindle|Fire) (.*?)[Gg]en\)").Matches.Value
     Write-Host "Device Detected: $device"
+    Write-Host "Software Version: $((adb shell getprop | Select-String "Fire OS (.*?)\.[1-9] ").Matches.Value)`n"
 }
 
 function debloat {
@@ -40,6 +41,7 @@ function debloat {
         $status = "Failed to $($option[1]): $($args[1])"
     }
     Write-Host "$status"
+    Remove-Item .\error
 }
 
 # Change Application Installation Method Based on Filetype
@@ -305,7 +307,7 @@ $batchinstall.Add_Click{
 $disableota.Add_Click{
     $ota = @("com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota")
     foreach ($package in $ota){
-        adb shell pm disable-user -k "$package"
+        debloat debloat "$package"
     }
     $status = "Failed to Disable OTA Updates"
     if (adb shell pm list packages -d | Select-String "com.amazon.device.software.ota"){
@@ -318,11 +320,11 @@ $disableota.Add_Click{
 $update.Add_Click{
     $latest = (Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version")
     if ("$version" -lt "$latest"){
-        Write-Host "Latest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
+        Write-Host "`nLatest Changelog:"; Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md" | Out-Host
         @("Fire-Tools.ps1", "Debloat.txt") | % {
             Invoke-RestMethod "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$_" -OutFile "$_"
         }
-        Write-Host "`nUpdates Complete, Please Re-launch Application"
+        Write-Host "Updates Complete, Please Re-launch Application"
         pause; $form.Close()
     }
     Write-Host "No Updates Available`n"
@@ -370,6 +372,7 @@ $enableselected.Add_Click{
 # Extract selected packages to Extracted\packagename
 $extractselected.Add_Click{
     foreach ($package in $installedlist.SelectedItems){
+        Write-Host "Extracting: $package"
         New-Item -Type Directory .\Extracted\"$package" -Force
         adb shell pm path "$package" | % {
             adb pull $_.split(":")[1] .\Extracted\"$package" | Out-Host
@@ -379,6 +382,3 @@ $extractselected.Add_Click{
 
 $form.Controls.AddRange(@($label,$label1,$label2,$debloat,$rebloat,$edit,$dnsServers,$customdns,$googleservices,$batchinstall,$disableota,$update,$launchers,$customlauncher,$installedlist,$disableselected,$enableselected,$extractselected))
 $form.ShowDialog()
-
-# Cleanup Temp Files
-Remove-Item .\error,.\packagelist -ErrorAction SilentlyContinue
