@@ -14,6 +14,9 @@ if (adb shell pm list features | grep -q "fireos"); then
     model=$(adb shell getprop ro.product.model)
     [ -e ft-identifying-tablet-devices.html ] || curl -O "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
     device=$(grep -B 2 "$model" < ft-identifying-tablet-devices.html | grep -E -o "(Kindle|Fire) (.*?)[G|g]en\)")
+    fireos=$(adb shell getprop ro.build.version.name | grep -E -o "Fire OS (.*?)\.[1-9] ")
+    echo "Device Detected: $device"
+    echo "Software Version: $fireos\n"
 fi
 
 # Change Application Installation Method Based on Filetype
@@ -74,6 +77,7 @@ case "$tool" in
         packages=$(adb shell pm list packages | cut -f2 -d:)
         list=$(zenity --list --width=500 --height=400 --column=Packages  --multiple $packages | tr '|' '\n')
         for package in ${list}; do
+            echo "Extracting: $package"
             mkdir -p ./Extracted/"$package"
             adb shell pm path "$package" | cut -f2 -d: | xargs -I % adb pull % ./Extracted/"$package"
         done;;
