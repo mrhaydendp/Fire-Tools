@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 
-version="23.08"
+version="23.09"
+
+# Wait for Device
+adb get-state > /dev/null 2>&1 ||
+printf "Please Connect a Fire Tablet\nWaiting for Device...\n\n"
+adb wait-for-device
 
 # Check for Dependencies
 export dependencies="adb zenity"
