@@ -7,7 +7,7 @@ case "$1" in
         adb shell pm enable "$2" 2> /dev/null ||
         echo "Failed to Enable: $2";;
     Disable)
-        adb shell pm disable-user -k "$2" 2> /dev/null ||
+        adb shell pm disable-user "$2" 2> /dev/null && adb shell pm clear "$2" > /dev/null ||
         echo "Failed to Disable: $2";;
 esac
 }
