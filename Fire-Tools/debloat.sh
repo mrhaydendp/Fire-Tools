@@ -49,7 +49,6 @@ case "$opt" in
             adb shell settings put secure limit_ad_tracking 1
             adb shell settings put secure usage_metrics_marketing_enabled 0
             adb shell settings put secure USAGE_METRICS_UPLOAD_ENABLED 0
-            adb shell pm clear com.amazon.advertisingidsettings
             echo "Disabling Location"
             adb shell settings put secure location_providers_allowed -network
             echo "Blocking Ads With Adguard DNS"
