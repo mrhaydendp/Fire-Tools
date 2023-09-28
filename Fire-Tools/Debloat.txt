@@ -51,6 +51,7 @@ com.amazon.fireos.cirruscloud                    # Cirrus Cloud
 com.amazon.connectivitydiag                      # Connectivity Diagnostics
 com.android.contacts                             # Contacts
 com.android.providers.contacts                   # Contacts Storage
+com.android.providers.partnerbookmarks           # Provider Bookmarks
 com.amazon.dp.contacts                           # Contacts Sync Adapter
 com.amazon.providers.contentsupport              # Content Support Manager
 com.amazon.sync.service                          # Content Sync Framework
