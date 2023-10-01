@@ -9,7 +9,7 @@ for dependency in ${dependencies}; do
 done
 
 # Wait for Device
-adb get-state > /dev/null 2>&1 ||
+adb get-state >/dev/null 2>&1 ||
 printf "Please Connect a Fire Tablet\nWaiting for Device...\n\n"
 adb wait-for-device
 
@@ -25,14 +25,16 @@ fi
 
 # Change Application Installation Method Based on Filetype
 appinstaller () {
+    printf "%s\n" "Installing: $1"
     case "$1" in
     *.apk)
-        adb install -g "$1";;
+        adb install -g "$1" >/dev/null 2>&1;;
     *.apkm)
         unzip "$1" -d ./Split >/dev/null
-        adb install-multiple -r -g ./Split/*.apk
+        adb install-multiple -r -g ./Split/*.apk >/dev/null 2>&1
         rm -rf ./Split;;
     esac
+    [ "$?" = 0 ] && printf "%s\n" "Success" || printf "%s\n" "Fail"
 }
 
 # Invoke Tools by Adding Their Names After ./ui.sh (Ex: ./ui.sh Update) Else, Resort to UI
@@ -101,7 +103,7 @@ case "$tool" in
             printf "%s\n" "Disabled Private DNS"
         }
         printf "%s\n" "$server" | grep -q "dns" &&
-        if (ping -q -c 1 "$server" > /dev/null 2>&1); then
+        if (ping -q -c 1 "$server" >/dev/null 2>&1); then
             adb shell settings put global private_dns_mode hostname
             adb shell settings put global private_dns_specifier "$server"
             printf "%s\n" "Successfully Changed Private DNS to: $server"
