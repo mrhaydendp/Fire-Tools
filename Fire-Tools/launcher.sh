@@ -35,7 +35,7 @@ launcher=$(diff installed* | grep -E -o "[a-z0-9]*(\.[a-z0-9]+)+[a-z0-9]")
     rm installed* --force
     adb shell pm disable-user -k com.amazon.firelauncher
     adb shell input keyevent KEYCODE_HOME
-    echo "Installed Launcher: $launcher"
+    printf "%s\n" "Installed Launcher: $launcher"
 }
 
 exec ./ui.sh
