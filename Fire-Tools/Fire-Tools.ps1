@@ -1,4 +1,4 @@
-$version = "23.08"
+$version = "23.10"
 
 # Check if ADB is installed. If not, open documentation
 try {
@@ -31,16 +31,17 @@ if (adb shell pm list features | Select-String -Quiet "fireos"){
 }
 
 function debloat {
-    $option = ("disable-user -k","Disable")
+    $option = ("disable-user","Disable")
     if ($args[0] -eq "Undo"){
         $option = @("enable","Enable")
     }
     adb shell pm $option[0] $args[1] 2> .\error
-    $status = "$($option[1])d: $($args[1])"
     if (Get-Content .\error){
-        $status = "Failed to $($option[1]): $($args[1])"
+        Write-Host "Failed to $($option[1]): $($args[1])"
+    } else {
+        adb shell pm clear $args[1]
+        Write-Host "$($option[1])d: $($args[1])"
     }
-    Write-Host "$status"
     Remove-Item .\error
 }
 
@@ -382,3 +383,4 @@ $extractselected.Add_Click{
 
 $form.Controls.AddRange(@($label,$label1,$label2,$debloat,$rebloat,$edit,$dnsServers,$customdns,$googleservices,$batchinstall,$disableota,$update,$launchers,$customlauncher,$installedlist,$disableselected,$enableselected,$extractselected))
 $form.ShowDialog()
+
