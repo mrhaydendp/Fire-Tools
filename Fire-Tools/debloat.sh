@@ -4,12 +4,11 @@
 debloat () {
 case "$1" in
     Enable)
-        adb shell pm enable "$2" 2> /dev/null ||
-        printf "%s\n" "Failed to Enable: $2";;
+        adb shell pm enable "$2" >/dev/null 2>&1;;
     Disable)
-        adb shell pm disable-user "$2" 2> /dev/null && adb shell pm clear "$2" > /dev/null ||
-        printf "%s\n" "Failed to Disable: $2";;
+        adb shell pm disable-user "$2" >/dev/null 2>&1 && adb shell pm clear "$2" > /dev/null;;
 esac
+    [ "$?" = 0 ] && printf "%sd: $2\n" "$1" || printf "%s\n" "Failed to $1: $2"
 }
 
 # GUI Specs
