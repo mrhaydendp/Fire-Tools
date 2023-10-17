@@ -18,8 +18,10 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
 }
 
 # Wait for device
-Write-Host "Please Connect a Fire Tablet`nWaiting for Device..."
-adb wait-for-device
+if (!(adb get-state 2> $null)){
+    Write-Host "Please Connect a Fire Tablet`nWaiting for Device..."
+    adb wait-for-device
+}
 
 # Device identifier (find product name from model number -3 lines)
 $device = "Unknown/Undetected"
