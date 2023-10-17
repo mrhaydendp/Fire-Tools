@@ -17,6 +17,10 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
     $theme = @("#292929","#f3f3f3","#fbfbfb")
 }
 
+# Wait for device
+Write-Host "Please Connect a Fire Tablet`nWaiting for Device..."
+adb wait-for-device
+
 # Device identifier (find product name from model number -3 lines)
 $device = "Unknown/Undetected"
 if (adb shell pm list features | Select-String -Quiet "fireos"){
