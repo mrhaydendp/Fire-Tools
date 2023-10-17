@@ -35,18 +35,14 @@ if (adb shell pm list features | Select-String -Quiet "fireos"){
 }
 
 function debloat {
-    $option = ("disable-user","Disable")
-    if ($args[0] -eq "Undo"){
-        $option = @("enable","Enable")
+    if ($args[0] -eq "Debloat"){
+        adb shell pm disable-user $args[1] 2> $null | Out-Host
+    } elseif ($args[0] -eq "Undo"){
+        adb shell pm enable $args[1] 2> $null | Out-Host
     }
-    adb shell pm $option[0] $args[1] 2> .\error
-    if (Get-Content .\error){
-        Write-Host "Failed to $($option[1]): $($args[1])"
-    } else {
-        adb shell pm clear $args[1]
-        Write-Host "$($option[1])d: $($args[1])"
+    if ("$?" -eq "False"){
+        Write-Host "Failed to $($args[0]): $($args[1])"
     }
-    Remove-Item .\error
 }
 
 # Change Application Installation Method Based on Filetype
@@ -388,4 +384,3 @@ $extractselected.Add_Click{
 
 $form.Controls.AddRange(@($label,$label1,$label2,$debloat,$rebloat,$edit,$dnsServers,$customdns,$googleservices,$batchinstall,$disableota,$update,$launchers,$customlauncher,$installedlist,$disableselected,$enableselected,$extractselected))
 $form.ShowDialog()
-
