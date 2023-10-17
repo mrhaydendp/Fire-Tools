@@ -37,24 +37,25 @@ if (adb shell pm list features | Select-String -Quiet "fireos"){
 function debloat {
     if ($args[0] -eq "Debloat"){
         adb shell pm disable-user $args[1] 2> $null | Out-Host
+        if ("$?" -eq "True") {adb shell pm clear $args[1]}
     } elseif ($args[0] -eq "Undo"){
         adb shell pm enable $args[1] 2> $null | Out-Host
     }
-    if ("$?" -eq "False"){
-        Write-Host "Failed to $($args[0]): $($args[1])"
-    }
+    if ("$?" -eq "False") {Write-Host "Failed to $($args[0]): $($args[1])"}
 }
 
 # Change Application Installation Method Based on Filetype
 function appinstaller {
+    Write-Host "Installing: $args"
     if ("$args" -like '*.apk'){
-        adb install -g "$args" | Out-Host
+        adb install -g "$args" 2> $null | Out-Host
     } elseif ("$args" -like '*.apk*'){
         Copy-Item "$args" -Destination "$args.zip"
         Expand-Archive "$args.zip" -DestinationPath .\Split
-        adb install-multiple -r -g (Get-ChildItem .\Split\*apk) | Out-Host
+        adb install-multiple -r -g (Get-ChildItem .\Split\*apk) 2> $null | Out-Host
         Remove-Item -r .\Split, "$args.zip"
     }
+    if ("$?" -eq "False") {Write-Host "Failed to Install: $args"}
 }
 
 # GUI specs
