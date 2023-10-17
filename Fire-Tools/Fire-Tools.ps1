@@ -354,6 +354,7 @@ $customlauncher.Add_Click{
             if ("$_"){
                 adb shell appwidget grantbind --package $_.split(":")[1]
                 debloat debloat com.amazon.firelauncher
+                adb shell input keyevent KEYCODE_HOME
                 Write-Host "Installed Launcher: $($_.split(":")[1])`n"
             }
         }
