@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-version="23.09"
+version="23.10"
 
 # Check for Dependencies
 export dependencies="adb zenity"
