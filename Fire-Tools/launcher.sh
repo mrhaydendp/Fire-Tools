@@ -34,7 +34,8 @@ launcher=$(diff installed* | grep -E -o "[a-z0-9]*(\.[a-z0-9]+)+[a-z0-9]")
     adb shell appwidget grantbind --package "$launcher"
     rm installed* --force
     adb shell pm disable-user -k com.amazon.firelauncher
-    echo "Installed Launcher: $launcher"
+    adb shell input keyevent KEYCODE_HOME
+    printf "%s\n" "Installed Launcher: $launcher"
 }
 
 exec ./ui.sh

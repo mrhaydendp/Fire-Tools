@@ -1,4 +1,4 @@
-$version = "23.08"
+$version = "23.10"
 
 # Check if ADB is installed. If not, open documentation
 try {
@@ -17,6 +17,12 @@ if (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion
     $theme = @("#292929","#f3f3f3","#fbfbfb")
 }
 
+# Wait for device
+if (!(adb get-state 2> $null)){
+    Write-Host "Please Connect a Fire Tablet`nWaiting for Device..."
+    adb wait-for-device
+}
+
 # Device identifier (find product name from model number -3 lines)
 $device = "Unknown/Undetected"
 if (adb shell pm list features | Select-String -Quiet "fireos"){
@@ -31,29 +37,27 @@ if (adb shell pm list features | Select-String -Quiet "fireos"){
 }
 
 function debloat {
-    $option = ("disable-user -k","Disable")
-    if ($args[0] -eq "Undo"){
-        $option = @("enable","Enable")
+    if ($args[0] -eq "Debloat"){
+        adb shell pm disable-user $args[1] 2> $null | Out-Host
+        if ("$?" -eq "True") {adb shell pm clear $args[1]}
+    } elseif ($args[0] -eq "Undo"){
+        adb shell pm enable $args[1] 2> $null | Out-Host
     }
-    adb shell pm $option[0] $args[1] 2> .\error
-    $status = "$($option[1])d: $($args[1])"
-    if (Get-Content .\error){
-        $status = "Failed to $($option[1]): $($args[1])"
-    }
-    Write-Host "$status"
-    Remove-Item .\error
+    if ("$?" -eq "False") {Write-Host "Failed to $($args[0]): $($args[1])"}
 }
 
 # Change Application Installation Method Based on Filetype
 function appinstaller {
+    Write-Host "Installing: $args"
     if ("$args" -like '*.apk'){
-        adb install -g "$args" | Out-Host
+        adb install -g "$args" 2> $null | Out-Host
     } elseif ("$args" -like '*.apk*'){
         Copy-Item "$args" -Destination "$args.zip"
         Expand-Archive "$args.zip" -DestinationPath .\Split
-        adb install-multiple -r -g (Get-ChildItem .\Split\*apk) | Out-Host
+        adb install-multiple -r -g (Get-ChildItem .\Split\*apk) 2> $null | Out-Host
         Remove-Item -r .\Split, "$args.zip"
     }
+    if ("$?" -eq "False") {Write-Host "Failed to Install: $args"}
 }
 
 # GUI specs
@@ -349,6 +353,7 @@ $customlauncher.Add_Click{
             if ("$_"){
                 adb shell appwidget grantbind --package $_.split(":")[1]
                 debloat debloat com.amazon.firelauncher
+                adb shell input keyevent KEYCODE_HOME
                 Write-Host "Installed Launcher: $($_.split(":")[1])`n"
             }
         }

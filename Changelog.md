@@ -1,3 +1,12 @@
+## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, Debloat.txt, version (All) 10/25/2023
+- Version bump (23.10)
+- Script now waits for a device to be connected
+- Swapped to printf for better Posix compatibility & multi-line support (Linux/macOS)
+- App data will now get cleared during debloat process (for apps in debloat list)
+- Overhauled output for debloat & appinstaller function to show success and failure messages
+- Packages selected from the Custom menu can now be enabled or disabled (Linux/macOS)
+- Added "Provider Bookmarks" to debloat list
+
 ## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, Debloat.txt, version (All) 08/16/2023
 - Version bump (23.08)
 - Stopped disabling launcher3 because it disables recents button functionality
@@ -42,8 +51,3 @@
 - Fixed ADB check (Windows)
 - Application now prompts to close to apply updates (Windows)
 - Added padding to update status text (Windows)
-
-## Updated ui.sh, debloat.sh, version (Linux/macOS) 03/03/2023
-- Version bump (23.03)
-- Fixed `; do` and `; then` statements
-- Fixed debloat.sh

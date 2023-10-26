@@ -1,12 +1,17 @@
 #!/usr/bin/env sh
 
-version="23.08"
+version="23.10"
 
 # Check for Dependencies
 export dependencies="adb zenity"
 for dependency in ${dependencies}; do
-    "$dependency" --version >/dev/null || { echo "Error Dependency Required: $dependency"; exit 1; }
+    "$dependency" --version >/dev/null || { printf "%s\n" "Error Dependency Required: $dependency"; exit 1; }
 done
+
+# Wait for Device
+adb get-state >/dev/null 2>&1 ||
+printf "Please Connect a Fire Tablet\nWaiting for Device...\n\n"
+adb wait-for-device
 
 # If Device is Running Fire OS Identify Using Amazon Docs Page (Cache Until Next Update)
 device="Unknown/Unsupported"
@@ -15,20 +20,21 @@ if (adb shell pm list features | grep -q "fireos"); then
     [ -e ft-identifying-tablet-devices.html ] || curl -O "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html"
     device=$(grep -B 2 "$model" < ft-identifying-tablet-devices.html | grep -E -o "(Kindle|Fire) (.*?)[G|g]en\)")
     fireos=$(adb shell getprop ro.build.version.name | grep -E -o "Fire OS (.*?)\.[1-9] ")
-    echo "Device Detected: $device"
-    echo "Software Version: $fireos\n"
+    printf "Device: %s\nSoftware: %s\n\n" "$device" "$fireos"
 fi
 
 # Change Application Installation Method Based on Filetype
 appinstaller () {
+    printf "%s\n" "Installing: $1"
     case "$1" in
     *.apk)
-        adb install -g "$1";;
+        adb install -g "$1" >/dev/null 2>&1;;
     *.apkm)
         unzip "$1" -d ./Split >/dev/null
-        adb install-multiple -r -g ./Split/*.apk
+        adb install-multiple -r -g ./Split/*.apk >/dev/null 2>&1
         rm -rf ./Split;;
     esac
+    [ "$?" = 0 ] && printf "%s\n" "Success" || printf "%s\n" "Fail"
 }
 
 # Invoke Tools by Adding Their Names After ./ui.sh (Ex: ./ui.sh Update) Else, Resort to UI
@@ -60,8 +66,8 @@ case "$tool" in
         done
         appinstaller ./Gapps/*Store*
         installed=$(adb shell pm list packages com.android.vending)
-        [ -n "$installed" ] && echo "Successfully Installed Google Apps" ||
-        echo "Failed to Install Google Apps";;
+        [ -n "$installed" ] && printf "%s\n" "Successfully Installed Google Apps" ||
+        printf "%s\n" "Failed to Install Google Apps";;
 
     "Change Launcher")
         exec ./launcher.sh;;
@@ -69,15 +75,15 @@ case "$tool" in
     "Disable OTA")
         export ota="com.amazon.device.software.ota com.amazon.device.software.ota.override com.amazon.kindle.otter.oobe.forced.ota"
         for package in ${ota}; do
-            adb shell pm disable-user -k "$package" || { echo "Failed to Disable OTA Updates"; exec ./ui.sh; }
+            adb shell pm disable-user -k "$package" || { printf "%s\n" "Failed to Disable OTA Updates"; exec ./ui.sh; }
         done
-        echo "Successfully Disabled OTA Updates";;
+        printf "%s\n" "Successfully Disabled OTA Updates";;
 
     "Apk Extractor")
         packages=$(adb shell pm list packages | cut -f2 -d:)
         list=$(zenity --list --width=500 --height=400 --column=Packages  --multiple $packages | tr '|' '\n')
         for package in ${list}; do
-            echo "Extracting: $package"
+            printf "%s\n" "Extracting: $package"
             mkdir -p ./Extracted/"$package"
             adb shell pm path "$package" | cut -f2 -d: | xargs -I % adb pull % ./Extracted/"$package"
         done;;
@@ -87,36 +93,36 @@ case "$tool" in
         do
             appinstaller "$app"
         done
-        echo "Finished Installing App(s)";;
+        printf "%s\n" "Finished Installing App(s)";;
 
     "Custom DNS")
         server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net\n- None")
-        echo "$server" | grep -q --ignore-case "None" && {
+        printf "%s\n" "$server" | grep -q --ignore-case "None" && {
             adb shell settings put global private_dns_mode -hostname
             exec ./ui.sh
-            echo "Disabled Private DNS"
+            printf "%s\n" "Disabled Private DNS"
         }
-        echo "$server" | grep -q "dns" &&
-        if (ping -q -c 1 "$server" > /dev/null 2>&1); then
+        printf "%s\n" "$server" | grep -q "dns" &&
+        if (ping -q -c 1 "$server" >/dev/null 2>&1); then
             adb shell settings put global private_dns_mode hostname
             adb shell settings put global private_dns_specifier "$server"
-            echo "Successfully Changed Private DNS to: $server"
+            printf "%s\n" "Successfully Changed Private DNS to: $server"
         else
-            echo "Error: $server is Not a Valid DoT Address"
+            printf "%s\n" "Error: $server is Not a Valid DoT Address"
         fi;;
 
     "Update")
         latest=$(curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version | cut -c 1,2,4,5)
-        version=$(echo "$version" | cut -c 1,2,4,5)
+        version=$(printf "%s\n" "$version" | cut -c 1,2,4,5)
         [ "$version" -lt "$latest" ] && {
-        echo "Latest Changelogs:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
+        printf "%s\n" "Latest Changelogs:" && curl -sSL https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md
         export modules="Debloat.txt ui.sh debloat.sh launcher.sh"
         for module in ${modules}; do
             curl -LO "https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/$module"
         done
         rm ./ft-identifying-tablet-devices.html --force
-        echo "Successfully Updated, Reloading Application..."
-        } || echo "No Updates Available";;
+        printf "%s\n" "Successfully Updated, Reloading Application..."
+        } || printf "%s\n" "No Updates Available";;
 esac
 
 # Exit to Menu When a Tool Finishes
