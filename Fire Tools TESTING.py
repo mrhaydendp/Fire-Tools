@@ -1,7 +1,5 @@
-#!/usr/bin/env python3
-
 import customtkinter as ctk
-import subprocess, os
+import subprocess, os, webbrowser
 
 # Build/Device Variables
 version = "BETA"
@@ -12,7 +10,7 @@ if os.name == "nt":
 # Window Config
 window = ctk.CTk()
 window.title("Fire Tools v" + version + " - " + platform)
-window.geometry("1000x550")
+window.geometry("980x550")
 window.columnconfigure(0)
 window.columnconfigure(1)
 window.columnconfigure(2)
@@ -20,6 +18,9 @@ window.columnconfigure(2)
 # Functions
 def debloat():
     subprocess.call(os.getcwd() + "/debloat.sh")
+
+def edit():
+    webbrowser.open("test.txt")
 
 def set_dns():
     if customdns.get() == "None":
@@ -30,7 +31,8 @@ def set_dns():
 
 def set_launcher():
     if customlauncher.get() == "Custom":
-        print("Select .apk(m) File")
+        launcher = ctk.filedialog.askopenfilename(title = "Select .apk(m) File",filetypes = (("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
+        print("Selected:", launcher)
 
     elif customlauncher.get() != "Select Launcher":
         print("Installing Launcher:", customlauncher.get())
@@ -51,7 +53,7 @@ debloat.grid(row=1, column=0, padx=60, pady=15)
 undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=debloat)
 undo.grid(row=2, column=0, padx=60, pady=15)
 
-edit = ctk.CTkButton(window, text="Edit", width=200, height=50)
+edit = ctk.CTkButton(window, text="Edit", width=200, height=50, command=edit)
 edit.grid(row=3, column=0, padx=60, pady=15)
 
 label1 = ctk.CTkLabel(window, text="Custom DNS", font=("default",25))
