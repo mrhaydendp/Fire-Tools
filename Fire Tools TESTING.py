@@ -16,11 +16,12 @@ window.columnconfigure(1)
 window.columnconfigure(2)
 
 # Functions
-def debloat():
-    subprocess.call(os.getcwd() + "/debloat.sh")
+def debloat(option):
+    print("./debloat.sh", option)
+    subprocess.call([os.getcwd() + "/debloat.sh", option])
 
-def edit():
-    webbrowser.open("test.txt")
+def editfile():
+    webbrowser.open("Debloat.txt")
 
 def set_dns():
     if customdns.get() == "None":
@@ -47,13 +48,13 @@ def test(value):
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
 label.grid(row=0, column=0, padx=60, pady=15)
 
-debloat = ctk.CTkButton(window, text="Debloat", width=200, height=50, command=debloat)
-debloat.grid(row=1, column=0, padx=60, pady=15)
+disable = ctk.CTkButton(window, text="Debloat", width=200, height=50, command=lambda: debloat("disable"))
+disable.grid(row=1, column=0, padx=60, pady=15)
 
-undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=debloat)
+undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=lambda: debloat("enable"))
 undo.grid(row=2, column=0, padx=60, pady=15)
 
-edit = ctk.CTkButton(window, text="Edit", width=200, height=50, command=edit)
+edit = ctk.CTkButton(window, text="Edit", width=200, height=50, command=editfile)
 edit.grid(row=3, column=0, padx=60, pady=15)
 
 label1 = ctk.CTkLabel(window, text="Custom DNS", font=("default",25))
