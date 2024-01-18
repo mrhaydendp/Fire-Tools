@@ -1,5 +1,5 @@
 import customtkinter as ctk
-import subprocess, os, webbrowser
+import subprocess, os, webbrowser, glob
 
 # Build/Device Variables
 version = "Testing"
@@ -42,19 +42,28 @@ def set_dns():
         except:
             print("Error:", dnsprovider, "is Unreachable or Invalid")
 
+def appinstaller(folder):
+    dir = os.getcwd() + folder + "/*.apk*"
+    for app in glob.iglob(dir):
+        subprocess.call([path + "/appinstaller" + extension, app])
+
+def disableota():
+    ota = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
+    for package in ota:
+        cmd = "adb shell pm disable-user -k " + package + " >/dev/null 2>&1 && echo 'Disabled: '" + package + " || echo 'Failed to Disable: '" + package
+        os.system(cmd)
+
 def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title = "Select .apk(m) File",filetypes = (("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
-        print("Selected:", launcher)
+        if launcher:
+            subprocess.call([path + "/appinstaller" + extension, launcher])
 
     elif customlauncher.get() != "Select Launcher":
-        print("Installing Launcher:", customlauncher.get())
-
-def test(value):
-    if value == "Enable":
-        print("Enabling Selected Packages")
-    else:
-        print("Disabling Selected Packages")
+        test = os.getcwd() + "/" + customlauncher.get() + "*.apk"
+        for launcher in glob.iglob(test):
+            print(path + "/appinstaller" + extension, launcher)
+            subprocess.call([path + "/appinstaller" + extension, launcher])
 
 # Column 1
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
@@ -83,14 +92,14 @@ setdns.grid(row=6, column=0, padx=60, pady=15)
 label2 = ctk.CTkLabel(window, text="Utilities", font=("default",25))
 label2.grid(row=0, column=1, padx=60, pady=15)
 
-googleservices = ctk.CTkButton(window, text="Install Google Services", width=200, height=50)
+googleservices = ctk.CTkButton(window, text="Install Google Services", width=200, height=50, command=lambda: appinstaller("/Gapps"))
 googleservices.grid(row=1, column=1, padx=60, pady=15)
 
-batchinstall = ctk.CTkButton(window, text="Batch Install", width=200, height=50)
+batchinstall = ctk.CTkButton(window, text="Batch Install", width=200, height=50, command=lambda: appinstaller("/Batch"))
 batchinstall.grid(row=2, column=1, padx=60, pady=15)
 
-disableota = ctk.CTkButton(window, text="Disable OTA", width=200, height=50)
-disableota.grid(row=3, column=1, padx=60, pady=15)
+ota = ctk.CTkButton(window, text="Disable OTA", width=200, height=50, command=disableota)
+ota.grid(row=3, column=1, padx=60, pady=15)
 
 label3 = ctk.CTkLabel(window, text="Custom Launcher", font=("default",25))
 label3.grid(row=4, column=1, padx=60, pady=15)
@@ -106,7 +115,7 @@ setlauncher.grid(row=6, column=1, padx=60, pady=15)
 label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
 
-segemented_button = ctk.CTkSegmentedButton(window, values=["Enable", "Disable"], width=200, height=50, dynamic_resizing=False, command=test)
+segemented_button = ctk.CTkSegmentedButton(window, values=["Enable", "Disable"], width=200, height=50, dynamic_resizing=False)
 segemented_button.set("Disable")
 segemented_button.grid(row=1, column=2, padx=60, pady=15)
 
