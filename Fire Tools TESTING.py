@@ -2,10 +2,14 @@ import customtkinter as ctk
 import subprocess, os, webbrowser
 
 # Build/Device Variables
-version = "BETA"
+version = "Testing"
 platform = "(Linux/macOS)"
+path = str(os.getcwd() + "/Scripts/Posix")
+extension = ".sh"
 if os.name == "nt":
     platform = "(Windows)"
+    path = str(os.getcwd() + "/Scripts/Powershell")
+    extension = ".ps1"
 
 # Window Config
 window = ctk.CTk()
@@ -17,18 +21,26 @@ window.columnconfigure(2)
 
 # Functions
 def debloat(option):
-    print("./debloat.sh", option)
-    subprocess.call([os.getcwd() + "/debloat.sh", option])
+    print(path + "/debloat" + extension, option)
+    subprocess.call([path + "/debloat" + extension, option])
 
 def editfile():
     webbrowser.open("Debloat.txt")
 
 def set_dns():
-    if customdns.get() == "None":
-        print("Removing Private DNS Server")
-        
-    elif customdns.get() != "Select or Enter DNS Server":
-        print("Setting Private DNS Provider to:", customdns.get())
+    dnsprovider = customdns.get()
+    if dnsprovider == "None":
+        os.system("adb shell settings put global private_dns_mode -hostname")
+        print("Disabled Private DNS")
+
+    elif dnsprovider != "Select or Enter DNS Server":
+        cmd = "adb shell settings put global private_dns_specifier " + dnsprovider
+        try:
+            os.system("adb shell settings put global private_dns_mode -hostname")
+            os.system(cmd)
+            print("Successfully Set Private DNS to:", dnsprovider)
+        except:
+            print("Error:", dnsprovider, "is Unreachable or Invalid")
 
 def set_launcher():
     if customlauncher.get() == "Custom":
@@ -48,10 +60,10 @@ def test(value):
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
 label.grid(row=0, column=0, padx=60, pady=15)
 
-disable = ctk.CTkButton(window, text="Debloat", width=200, height=50, command=lambda: debloat("disable"))
+disable = ctk.CTkButton(window, text="Debloat", width=200, height=50, command=lambda: debloat("Disable"))
 disable.grid(row=1, column=0, padx=60, pady=15)
 
-undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=lambda: debloat("enable"))
+undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=lambda: debloat("Enable"))
 undo.grid(row=2, column=0, padx=60, pady=15)
 
 edit = ctk.CTkButton(window, text="Edit", width=200, height=50, command=editfile)
