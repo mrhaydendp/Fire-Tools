@@ -20,9 +20,7 @@ Fire Tools is a powerful collection of tools that helps debloat and install Goog
 - Fire HD 8 (8th Gen, 10th Gen)
 - Fire 7 (9th Gen, 12th Gen)
 
-Linux/macOS | Windows
-:----------:|:-------:
-![Linux/macOS Screenshot](/Pictures/Fire-Tools.png) | ![Windows Screenshot](/Pictures/Fire-Tools%20Windows.png)
+![Linux/macOS Screenshot](/Pictures/Fire-Tools.png)
 
 ## Setup
 Select instructions for your OS:
