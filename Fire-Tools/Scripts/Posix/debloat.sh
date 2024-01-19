@@ -28,7 +28,7 @@ else
         printf "%s\n" "Enabling Location"
         adb shell settings put secure location_providers_allowed network
         printf "%s\n" "Disabling Private DNS"
-        adb shell settings put global private_dns_mode -hostname
+        adb shell settings put global private_dns_mode off
         printf "%s\n" "Enabling Core Apps"
         export core="firelauncher device.software.ota device.software.ota.override kindle.otter.oobe.forced.ota"
         for package in ${core}; do
