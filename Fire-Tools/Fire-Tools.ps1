@@ -1,4 +1,4 @@
-$version = "23.10"
+$version = "24.01"
 
 # Check if ADB is installed. If not, open documentation
 try {
