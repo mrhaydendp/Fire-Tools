@@ -10,4 +10,4 @@ case "$1" in
     adb install-multiple -r -g ./Split/*.apk >/dev/null 2>&1
     rm -rf ./Split;;
 esac
-[ "$?" = 0 ] && printf "%s\n" "Success" || printf "%s\n" "Fail"
+[ "$?" = 0 ] && printf "%s\n\n" "Success" || printf "%s\n\n" "Fail"
