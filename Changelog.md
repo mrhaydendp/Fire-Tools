@@ -1,6 +1,7 @@
 ## Updated ui.sh, debloat.sh, Fire-Tools.ps1, version, Debloat.txt (All) 01/19/2024
 - Undo now re-enables location services
 - Undo now enables core apps (OTA & Fire Launcher)
+- Fixed terminal not outputting "Disabled Private DNS" (Linux/macOS)
 - Fix DNS not being disabled
 - Undo text now says "Disabling Private DNS" instead of just AdGuard
 - Swapped to different method of disabling location services
