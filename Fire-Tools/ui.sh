@@ -98,7 +98,7 @@ case "$tool" in
     "Custom DNS")
         server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net\n- None")
         printf "%s\n" "$server" | grep -q --ignore-case "None" && {
-            adb shell settings put global private_dns_mode -hostname
+            adb shell settings put global private_dns_mode off
             exec ./ui.sh
             printf "%s\n" "Disabled Private DNS"
         }

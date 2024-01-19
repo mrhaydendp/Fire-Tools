@@ -33,8 +33,10 @@ case "$opt" in
         done
         wait
         if [ "$opt" = "Enable" ]; then
-            printf "%s\n" "Disabling Adguard DNS"
-            adb shell settings put global private_dns_mode -hostname
+            printf "%s\n" "Disabling Private DNS"
+            adb shell settings put global private_dns_mode off
+            printf "%s\n" "Enabling Location Services"
+            adb shell settings put global location_global_kill_switch 0
             printf "%s\n" "Enabling Core Apps"
             export core="firelauncher device.software.ota device.software.ota.override kindle.otter.oobe.forced.ota"
             for package in ${core}; do
@@ -48,8 +50,8 @@ case "$opt" in
             adb shell settings put secure limit_ad_tracking 1
             adb shell settings put secure usage_metrics_marketing_enabled 0
             adb shell settings put secure USAGE_METRICS_UPLOAD_ENABLED 0
-            printf "%s\n" "Disabling Location"
-            adb shell settings put secure location_providers_allowed -network
+            printf "%s\n" "Disabling Location Services"
+            adb shell settings put global location_global_kill_switch 1
             printf "%s\n" "Blocking Ads With Adguard DNS"
             adb shell settings put global private_dns_mode hostname
             adb shell settings put global private_dns_specifier dns.adguard.com
