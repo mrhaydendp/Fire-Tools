@@ -32,12 +32,12 @@ def editfile():
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
-        os.system("adb shell settings put global private_dns_mode -hostname")
+        os.system("adb shell settings put global private_dns_mode off")
         print("Disabled Private DNS")
 
     elif dnsprovider != "Select or Enter DNS Server":
         try:
-            os.system("adb shell settings put global private_dns_mode -hostname")
+            os.system("adb shell settings put global private_dns_mode hostname")
             os.system("adb shell settings put global private_dns_specifier " + dnsprovider)
             print("Successfully Set Private DNS to:", dnsprovider)
         except:
