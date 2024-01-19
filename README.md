@@ -5,6 +5,8 @@ Fire Tools is a powerful collection of tools that helps debloat and install Goog
 
 **Note: This tool requires USB Debugging to be enabled**
 
+![Fire Tools Screenshot](/Pictures/Fire-Tools.png)
+
 ## Features
 - Cross Platform (Linux, macOS, & Windows)
 - Powerful Debloat Tool
@@ -13,14 +15,11 @@ Fire Tools is a powerful collection of tools that helps debloat and install Goog
 - Apk Extractor
 - Split Apk Support (aka App Bundles)
 - Private DNS Switcher
-- Built in Update Tool
 
 ## Officially Supported Devices
 - Fire HD 10 (9th Gen, 11th Gen)
 - Fire HD 8 (8th Gen, 10th Gen)
 - Fire 7 (9th Gen, 12th Gen)
-
-![Linux/macOS Screenshot](/Pictures/Fire-Tools.png)
 
 ## Setup
 Select instructions for your OS:
