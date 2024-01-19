@@ -97,18 +97,18 @@ case "$tool" in
 
     "Custom DNS")
         server=$(zenity --entry --width=400 --height=200 --title="Input Private DNS (DoT) Provider" --text="Example Servers:\n- dns.adguard.com\n- security.cloudflare-dns.com\n- dns.quad9.net\n- None")
-        printf "%s\n" "$server" | grep -q --ignore-case "None" && {
+        [ -n "$server" ] || exec ./ui.sh
+        if (printf "%s\n" "$server" | grep -i -q "None"); then
             adb shell settings put global private_dns_mode off
-            exec ./ui.sh
             printf "%s\n" "Disabled Private DNS"
-        }
-        printf "%s\n" "$server" | grep -q "dns" &&
-        if (ping -q -c 1 "$server" >/dev/null 2>&1); then
-            adb shell settings put global private_dns_mode hostname
-            adb shell settings put global private_dns_specifier "$server"
-            printf "%s\n" "Successfully Changed Private DNS to: $server"
         else
-            printf "%s\n" "Error: $server is Not a Valid DoT Address"
+            if (ping -q -c 1 "$server" >/dev/null 2>&1); then
+                adb shell settings put global private_dns_mode hostname
+                adb shell settings put global private_dns_specifier "$server"
+                printf "%s\n" "Successfully Changed Private DNS to: $server"
+            else
+                printf "%s\n" "Error: $server is Not a Valid DoT Address"
+            fi
         fi;;
 
     "Update")
