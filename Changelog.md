@@ -1,3 +1,12 @@
+## Updated ui.sh, debloat.sh, Fire-Tools.ps1, version, Debloat.txt (All) 01/19/2024
+- Undo now re-enables location services
+- Undo now enables core apps (OTA & Fire Launcher)
+- Fixed terminal not outputting "Disabled Private DNS" (Linux/macOS)
+- Fix DNS not being disabled
+- Undo text now says "Disabling Private DNS" instead of just AdGuard
+- Swapped to different method of disabling location services
+- Removed com.amazon.wifilocker & com.amazon.kindle.starsight from Debloat.txt because they made reconnecting to Wi-Fi inconsistent
+
 ## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, Debloat.txt, version (All) 10/25/2023
 - Version bump (23.10)
 - Script now waits for a device to be connected
@@ -39,15 +48,3 @@
 - Swapped to regex for formatting custom launcher diff (Linux/macOS)
 - Silenced output of split apk extraction
 - If ADB is not found, you will be asked to open the ADB installation instructions page (Windows)
-
-## Updated ui.sh, debloat.sh, launcher.sh, Fire-Tools.ps1, Debloat.txt, version (All) 04/06/2023
-- Version bump (23.04)
-- Apk Extractor can now extract multiple .APKs
-- Launcher3/Quickstep will be disabled to prevent launcher dialog from showing up
-- Rewrote launchers function to reduce redundant code & simplify enabling widgets
-- Fire Launcher will now only be disabled after the selected launcher successfully installs
-- Terminal output now shows which launcher was installed
-- Terminal output now shows "Enabling Core Apps" when enabling Fire Launcher & OTA
-- Fixed ADB check (Windows)
-- Application now prompts to close to apply updates (Windows)
-- Added padding to update status text (Windows)

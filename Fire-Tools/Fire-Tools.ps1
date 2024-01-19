@@ -1,4 +1,4 @@
-$version = "23.10"
+$version = "24.01"
 
 # Check if ADB is installed. If not, open documentation
 try {
@@ -236,7 +236,14 @@ $debloatTool.Add_Click{
     }
     if ($this.Text -eq "Undo"){
         Write-Host "Disabling Private DNS"
-        adb shell settings put global private_dns_mode -hostname
+        adb shell settings put global private_dns_mode off
+        Write-Host "Enabling Location Services"
+        adb shell settings put global location_global_kill_switch 0
+        Write-Host "Enabling Core Apps"
+        $core = @("firelauncher", "device.software.ota", "device.software.ota.override", "kindle.otter.oobe.forced.ota")
+        foreach ($package in $core){
+            debloat undo com.amazon."$package"
+        }
         Write-Host "Enabling Background Activities"
         adb shell settings put global always_finish_activities 0
         Write-Host "Successfully Enabled Fire OS Bloat`n"
@@ -246,8 +253,8 @@ $debloatTool.Add_Click{
         adb shell settings put secure usage_metrics_marketing_enabled 0
         adb shell settings put secure USAGE_METRICS_UPLOAD_ENABLED 0
         adb shell pm clear com.amazon.advertisingidsettings
-        Write-Host "Disabling Location"
-        adb shell settings put secure location_providers_allowed -network
+        Write-Host "Disabling Location Services"
+        adb shell settings put global location_global_kill_switch 1
         Write-Host "Blocking Ads With AdGuard DNS"
         adb shell settings put global private_dns_mode hostname
         adb shell settings put global private_dns_specifier "dns.adguard.com"
@@ -275,7 +282,7 @@ $edit.Add_Click{.\Debloat.txt}
 $customdns.Add_Click{
     if ($dnsServers.SelectedItem -eq "None"){
         Write-Host "Disabling Private DNS"
-        adb shell settings put global private_dns_mode -hostname
+        adb shell settings put global private_dns_mode off
     } elseif ($dnsServers.Text | Select-String -Quiet "dns(\.|[a-z])"){
         if (Test-Connection -Count 1 -Quiet $dnsServers.Text){
             adb shell settings put global private_dns_mode hostname

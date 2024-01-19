@@ -111,5 +111,3 @@ com.amazon.weather                               # Weather
 com.amazon.whisperplay.service.install           # Whisperlink Installer
 com.amazon.whisperplay.contracts                 # Whisperlink SDK
 com.amazon.whisperlink.core.android              # Whisperplay Daemon
-com.amazon.wifilocker                            # Wifi Locker
-com.amazon.kindle.starsight                      # Wifi Reconnect
