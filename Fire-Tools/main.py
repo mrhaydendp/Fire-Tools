@@ -1,14 +1,14 @@
 import customtkinter as ctk
-import subprocess, os, webbrowser, glob
+import subprocess, os, glob
 
 # Build/Device Variables
 version = "Testing"
 platform = "(Linux/macOS)"
-path = str(os.getcwd() + "/Scripts/Posix")
+path = os.getcwd() + "/Scripts/Posix"
 extension = ".sh"
 if os.name == "nt":
     platform = "(Windows)"
-    path = str(os.getcwd() + "/Scripts/Powershell")
+    path = os.getcwd() + "/Scripts/Powershell"
     extension = ".ps1"
 
 # Window Config
@@ -21,11 +21,13 @@ window.columnconfigure(2)
 
 # Functions
 def debloat(option):
-    print(path + "/debloat" + extension, option)
     subprocess.call([path + "/debloat" + extension, option])
 
 def editfile():
-    webbrowser.open("Debloat.txt")
+    if platform != "(Windows)":
+        os.system("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt")
+    else:
+        os.system("Debloat.txt")
 
 def set_dns():
     dnsprovider = customdns.get()
@@ -34,10 +36,9 @@ def set_dns():
         print("Disabled Private DNS")
 
     elif dnsprovider != "Select or Enter DNS Server":
-        cmd = "adb shell settings put global private_dns_specifier " + dnsprovider
         try:
             os.system("adb shell settings put global private_dns_mode -hostname")
-            os.system(cmd)
+            os.system("adb shell settings put global private_dns_specifier " + dnsprovider)
             print("Successfully Set Private DNS to:", dnsprovider)
         except:
             print("Error:", dnsprovider, "is Unreachable or Invalid")
@@ -50,8 +51,7 @@ def appinstaller(folder):
 def disableota():
     ota = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
     for package in ota:
-        cmd = "adb shell pm disable-user -k " + package + " >/dev/null 2>&1 && echo 'Disabled: '" + package + " || echo 'Failed to Disable: '" + package
-        os.system(cmd)
+        subprocess.call([path + "/debloat" + extension, "Disable", package])
 
 def set_launcher():
     if customlauncher.get() == "Custom":
@@ -62,8 +62,10 @@ def set_launcher():
     elif customlauncher.get() != "Select Launcher":
         test = os.getcwd() + "/" + customlauncher.get() + "*.apk"
         for launcher in glob.iglob(test):
-            print(path + "/appinstaller" + extension, launcher)
             subprocess.call([path + "/appinstaller" + extension, launcher])
+
+def switch(value):
+    selected.configure(text=value + " Selected")
 
 # Column 1
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
@@ -115,11 +117,14 @@ setlauncher.grid(row=6, column=1, padx=60, pady=15)
 label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
 
-segemented_button = ctk.CTkSegmentedButton(window, values=["Enable", "Disable"], width=200, height=50, dynamic_resizing=False)
-segemented_button.set("Disable")
-segemented_button.grid(row=1, column=2, padx=60, pady=15)
+package_option = ctk.CTkSegmentedButton(window, values=["Enable", "Disable"], width=200, height=50, dynamic_resizing=False, command=switch)
+package_option.set("Disable")
+package_option.grid(row=1, column=2, padx=60, pady=15)
+
+selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50)
+selected.grid(row=2, column=2, padx=60, pady=15)
 
 extract = ctk.CTkButton(window, text="Extract", width=200, height=50)
-extract.grid(row=2, column=2, padx=60, pady=15)
+extract.grid(row=3, column=2, padx=60, pady=15)
 
 window.mainloop()
