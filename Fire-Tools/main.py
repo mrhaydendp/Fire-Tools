@@ -1,5 +1,5 @@
 import customtkinter as ctk
-import subprocess, os, glob
+import os, glob
 
 # Build/Device Variables
 version = "Testing"
@@ -8,7 +8,7 @@ path = os.getcwd() + "/Scripts/Posix"
 extension = ".sh"
 if os.name == "nt":
     platform = "(Windows)"
-    path = os.getcwd() + "/Scripts/Powershell"
+    path = "powershell.exe -ExecutionPolicy RemoteSigned -file " + os.getcwd() + "/Scripts/PowerShell"
     extension = ".ps1"
 
 # Window Config
@@ -21,13 +21,13 @@ window.columnconfigure(2)
 
 # Functions
 def debloat(option):
-    subprocess.call([path + "/debloat" + extension, option])
+    os.system(path + "/debloat" + extension + " " + option)
 
 def editfile():
     if platform != "(Windows)":
         os.system("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt")
     else:
-        os.system("Debloat.txt")
+        os.startfile('Debloat.txt')
 
 def set_dns():
     dnsprovider = customdns.get()
@@ -46,23 +46,25 @@ def set_dns():
 def appinstaller(folder):
     dir = os.getcwd() + folder + "/*.apk*"
     for app in glob.iglob(dir):
-        subprocess.call([path + "/appinstaller" + extension, app])
+        os.system(path + "/appinstaller" + extension + " " + option)
 
 def disableota():
     ota = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
     for package in ota:
-        subprocess.call([path + "/debloat" + extension, "Disable", package])
+        os.system(path + "/debloat" + extension + " " + "Disable " + package)
+
 
 def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title = "Select .apk(m) File",filetypes = (("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
         if launcher:
-            subprocess.call([path + "/appinstaller" + extension, launcher])
+            os.system(path + "/appinstaller" + extension + " " + launcher)
+
 
     elif customlauncher.get() != "Select Launcher":
         test = os.getcwd() + "/" + customlauncher.get() + "*.apk"
         for launcher in glob.iglob(test):
-            subprocess.call([path + "/appinstaller" + extension, launcher])
+            os.system(path + "/appinstaller" + extension + " " + launcher)
 
 def switch(value):
     selected.configure(text=value + " Selected")
