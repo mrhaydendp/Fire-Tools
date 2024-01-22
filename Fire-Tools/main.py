@@ -11,9 +11,12 @@ if os.name == "nt":
     path = "powershell.exe -ExecutionPolicy Bypass -file " + os.getcwd() + "/Scripts/PowerShell"
     extension = ".ps1"
 
+# Identify Fire Device
+device = os.popen(path + "/identify" + extension).read()
+
 # Window Config
 window = ctk.CTk()
-window.title("Fire Tools v" + version + " - " + platform)
+window.title("Fire Tools v" + version + " - " + platform + " | " + device)
 window.geometry("980x550")
 window.columnconfigure(0)
 window.columnconfigure(1)
@@ -32,11 +35,10 @@ def editfile():
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
-        os.system("adb shell settings put global private_dns_mode off")
-        print("Disabled Private DNS")
+        os.system("adb shell \"settings put global private_dns_mode off && printf '%s\\n\\n' 'Disabled Private DNS'\"")
     elif dnsprovider != "Select or Enter DNS Server":
             os.system("adb shell settings put global private_dns_mode hostname")
-            os.system("adb shell \"settings put global private_dns_specifier " + dnsprovider + " && printf 'Successfully Set Private DNS to: %s\\n' " + dnsprovider + "\"")
+            os.system("adb shell \"settings put global private_dns_specifier " + dnsprovider + " && printf 'Successfully Set Private DNS to: %s\\n\\n' " + dnsprovider + "\"")
 
 def appinstaller(folder):
     dir = os.getcwd() + folder + "/*.apk*"
