@@ -41,8 +41,8 @@ def set_dns():
             os.system("adb shell \"settings put global private_dns_specifier " + dnsprovider + " && printf 'Successfully Set Private DNS to: %s\\n\\n' " + dnsprovider + "\"")
 
 def appinstaller(folder):
-    dir = os.getcwd() + folder + "/*.apk*"
-    for app in glob.iglob(dir):
+    search = os.getcwd() + folder + "/*.apk*"
+    for app in glob.iglob(search):
         os.system(path + "/appinstaller" + extension + app)
 
 def disableota():
@@ -56,8 +56,8 @@ def set_launcher():
         if launcher:
             os.system(path + "/appinstaller" + extension + launcher)
     elif customlauncher.get() != "Select Launcher":
-        test = os.getcwd() + "/" + customlauncher.get() + "*.apk"
-        for launcher in glob.iglob(test):
+        search = os.getcwd() + "/" + customlauncher.get() + "*.apk"
+        for launcher in glob.iglob(search):
             os.system(path + "/appinstaller" + extension + launcher)
 
 def switch(value):
