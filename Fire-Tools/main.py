@@ -5,11 +5,11 @@ import os, glob
 version = "Testing"
 platform = "(Linux/macOS)"
 path = os.getcwd() + "/Scripts/Posix"
-extension = ".sh"
+extension = ".sh "
 if os.name == "nt":
     platform = "(Windows)"
     path = "powershell.exe -ExecutionPolicy Bypass -file " + os.getcwd() + "/Scripts/PowerShell"
-    extension = ".ps1"
+    extension = ".ps1 "
 
 # Identify Fire Device
 device = os.popen(path + "/identify" + extension).read()
@@ -24,7 +24,7 @@ window.columnconfigure(2)
 
 # Functions
 def debloat(option):
-    os.system(path + "/debloat" + extension + " " + option)
+    os.system(path + "/debloat" + extension + option)
 
 def editfile():
     if platform != "(Windows)":
@@ -43,23 +43,22 @@ def set_dns():
 def appinstaller(folder):
     dir = os.getcwd() + folder + "/*.apk*"
     for app in glob.iglob(dir):
-        os.system(path + "/appinstaller" + extension + " " + option)
+        os.system(path + "/appinstaller" + extension + app)
 
 def disableota():
     ota = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
     for package in ota:
-        os.system(path + "/debloat" + extension + " " + "Disable " + package)
-
+        os.system(path + "/debloat" + extension + "Disable " + package)
 
 def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title = "Select .apk(m) File",filetypes = (("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
         if launcher:
-            os.system(path + "/appinstaller" + extension + " " + launcher)
+            os.system(path + "/appinstaller" + extension + launcher)
     elif customlauncher.get() != "Select Launcher":
         test = os.getcwd() + "/" + customlauncher.get() + "*.apk"
         for launcher in glob.iglob(test):
-            os.system(path + "/appinstaller" + extension + " " + launcher)
+            os.system(path + "/appinstaller" + extension + launcher)
 
 def switch(value):
     selected.configure(text=value + " Selected")
