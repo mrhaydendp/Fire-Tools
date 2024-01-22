@@ -8,7 +8,7 @@ path = os.getcwd() + "/Scripts/Posix"
 extension = ".sh"
 if os.name == "nt":
     platform = "(Windows)"
-    path = "powershell.exe -ExecutionPolicy RemoteSigned -file " + os.getcwd() + "/Scripts/PowerShell"
+    path = "powershell.exe -ExecutionPolicy Bypass -file " + os.getcwd() + "/Scripts/PowerShell"
     extension = ".ps1"
 
 # Window Config
@@ -34,14 +34,9 @@ def set_dns():
     if dnsprovider == "None":
         os.system("adb shell settings put global private_dns_mode off")
         print("Disabled Private DNS")
-
     elif dnsprovider != "Select or Enter DNS Server":
-        try:
             os.system("adb shell settings put global private_dns_mode hostname")
-            os.system("adb shell settings put global private_dns_specifier " + dnsprovider)
-            print("Successfully Set Private DNS to:", dnsprovider)
-        except:
-            print("Error:", dnsprovider, "is Unreachable or Invalid")
+            os.system("adb shell \"settings put global private_dns_specifier " + dnsprovider + " && printf 'Successfully Set Private DNS to: %s\\n' " + dnsprovider + "\"")
 
 def appinstaller(folder):
     dir = os.getcwd() + folder + "/*.apk*"
@@ -59,8 +54,6 @@ def set_launcher():
         launcher = ctk.filedialog.askopenfilename(title = "Select .apk(m) File",filetypes = (("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
         if launcher:
             os.system(path + "/appinstaller" + extension + " " + launcher)
-
-
     elif customlauncher.get() != "Select Launcher":
         test = os.getcwd() + "/" + customlauncher.get() + "*.apk"
         for launcher in glob.iglob(test):
