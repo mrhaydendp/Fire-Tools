@@ -43,7 +43,7 @@ def set_dns():
 def appinstaller(folder):
     search = os.getcwd() + folder + "/*.apk*"
     for app in glob.iglob(search):
-        os.system(path + "/appinstaller" + extension + app)
+        os.system(path + "/appinstaller" + extension + "\"" + app + "\"")
 
 def disableota():
     ota = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
@@ -54,11 +54,11 @@ def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title = "Select .apk(m) File",filetypes = (("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
         if launcher:
-            os.system(path + "/appinstaller" + extension + launcher)
+            os.system(path + "/appinstaller" + extension + "\"" + launcher + "\"")
     elif customlauncher.get() != "Select Launcher":
         search = os.getcwd() + "/" + customlauncher.get() + "*.apk"
         for launcher in glob.iglob(search):
-            os.system(path + "/appinstaller" + extension + launcher)
+            os.system(path + "/appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
 
 def switch(value):
     selected.configure(text=value + " Selected")
