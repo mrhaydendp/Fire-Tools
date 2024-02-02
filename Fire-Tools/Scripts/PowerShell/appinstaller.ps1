@@ -21,5 +21,5 @@ if ("$option" -eq "Launcher"){
         adb shell appwidget grantbind --package "$_".split(":")[1]
     }
     adb shell pm disable-user -k com.amazon.firelauncher *> $null
-    if ("$?" -eq "False") {powershell -ExecutionPolicy Bypass -file .\Scripts\PowerShell\appinstaller .\LauncherHijackV403.apk}
+    if ("$?" -eq "False") {powershell -ExecutionPolicy Bypass -file .\Scripts\PowerShell\appinstaller.ps1 .\LauncherHijackV403.apk}
 }
