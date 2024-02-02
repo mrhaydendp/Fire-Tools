@@ -60,8 +60,23 @@ def set_launcher():
         for launcher in glob.iglob(search):
             os.system(path + "/appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
 
+def test(option):
+    packages = textbox.get("1.0", "100.0")
+    for package in packages.split():       
+        if option == "Disable":
+            print("Disabling:", package)
+        elif option == "Enable":
+            print("Enabling:", package)
+        elif option == "Extract":
+            print("Extracting:", package)
+
 def switch(value):
     selected.configure(text=value + " Selected")
+    selected.configure(command=lambda: test(value))
+
+def add_package(value):
+    #print("Selected:", value)
+    textbox.insert("1.0", value)
 
 # Column 1
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
@@ -102,7 +117,7 @@ ota.grid(row=3, column=1, padx=60, pady=15)
 label3 = ctk.CTkLabel(window, text="Custom Launcher", font=("default",25))
 label3.grid(row=4, column=1, padx=60, pady=15)
 
-customlauncher = ctk.CTkOptionMenu(window, values=["Lawnchair", "Nova Launcher", "Custom"], width=200, height=30, fg_color=("#F9F9FA","#343638"), button_color=("#979DA2","#565b5e"), text_color=("#1A1A1A","#DCE4EE"))
+customlauncher = ctk.CTkComboBox(window, values=["Lawnchair", "Nova Launcher", "Custom"], width=200, height=30, state="readonly")
 customlauncher.grid(row=5, column=1, padx=60, pady=15)
 customlauncher.set("Select Launcher")
 
@@ -114,23 +129,21 @@ label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
 
 # Read Packages from packagelist
-packages = []
 with open("test.txt") as package:
-    packages = [line for line in package]
-    print(line for line in package)
+    packagelist = [line for line in package]
 
-packagelist = ctk.CTkOptionMenu(window, values= tuple(packages), width=200, height=30, fg_color=("#F9F9FA","#343638"), button_color=("#979DA2","#565b5e"), text_color=("#1A1A1A","#DCE4EE"), dynamic_resizing=False)
+packagelist = ctk.CTkComboBox(window, values=packagelist, width=200, height=30, state="readonly", command=add_package)
 packagelist.grid(row=1, column=2, padx=60, pady=15)
 packagelist.set("Select Package(s) for List")
 
-package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable"], width=200, height=50, dynamic_resizing=False, command=switch)
+textbox = ctk.CTkTextbox(window, wrap="none")
+#textbox.grid(row=2, column=2, padx=60, pady=15)
+
+package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
 package_option.set("Disable")
-package_option.grid(row=2, column=2, padx=60, pady=15)
+package_option.grid(row=3, column=2, padx=60, pady=15)
 
-selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50)
-selected.grid(row=3, column=2, padx=60, pady=15)
-
-extract = ctk.CTkButton(window, text="Extract", width=200, height=50)
-extract.grid(row=4, column=2, padx=60, pady=15)
+selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: test("Disable"))
+selected.grid(row=4, column=2, padx=60, pady=15)
 
 window.mainloop()
