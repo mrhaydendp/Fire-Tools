@@ -113,14 +113,24 @@ setlauncher.grid(row=6, column=1, padx=60, pady=15)
 label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
 
-package_option = ctk.CTkSegmentedButton(window, values=["Enable", "Disable"], width=200, height=50, dynamic_resizing=False, command=switch)
+# Read Packages from packagelist
+packages = []
+with open("test.txt") as package:
+    packages = [line for line in package]
+    print(line for line in package)
+
+packagelist = ctk.CTkOptionMenu(window, values= tuple(packages), width=200, height=30, fg_color=("#F9F9FA","#343638"), button_color=("#979DA2","#565b5e"), text_color=("#1A1A1A","#DCE4EE"), dynamic_resizing=False)
+packagelist.grid(row=1, column=2, padx=60, pady=15)
+packagelist.set("Select Package(s) for List")
+
+package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable"], width=200, height=50, dynamic_resizing=False, command=switch)
 package_option.set("Disable")
-package_option.grid(row=1, column=2, padx=60, pady=15)
+package_option.grid(row=2, column=2, padx=60, pady=15)
 
 selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50)
-selected.grid(row=2, column=2, padx=60, pady=15)
+selected.grid(row=3, column=2, padx=60, pady=15)
 
 extract = ctk.CTkButton(window, text="Extract", width=200, height=50)
-extract.grid(row=3, column=2, padx=60, pady=15)
+extract.grid(row=4, column=2, padx=60, pady=15)
 
 window.mainloop()
