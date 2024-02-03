@@ -4,15 +4,15 @@ import os, glob
 # Build/Device Variables
 version = "Testing"
 platform = "(Linux/macOS)"
-path = os.getcwd() + "/Scripts/Posix"
+path = os.getcwd() + "/Scripts/Posix/"
 extension = ".sh "
 if os.name == "nt":
     platform = "(Windows)"
-    path = "powershell.exe -ExecutionPolicy Bypass -file " + os.getcwd() + "/Scripts/PowerShell"
+    path = "powershell -ExecutionPolicy Bypass -file " + os.getcwd() + "\\Scripts\\PowerShell\\"
     extension = ".ps1 "
 
 # Identify Fire Device
-device = os.popen(path + "/identify" + extension).read()
+device = os.popen(path + "identify" + extension).read()
 
 # Window Config
 window = ctk.CTk()
@@ -23,8 +23,8 @@ window.columnconfigure(1)
 window.columnconfigure(2)
 
 # Functions
-def debloat(option):
-    os.system(path + "/debloat" + extension + option)
+def debloat(option, package):
+    os.system(path + "debloat" + extension + option + " " + package)
 
 def editfile():
     if platform != "(Windows)":
@@ -43,46 +43,46 @@ def set_dns():
 def appinstaller(folder):
     search = os.getcwd() + folder + "/*.apk*"
     for app in glob.iglob(search):
-        os.system(path + "/appinstaller" + extension + "\"" + app + "\"")
+        os.system(path + "appinstaller" + extension + "\"" + app + "\"")
 
 def disableota():
     ota = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
     for package in ota:
-        os.system(path + "/debloat" + extension + "Disable " + package)
+        debloat("Disable",package)
 
 def set_launcher():
     if customlauncher.get() == "Custom":
-        launcher = ctk.filedialog.askopenfilename(title = "Select .apk(m) File",filetypes = (("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
+        launcher = ctk.filedialog.askopenfilename(title="Select .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
         if launcher:
-            os.system(path + "/appinstaller" + extension + "\"" + launcher + "\"")
+            os.system(path + "appinstaller" + extension + "\"" + launcher + "\"")
     elif customlauncher.get() != "Select Launcher":
         search = os.getcwd() + "/" + customlauncher.get() + "*.apk"
         for launcher in glob.iglob(search):
-            os.system(path + "/appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
+            os.system(path + "appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
 
-def test(option):
-    packages = textbox.get("1.0", "100.0")
-    for package in packages.split("\n"):
-        if package != "":
-            print(option, "Package:", package)
+def custom(option):
+    packages = textbox.get("1.0", str(line + 1) + ".0")
+    for package in packages.split():
+        if option == "Extract":
+            print("Extracting:", package)
+        else:
+            debloat(option,package)
+def switch(option):
+    selected.configure(text=option + " Selected",command=lambda: custom(option))
 
-def switch(value):
-    selected.configure(text=value + " Selected")
-    selected.configure(command=lambda: test(value))
-
-def add_package(value):
+def add_package(package):
     global line
     line += 1
-    textbox.insert(str(line) + ".0", value)
+    textbox.insert(str(line) + ".0", package)
 
 # Column 1
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
 label.grid(row=0, column=0, padx=60, pady=15)
 
-disable = ctk.CTkButton(window, text="Debloat", width=200, height=50, command=lambda: debloat("Disable"))
+disable = ctk.CTkButton(window, text="Debloat", width=200, height=50, command=lambda: debloat("Disable",""))
 disable.grid(row=1, column=0, padx=60, pady=15)
 
-undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=lambda: debloat("Enable"))
+undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=lambda: debloat("Enable",""))
 undo.grid(row=2, column=0, padx=60, pady=15)
 
 edit = ctk.CTkButton(window, text="Edit", width=200, height=50, command=editfile)
@@ -126,7 +126,7 @@ label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
 
 # Read Packages from packagelist
-packagelist = open("packagelist", "rb").readlines()
+packagelist = open("packagelist", encoding="utf-16").readlines()
 
 packagelist = ctk.CTkComboBox(window, values=packagelist, width=200, height=30, state="readonly", command=add_package)
 packagelist.grid(row=1, column=2, padx=60, pady=15)
@@ -140,7 +140,7 @@ package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Ex
 package_option.set("Disable")
 package_option.grid(row=5, column=2, padx=60, pady=15)
 
-selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: test("Disable"))
+selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: custom("Disable"))
 selected.grid(row=6, column=2, padx=60, pady=15)
 
 window.mainloop()
