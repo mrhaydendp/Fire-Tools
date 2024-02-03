@@ -62,21 +62,18 @@ def set_launcher():
 
 def test(option):
     packages = textbox.get("1.0", "100.0")
-    for package in packages.split():       
-        if option == "Disable":
-            print("Disabling:", package)
-        elif option == "Enable":
-            print("Enabling:", package)
-        elif option == "Extract":
-            print("Extracting:", package)
+    for package in packages.split("\n"):
+        if package != "":
+            print(option, "Package:", package)
 
 def switch(value):
     selected.configure(text=value + " Selected")
     selected.configure(command=lambda: test(value))
 
 def add_package(value):
-    #print("Selected:", value)
-    textbox.insert("1.0", value)
+    global line
+    line += 1
+    textbox.insert(str(line) + ".0", value)
 
 # Column 1
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
@@ -129,21 +126,21 @@ label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
 
 # Read Packages from packagelist
-with open("test.txt") as package:
-    packagelist = [line for line in package]
+packagelist = open("packagelist", "rb").readlines()
 
 packagelist = ctk.CTkComboBox(window, values=packagelist, width=200, height=30, state="readonly", command=add_package)
 packagelist.grid(row=1, column=2, padx=60, pady=15)
 packagelist.set("Select Package(s) for List")
 
 textbox = ctk.CTkTextbox(window, wrap="none")
-#textbox.grid(row=2, column=2, padx=60, pady=15)
+textbox.place(x=700, y=154)
+line = 0
 
 package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
 package_option.set("Disable")
-package_option.grid(row=3, column=2, padx=60, pady=15)
+package_option.grid(row=5, column=2, padx=60, pady=15)
 
 selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: test("Disable"))
-selected.grid(row=4, column=2, padx=60, pady=15)
+selected.grid(row=6, column=2, padx=60, pady=15)
 
 window.mainloop()
