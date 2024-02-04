@@ -60,11 +60,23 @@ def set_launcher():
         for launcher in glob.iglob(search):
             os.system(path + "appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
 
+def extract(package):
+    if not os.path.exists("Extracted/" + package):
+        print("Extracting:", package)
+        os.mkdir("Extracted/" + package)
+        for packagelocation in os.popen("adb shell pm path " + package).read().splitlines():
+                packagelocation = packagelocation.replace("package:","")
+                os.system("adb pull " + packagelocation + " ./Extracted/" + package)
+                if os.listdir("Extracted/" + package):
+                    print("Success\n")
+    else:
+        print("Found at: /Extracted/" + package + "\n")
+
 def custom(option):
     packages = customlist.get("1.0", str(line + 1) + ".0")
     for package in packages.split():
         if option == "Extract":
-            print("Extracting:", package)
+            extract(package)
         else:
             debloat(option,package)
 
@@ -138,7 +150,7 @@ packages.grid(row=1, column=2, padx=60, pady=15)
 packages.set("Select Package(s) for List")
 
 customlist = ctk.CTkTextbox(window, wrap="none")
-customlist.place(x=718, y=154)
+customlist.place(x=700, y=154, anchor="nw")
 line = 0
 
 package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
