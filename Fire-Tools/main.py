@@ -150,7 +150,10 @@ packages.grid(row=1, column=2, padx=60, pady=15)
 packages.set("Select Package(s) for List")
 
 customlist = ctk.CTkTextbox(window, wrap="none")
-customlist.place(x=700, y=154, anchor="nw")
+# Fix Inconsistent .place() Between Windows and Linux
+customlist.place(x=718, y=156)
+if os.name == "nt":
+    customlist.place(x=700, y=156)
 line = 0
 
 package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
