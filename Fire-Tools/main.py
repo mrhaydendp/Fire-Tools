@@ -61,19 +61,21 @@ def set_launcher():
             os.system(path + "appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
 
 def custom(option):
-    packages = textbox.get("1.0", str(line + 1) + ".0")
+    packages = customlist.get("1.0", str(line + 1) + ".0")
     for package in packages.split():
         if option == "Extract":
             print("Extracting:", package)
         else:
             debloat(option,package)
+
 def switch(option):
     selected.configure(text=option + " Selected",command=lambda: custom(option))
 
 def add_package(package):
+    packages.set("Select Package(s) for List")
     global line
     line += 1
-    textbox.insert(str(line) + ".0", package)
+    customlist.insert(str(line) + ".0", package + "\n")
 
 # Column 1
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
@@ -125,15 +127,18 @@ setlauncher.grid(row=6, column=1, padx=60, pady=15)
 label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
 
-# Read Packages from packagelist
-packagelist = open("packagelist", encoding="utf-16").readlines()
+# Read Packages from 'packagelist' & Set File Encoding Based on OS
+file_encoding = "us-ascii"
+if os.name == "nt":
+    file_encoding = "utf-16"
+packagelist = open("packagelist", encoding=file_encoding).read().splitlines()
 
-packagelist = ctk.CTkComboBox(window, values=packagelist, width=200, height=30, state="readonly", command=add_package)
-packagelist.grid(row=1, column=2, padx=60, pady=15)
-packagelist.set("Select Package(s) for List")
+packages = ctk.CTkComboBox(window, values=packagelist, width=200, height=30, state="readonly", command=add_package)
+packages.grid(row=1, column=2, padx=60, pady=15)
+packages.set("Select Package(s) for List")
 
-textbox = ctk.CTkTextbox(window, wrap="none")
-textbox.place(x=700, y=154)
+customlist = ctk.CTkTextbox(window, wrap="none")
+customlist.place(x=718, y=154)
 line = 0
 
 package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
