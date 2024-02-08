@@ -60,9 +60,9 @@ def disableota():
 # Pass Selected Package to Appinstaller with Launcher Argument
 def set_launcher():
     if customlauncher.get() == "Custom":
-        launcher = ctk.filedialog.askopenfilename(title="Select .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
+        launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
         if launcher:
-            os.system(path + "appinstaller" + extension + "\"" + launcher + "\"")
+            os.system(path + "appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
     elif customlauncher.get() != "Select Launcher":
         search = os.getcwd() + "/" + customlauncher.get() + "*.apk"
         for launcher in glob.iglob(search):
@@ -78,6 +78,9 @@ def extract(package):
                 os.system("adb pull " + packagelocation + " ./Extracted/" + package)
                 if os.listdir("Extracted/" + package):
                     print("Success\n")
+                else:
+                    os.rmdir("Extracted/" + package)
+                    print("Fail\n")
     else:
         print("Found at: /Extracted/" + package + "\n")
 
