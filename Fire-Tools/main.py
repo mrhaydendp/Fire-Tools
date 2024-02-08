@@ -11,8 +11,11 @@ if os.name == "nt":
     path = "powershell -ExecutionPolicy Bypass -file " + os.getcwd() + "\\Scripts\\PowerShell\\"
     extension = ".ps1 "
 
-# Identify Fire Device
+# Identify Fire Device & Generate Package List
 device = os.popen(path + "identify" + extension).read()
+packagelist = []
+for package in os.popen("adb shell pm list packages").read().splitlines():
+    packagelist.append(package.replace("package:",""))
 
 # Window Config
 window = ctk.CTk()
@@ -147,12 +150,6 @@ setlauncher.grid(row=6, column=1, padx=60, pady=15)
 # Column 3
 label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
-
-# Read Packages from 'packagelist' & Set File Encoding Based on OS
-file_encoding = "us-ascii"
-if os.name == "nt":
-    file_encoding = "utf-16"
-packagelist = open("packagelist", encoding=file_encoding).read().splitlines()
 
 packages = ctk.CTkComboBox(window, values=packagelist, width=200, height=30, state="readonly", command=add_package)
 packages.grid(row=1, column=2, padx=60, pady=15)
