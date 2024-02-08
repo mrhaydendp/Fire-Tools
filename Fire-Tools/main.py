@@ -2,7 +2,7 @@ import customtkinter as ctk
 import os, glob
 
 # Build/Device Variables
-version = "Testing"
+version = "Beta"
 platform = "(Linux/macOS)"
 path = os.getcwd() + "/Scripts/Posix/"
 extension = ".sh "
