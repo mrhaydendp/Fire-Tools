@@ -22,16 +22,18 @@ window.columnconfigure(0)
 window.columnconfigure(1)
 window.columnconfigure(2)
 
-# Functions
+# Run Debloat Script & Pass in Arguments
 def debloat(option, package):
     os.system(path + "debloat" + extension + option + " " + package)
 
+# Open Debloat.txt in Preferred Text Editor
 def editfile():
     if platform != "(Windows)":
         os.system("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt")
     else:
         os.startfile('Debloat.txt')
 
+# Set DNS Mode to Hostname and Set Selected Provider as Private DNS
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
@@ -40,16 +42,19 @@ def set_dns():
             os.system("adb shell settings put global private_dns_mode hostname")
             os.system("adb shell \"settings put global private_dns_specifier " + dnsprovider + " && printf 'Successfully Set Private DNS to: %s\\n\\n' " + dnsprovider + "\"")
 
+# Get all .apk(m) Files from Selected Folder & Pass to AppInstaller Script
 def appinstaller(folder):
     search = os.getcwd() + folder + "/*.apk*"
     for app in glob.iglob(search):
         os.system(path + "appinstaller" + extension + "\"" + app + "\"")
 
+# Attempt to Disable OTA Packages
 def disableota():
     ota = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
     for package in ota:
         debloat("Disable",package)
 
+# Pass Selected Package to Appinstaller with Launcher Argument
 def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title="Select .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
@@ -60,6 +65,7 @@ def set_launcher():
         for launcher in glob.iglob(search):
             os.system(path + "appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
 
+# Make Folder using Package Name & Extract Package from Device
 def extract(package):
     if not os.path.exists("Extracted/" + package):
         print("Extracting:", package)
@@ -72,22 +78,25 @@ def extract(package):
     else:
         print("Found at: /Extracted/" + package + "\n")
 
+# Read Packages from Listbox & Pass to Debloat or Extract Function
 def custom(option):
-    packages = customlist.get("1.0", str(line + 1) + ".0")
+    packages = customlist.get("1.0", "100.0")
     for package in packages.split():
         if option == "Extract":
             extract(package)
         else:
             debloat(option,package)
 
+# Switch Segmented Button's Text & Command to Selected Option
 def switch(option):
     selected.configure(text=option + " Selected",command=lambda: custom(option))
 
+# Add Selected Package to Listbox Then Remove Package from Package List
 def add_package(package):
     packages.set("Select Package(s) for List")
-    global line
-    line += 1
-    customlist.insert(str(line) + ".0", package + "\n")
+    customlist.insert("1.0", package + "\n")
+    packagelist.remove(package)
+    packages.configure(values=packagelist)
 
 # Column 1
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
@@ -154,7 +163,6 @@ customlist = ctk.CTkTextbox(window, wrap="none")
 customlist.place(x=718, y=156)
 if os.name == "nt":
     customlist.place(x=700, y=156)
-line = 0
 
 package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
 package_option.set("Disable")
