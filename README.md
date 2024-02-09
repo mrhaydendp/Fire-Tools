@@ -44,6 +44,7 @@ Explorer .\Fire-Tools
 ## Credits
 Thank you to all these people's software included in this tool! Included software is not my own and is provided for convinience.
 - [Google](https://www.android.com/) (Gapps)
-- [TeslaCoil Software](https://play.google.com/store/apps/developer?id=TeslaCoil%20Software&hl=en_US&gl=US) (Nova Launcher)
+- [TeslaCoil Software](https://novalauncher.com/) (Nova Launcher)
 - [Lawnchair](https://github.com/LawnchairLauncher/Lawnchair) (Lawnchair)
-- [D0k3](https://github.com/d0k3) (Inspired by their OneClick-for-Amazon-Fire tool)
+- [BaronKiko](https://github.com/BaronKiko/LauncherHijack) (LauncherHijack)
+- [D0k3](https://github.com/d0k3/OneClick-for-Amazon-Fire) (Inspired by their OneClick-for-Amazon-Fire tool)
