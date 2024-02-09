@@ -15,15 +15,8 @@ Fire Tools is a powerful collection of tools that helps debloat and install Goog
 - Batch Installer (.apk & .apkm files)
 - Private DNS Switcher
 
-## Setup
-Select instructions for your OS:
-
-- [Linux](Setup-Instructions.md#linux)
-- [macOS](Setup-Instructions.md#macos)
-- [Windows](Setup-Instructions.md#windows)
-
 ## Installation Instructions
-After installation run update tool to get the latest version of scripts!
+Follow the steps outlined in [Setup-Instructions.md](/Setup-Instructions.md) then proceed to installation. After installation run update tool to get the latest version of scripts!
 
 Linux/macOS:
 ``` shell
