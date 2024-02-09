@@ -1,15 +1,15 @@
 ## Linux
-Install the necessary packages for your Linux distro:
+Install the necessary packages for your Linux distro, then proceed to [CustomTkinter installation](#CustomTkinter-Installation).
 
 ``` bash
 # Ubuntu/Debian/Chrome OS Linux Container
-sudo apt install adb zenity
+sudo apt install adb python3-tk
 
 # Arch
-sudo pacman -S android-tools zenity
+sudo pacman -S android-tools tk
 
 # Fedora
-sudo dnf install android-tools zenity
+sudo dnf install android-tools python3-tkinter
 ```
 
 ## MacOS
@@ -20,7 +20,7 @@ The necessary packages need to be installed using [Brew](https://brew.sh).
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Install Packages
-brew install android-platform-tools zenity
+brew install android-platform-tools python-tk
 ```
 
 ## Windows
@@ -45,15 +45,11 @@ Start-BitsTransfer "https://dl.google.com/android/repository/platform-tools-late
 Remove-Item .\platform-tools-latest-windows.zip
 ```
 
-### 7-Zip
-Needed to extract Fire-Tools releases, download from [website](https://www.7-zip.org/) or through Powershell:
+## CustomTkinter Installation
+Install CustomTkinter Package with pip3 (use pip instead on Windows)
 
-``` powershell
-# Winget
-winget install -s winget 7-Zip
-
-# Chocolatey
-choco install 7zip
+``` shell
+pip3 install customtkinter
 ```
 
 ## Fire Tablet Prep
