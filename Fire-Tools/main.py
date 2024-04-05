@@ -13,6 +13,7 @@ if os.name == "nt":
 
 # Identify Fire Device & Generate Package List
 device = os.popen(path + "identify" + extension).read()
+print(device)
 packagelist = []
 for package in os.popen("adb shell pm list packages").read().splitlines():
     packagelist.append(package.replace("package:",""))
