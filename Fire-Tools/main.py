@@ -11,12 +11,9 @@ if os.name == "nt":
     path = "powershell -ExecutionPolicy Bypass -file " + os.getcwd() + "\\Scripts\\PowerShell\\"
     extension = ".ps1 "
 
-# Identify Fire Device & Generate Package List
+# Identify Fire Device
 device = os.popen(path + "identify" + extension).read()
 print(device)
-packagelist = []
-for package in os.popen("adb shell pm list packages").read().splitlines():
-    packagelist.append(package.replace("package:",""))
 
 # Window Config
 window = ctk.CTk()
@@ -85,10 +82,17 @@ def extract(package):
     else:
         print("Found at: /Extracted/" + package + "\n")
 
+# Blah blah blah
+def add_package(package):
+    if package in customlist:
+        customlist.remove(package)
+    else:
+        print(package)
+        customlist.append(package)
+
 # Read Packages from Listbox & Pass to Debloat or Extract Function
 def custom(option):
-    packages = customlist.get("1.0", "100.0")
-    for package in packages.split():
+    for package in customlist:
         if option == "Extract":
             extract(package)
         else:
@@ -97,13 +101,6 @@ def custom(option):
 # Switch Segmented Button's Text & Command to Selected Option
 def switch(option):
     selected.configure(text=option + " Selected",command=lambda: custom(option))
-
-# Add Selected Package to Listbox Then Remove Package from Package List
-def add_package(package):
-    packages.set("Select Package(s) for List")
-    customlist.insert("1.0", package + "\n")
-    packagelist.remove(package)
-    packages.configure(values=packagelist)
 
 # Column 1
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
@@ -155,15 +152,23 @@ setlauncher.grid(row=6, column=1, padx=60, pady=15)
 label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
 
-packages = ctk.CTkComboBox(window, values=packagelist, width=200, height=30, state="readonly", command=add_package)
-packages.grid(row=1, column=2, padx=60, pady=15)
-packages.set("Select Package(s) for List")
+tabview = ctk.CTkTabview(window, width=20)
+tabview.add("Enabled")
+tabview.add("Disabled")
+tabview.place(x=680, y=55)
 
-customlist = ctk.CTkTextbox(window, wrap="none")
-# Fix Inconsistent .place() Between Windows and Linux
-customlist.place(x=718, y=156)
-if os.name == "nt":
-    customlist.place(x=700, y=156)
+enabled_list = ctk.CTkScrollableFrame(tabview.tab("Enabled"), width=200, height=230)
+enabled_list.pack()
+disabled_list = ctk.CTkScrollableFrame(tabview.tab("Disabled"), width=200, height=230)
+disabled_list.pack()
+customlist = []
+
+for package in os.popen("adb shell pm list packages -e").read().splitlines():
+    checkbox = ctk.CTkCheckBox(enabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param))
+    checkbox.pack()
+for package in os.popen("adb shell pm list packages -d").read().splitlines():
+    checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param))
+    checkbox.pack()
 
 package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
 package_option.set("Disable")
