@@ -82,15 +82,14 @@ def extract(package):
     else:
         print("Found at: /Extracted/" + package + "\n")
 
-# Blah blah blah
+# Add Selected Packages to 'customlist' & if Package is Already Found in List, Remove it
 def add_package(package):
     if package in customlist:
         customlist.remove(package)
     else:
-        print(package)
         customlist.append(package)
 
-# Read Packages from Listbox & Pass to Debloat or Extract Function
+# Read Packages from 'customlist' & Pass to Debloat or Extract Function
 def custom(option):
     for package in customlist:
         if option == "Extract":
@@ -166,11 +165,9 @@ disabled_list.pack()
 customlist = []
 
 for package in os.popen("adb shell pm list packages -e").read().splitlines():
-    checkbox = ctk.CTkCheckBox(enabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param))
-    checkbox.pack()
+    checkbox = ctk.CTkCheckBox(enabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
 for package in os.popen("adb shell pm list packages -d").read().splitlines():
-    checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param))
-    checkbox.pack()
+    checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
 
 package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
 package_option.set("Disable")
