@@ -155,7 +155,9 @@ label4.grid(row=0, column=2, padx=60, pady=15)
 tabview = ctk.CTkTabview(window, width=20)
 tabview.add("Enabled")
 tabview.add("Disabled")
-tabview.place(x=680, y=55)
+tabview.place(x=698, y=55)
+if os.name == "nt":
+    tabview.place(x=680, y=55)
 
 enabled_list = ctk.CTkScrollableFrame(tabview.tab("Enabled"), width=200, height=230)
 enabled_list.pack()
