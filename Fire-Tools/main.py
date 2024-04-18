@@ -23,6 +23,11 @@ window.columnconfigure(0)
 window.columnconfigure(1)
 window.columnconfigure(2)
 
+# Check for Updates & Update if Found
+def update_tool():
+    print("Checking for Updates...")
+    print("No Updates Found")
+
 # Run Debloat Script & Pass in Arguments
 def debloat(option, package):
     os.system(path + "debloat" + extension + option + " " + package)
@@ -100,6 +105,10 @@ def custom(option):
 # Switch Segmented Button's Text & Command to Selected Option
 def switch(option):
     selected.configure(text=option + " Selected",command=lambda: custom(option))
+
+# Update Button
+update = ctk.CTkButton(window, text="⟳", font=("default",20), width=30, height=30, command=update_tool)
+update.place(x=15, y=15)
 
 # Column 1
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
