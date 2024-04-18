@@ -1,8 +1,8 @@
 import customtkinter as ctk
-import os, glob
+import glob, os, requests
 
 # Build/Device Variables
-version = "Beta"
+version = float(24.04)
 platform = "(Linux/macOS)"
 path = os.getcwd() + "/Scripts/Posix/"
 extension = ".sh "
@@ -17,16 +17,27 @@ print(device)
 
 # Window Config
 window = ctk.CTk()
-window.title("Fire Tools v" + version + " - " + platform + " | " + device)
+window.title("Fire Tools v" + str(version) + " Beta - " + platform + " | " + device)
 window.geometry("980x550")
 window.columnconfigure(0)
 window.columnconfigure(1)
 window.columnconfigure(2)
 
-# Check for Updates & Update if Found
+# If Update is Available, Download main.py then Modules for your OS
 def update_tool():
-    print("Checking for Updates...")
-    print("No Updates Found")
+    print("\nChecking for Updates...")
+    latest = float(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version").text)
+    if version < latest:
+        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md").text)
+        open("main.py", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/beta/Fire-Tools/main.py").content)
+        modules = ["Posix/appinstaller.sh", "Posix/debloat.sh", "Posix/identify.sh"]
+        if os.name == "nt":    
+            modules = ["PowerShell/appinstaller.ps1", "PowerShell/debloat.ps1", "PowerShell/identify.ps1"]
+        for module in modules:
+            print("Updating: Fire-Tools/" + module)
+            open("Scripts/" + module + ".test", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/beta/Fire-Tools/Scripts/" + module).content)
+    else:
+        print("No Update Needed")
 
 # Run Debloat Script & Pass in Arguments
 def debloat(option, package):
