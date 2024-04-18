@@ -11,6 +11,7 @@ com.amazon.appverification                       # Amazon App Verification
 com.amazon.avod                                  # Prime Video
 com.amazon.bioscope                              # Amazon VideoStore
 com.amazon.cardinal                              # Alexa Video Player
+com.amazon.charles                               # Charles Proxy
 com.amazon.client.metrics                        # Amazon Client Metrics
 com.amazon.client.metrics.api                    # Amazon Client Metrics API
 com.amazon.cloud9.contentservice                 # Silk Browser Content Service
