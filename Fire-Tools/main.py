@@ -171,6 +171,13 @@ setlauncher.grid(row=6, column=1, padx=60, pady=15)
 label4 = ctk.CTkLabel(window, text="Packages", font=("default",25))
 label4.grid(row=0, column=2, padx=60, pady=15)
 
+package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
+package_option.set("Disable")
+package_option.grid(row=5, column=2, padx=60, pady=15)
+
+selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: custom("Disable"))
+selected.grid(row=6, column=2, padx=60, pady=15)
+
 tabview = ctk.CTkTabview(window, width=20)
 tabview.add("Enabled")
 tabview.add("Disabled")
@@ -188,12 +195,5 @@ for package in os.popen("adb shell pm list packages -e").read().splitlines():
     checkbox = ctk.CTkCheckBox(enabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
 for package in os.popen("adb shell pm list packages -d").read().splitlines():
     checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
-
-package_option = ctk.CTkSegmentedButton(window, values=["Disable", "Enable", "Extract"], width=200, height=50, dynamic_resizing=False, command=switch)
-package_option.set("Disable")
-package_option.grid(row=5, column=2, padx=60, pady=15)
-
-selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: custom("Disable"))
-selected.grid(row=6, column=2, padx=60, pady=15)
 
 window.mainloop()
