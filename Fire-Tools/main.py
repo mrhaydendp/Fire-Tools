@@ -4,20 +4,20 @@ import glob, os, requests
 # Build/Device Variables
 version = float(24.04)
 platform = "(Linux/macOS)"
-path = os.getcwd() + "/Scripts/Posix/"
-extension = ".sh "
+path = f"{os.getcwd()}/Scripts/Posix/"
+extension = ".sh"
 if os.name == "nt":
     platform = "(Windows)"
-    path = "powershell -ExecutionPolicy Bypass -file " + os.getcwd() + "\\Scripts\\PowerShell\\"
-    extension = ".ps1 "
+    path = f"powershell -ExecutionPolicy Bypass -file {os.getcwd()}\\Scripts\\PowerShell\\"
+    extension = ".ps1"
 
 # Identify Fire Device
-device = os.popen(path + "identify" + extension).read()
-print(device)
+device = os.popen(f"{path}identify{extension}").read()
+print(f"{device}\n")
 
 # Window Config
 window = ctk.CTk()
-window.title("Fire Tools v" + str(version) + " Beta - " + platform + " | " + device)
+window.title(f"Fire Tools v{str(version)} Beta - {platform} | {device}")
 window.geometry("980x550")
 window.columnconfigure(0)
 window.columnconfigure(1)
@@ -34,14 +34,14 @@ def update_tool():
         if os.name == "nt":    
             modules = ["PowerShell/appinstaller.ps1", "PowerShell/debloat.ps1", "PowerShell/identify.ps1"]
         for module in modules:
-            print("Updating: Fire-Tools/" + module)
-            open("Scripts/" + module + ".test", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/beta/Fire-Tools/Scripts/" + module).content)
+            print(f"Updating: Fire-Tools/{module}")
+            open(f"Scripts/{module}", "wb").write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/beta/Fire-Tools/Scripts/{module}").content)
     else:
         print("No Update Needed")
 
 # Run Debloat Script & Pass in Arguments
-def debloat(option, package):
-    os.system(path + "debloat" + extension + option + " " + package)
+def debloat(option,package):
+    os.system(f"{path}debloat{extension} {option} {package}")
 
 # Open Debloat.txt in Preferred Text Editor
 def editfile():
@@ -54,16 +54,16 @@ def editfile():
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
-        os.system("adb shell \"settings put global private_dns_mode off && printf '%s\\n\\n' 'Disabled Private DNS'\"")
+        os.system(f"adb shell settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'")
     elif dnsprovider != "Select or Enter DNS Server":
             os.system("adb shell settings put global private_dns_mode hostname")
-            os.system("adb shell \"settings put global private_dns_specifier " + dnsprovider + " && printf 'Successfully Set Private DNS to: %s\\n\\n' " + dnsprovider + "\"")
+            os.system(f"adb shell settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'")
 
 # Get all .apk(m) Files from Selected Folder & Pass to AppInstaller Script
 def appinstaller(folder):
-    search = os.getcwd() + folder + "/*.apk*"
+    search = f"{os.getcwd()}{folder}/*.apk*"
     for app in glob.iglob(search):
-        os.system(path + "appinstaller" + extension + "\"" + app + "\"")
+        os.system(f"{path}appinstaller{extension} \"{app}\"")
 
 # Attempt to Disable OTA Packages
 def disableota():
@@ -76,27 +76,27 @@ def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
         if launcher:
-            os.system(path + "appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
+            os.system(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
     elif customlauncher.get() != "Select Launcher":
-        search = os.getcwd() + "/" + customlauncher.get() + "*.apk"
+        search = f"{os.getcwd()}/{customlauncher.get()}*.apk"
         for launcher in glob.iglob(search):
-            os.system(path + "appinstaller" + extension + "\"" + launcher + "\" " + "Launcher")
+            os.system(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
 
 # Make Folder using Package Name & Extract Package from Device
 def extract(package):
-    if not os.path.exists("Extracted/" + package):
+    if not os.path.exists(f"Extracted/{package}"):
         print("Extracting:", package)
-        os.mkdir("Extracted/" + package)
-        for packagelocation in os.popen("adb shell pm path " + package).read().splitlines():
+        os.mkdir(f"Extracted/{package}")
+        for packagelocation in os.popen(f"adb shell pm path {package}").read().splitlines():
                 packagelocation = packagelocation.replace("package:","")
-                os.system("adb pull " + packagelocation + " ./Extracted/" + package)
-                if os.listdir("Extracted/" + package):
+                os.system(f"adb pull {packagelocation} ./Extracted/{package}")
+                if os.listdir(f"Extracted/{package}"):
                     print("Success\n")
                 else:
-                    os.rmdir("Extracted/" + package)
+                    os.rmdir(f"Extracted/{package}")
                     print("Fail\n")
     else:
-        print("Found at: /Extracted/" + package + "\n")
+        print(f"Found at: /Extracted/{package}\n")
 
 # Add Selected Packages to 'customlist' & if Package is Already Found in List, Remove it
 def add_package(package):
@@ -115,7 +115,7 @@ def custom(option):
 
 # Switch Segmented Button's Text & Command to Selected Option
 def switch(option):
-    selected.configure(text=option + " Selected",command=lambda: custom(option))
+    selected.configure(text=f"{option} Selected",command=lambda: custom(option))
 
 # Update Button
 update = ctk.CTkButton(window, text="⟳", font=("default",20), width=30, height=30, command=update_tool)
@@ -194,6 +194,6 @@ customlist = []
 for package in os.popen("adb shell pm list packages -e").read().splitlines():
     checkbox = ctk.CTkCheckBox(enabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
 for package in os.popen("adb shell pm list packages -d").read().splitlines():
-    checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
+   checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
 
 window.mainloop()
