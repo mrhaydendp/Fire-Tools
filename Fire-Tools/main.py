@@ -25,17 +25,20 @@ window.columnconfigure(2)
 
 # If Update is Available, Download main.py then Modules for your OS
 def update_tool():
-    print("\nChecking for Updates...")
+    print("\nChecking for Updates...\n")
     latest = float(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version").text)
     if version < latest:
         print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md").text)
         open("main.py", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/beta/Fire-Tools/main.py").content)
+        open("Debloat.txt", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/beta/Fire-Tools/Debloat.txt").content)
         modules = ["Posix/appinstaller.sh", "Posix/debloat.sh", "Posix/identify.sh"]
         if os.name == "nt":    
             modules = ["PowerShell/appinstaller.ps1", "PowerShell/debloat.ps1", "PowerShell/identify.ps1"]
         for module in modules:
             print(f"Updating: Fire-Tools/{module}")
             open(f"Scripts/{module}", "wb").write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/beta/Fire-Tools/Scripts/{module}").content)
+        print("\nUpdates Complete, Please Re-launch Application")
+        quit()
     else:
         print("No Update Needed")
 
