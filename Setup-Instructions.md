@@ -1,24 +1,24 @@
 ## Fire Device Preparation
 
-Enabling USB Debugging is required for Fire-Tools to work. Also, make sure to plug device into a computer with a data transfer cable (preferably the one in the box).
+Enabling USB Debugging is required for Fire-Tools to work. Make sure to plug device into a computer with a data transfer cable (preferably the one in the box).
 
 1. **Initial Setup:**
 * Select preferred language.
 * Choose "Set up manually".
-* Tap on a random locked network then press "Cancel".
+* Tap on a random locked network, then press "Cancel".
 * Select "Skip Setup"
 
 2. **Developer Options:**
-* Open Settings
-* Scroll down to and select "Device Options"
-* Go to "About Fire Tablet"
-* Tap on "Serial Number" 7 times 
+* Open Settings.
+* Scroll down to and select "Device Options".
+* Go to "About Fire Tablet".
+* Tap on "Serial Number" 7 times .
 
 3. **USB Debugging:**
-* Go back to "Device Options" and select "Developer Options"
-* Turn the toggle switch on
-* Scroll down to "USB debugging" and switch to on
-* Scroll down to "Default USB configuration" tap it, then select "File Transfer" (Optional, but fixes plugdev group issues on Linux)
+* Go back to "Device Options" and select "Developer Options".
+* Turn the toggle switch on.
+* Scroll down to "USB debugging" and switch it on.
+* Scroll down to "Default USB configuration", tap it, then select "File Transfer" (Optional, but fixes plugdev group issues on Linux).
 
 ## Setting Up Fire Tools Dependencies
 
@@ -26,9 +26,9 @@ This guide will help you install the necessary dependencies to run Fire Tools on
 
 **Software Requirements:**
 
-* ADB (Android Debug Bridge)
-* Python 3.x tk (Python 3 with Tkinter)
-* CustomTkinter (Python GUI toolkit library)
+* [ADB](https://developer.android.com/tools/releases/platform-tools) (Android Debug Bridge)
+* [Python](https://www.python.org/) (Python 3 with Tkinter)
+* [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) (Python GUI toolkit library)
 
 **Windows**
 
@@ -37,7 +37,7 @@ This guide will help you install the necessary dependencies to run Fire Tools on
     * Extract the downloaded zip file.
     * Search and launch "Environment Variables" from the Start Menu.
     * In the “System Properties” window, click the “Environment Variables” button at the bottom.
-    * Select "Path" variable then "Edit" and type the platform-tools folder location then hit "OK" on all open windows.   
+    * Select the "Path" variable, then "Edit" and type in the platform-tools folder location, then hit "OK" on all open windows.  
 
 2. **Python:**
     * Download the latest Python 3.x installer from [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/).
