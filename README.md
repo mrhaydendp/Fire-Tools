@@ -1,7 +1,7 @@
 ## Fire Tools
 Fire Tools is a powerful collection of tools that helps debloat and install Google services on your Fire Tablet to make it feel snappier and improve usability. Additionally, it supports custom launchers such as Nova, Lawnchair, or any `.apk(m)`. If you need to install multiple apps quickly, there's a batch installer. It's as easy as dropping all your `.apk(m)`s in the Batch folder and clicking the Batch Install button! No root required!
 
-![Fire Tools Screenshot](/Pictures/Fire-Tools.png)
+![Fire Tools Screenshot](Screenshot.png)
 
 **Features:**
 * Cross Platform (Linux, macOS, & Windows)
