@@ -48,7 +48,7 @@ com.amazon.imdb.tv.mobile.app                    # Freevee (IMDb)
 com.amazon.imp                                   # Identity Mobile Platform
 com.amazon.iris                                  # News
 com.amazon.kindle                                # Kindle
-com.amazon.kindle.kso                            # Kindle Store
+com.amazon.kindle.kso                            # Special Offers
 com.amazon.kindle.otter.oobe                     # Device Setup
 com.amazon.kindle.personal_video                 # My Videos
 com.amazon.kindle.rdmdeviceadmin                 # Remote Device Management Application
