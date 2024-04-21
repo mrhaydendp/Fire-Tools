@@ -29,6 +29,7 @@ This guide will help you install the necessary dependencies to run Fire Tools on
 * [ADB](https://developer.android.com/tools/releases/platform-tools) (Android Debug Bridge)
 * [Python](https://www.python.org/) (Python 3 with Tkinter)
 * [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) (Python GUI toolkit library)
+* [Requests](https://requests.readthedocs.io/en/latest/) (Python HTTP library)
 
 **Windows**
 
@@ -43,11 +44,11 @@ This guide will help you install the necessary dependencies to run Fire Tools on
     * Download the latest Python 3.x installer from [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/).
     * Run the installer and make sure to check the option to "Add Python 3.x to PATH" during installation.
 
-3. **CustomTkinter:**
+3. **CustomTkinter & Requests:**
     * Open PowerShell or Windows Terminal.
     * Use the `pip` package manager to install CustomTkinter:
       ``` powershell
-      python.exe -m pip install customtkinter
+      python.exe -m pip install customtkinter requests
       ```
 
 **Linux:**
@@ -66,10 +67,10 @@ This guide will help you install the necessary dependencies to run Fire Tools on
       sudo dnf install android-tools python3-tkinter
       ```
       
-2. **CustomTkinter:**
+2. **CustomTkinter & Requests:**
     * Use `pip` to install CustomTkinter:
       ```bash
-      pip3 install customtkinter
+      pip3 install customtkinter requests
       ```
 
 **macOS**
@@ -87,8 +88,8 @@ This guide will help you install the necessary dependencies to run Fire Tools on
       brew install android-platform-tools python-tk
       ```
     
-3. **CustomTkinter:**
+3. **CustomTkinter & Requests:**
     * Use `pip` to install CustomTkinter:
       ```bash
-      pip3 install customtkinter
+      pip3 install customtkinter requests
       ```
