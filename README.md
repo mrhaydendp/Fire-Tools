@@ -31,7 +31,8 @@ cd Fire-Tools && python3 main.py
 ``` powershell
 # Download Latest Release & Extract, Then Open in Explorer
 Start-BitsTransfer "https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.zip"
-Expand-Archive Fire-Tools.zip .\; Remove-Item Fire-Tools.zip
+Expand-Archive Fire-Tools.zip; mv Fire-Tools\Fire-Tools\* Fire-Tools
+Remove-Item Fire-Tools.zip, Fire-Tools\Fire-Tools
 Set-Location Fire-Tools; python main.py
 ```
 
