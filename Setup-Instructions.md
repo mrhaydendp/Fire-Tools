@@ -1,57 +1,96 @@
-## Linux
-Install the necessary packages for your Linux distro:
+## Fire Device Preparation
 
-``` bash
-# Ubuntu/Debian/Chrome OS Linux Container
-sudo apt install adb zenity
+Enabling USB Debugging is required for Fire-Tools to work. Make sure to plug device into a computer with a data transfer cable (preferably the one in the box).
 
-# Arch
-sudo pacman -S android-tools zenity
+1. **Initial Setup:**
+* Select preferred language.
+* Choose "Set up manually".
+* Tap on a random locked network, then press "Cancel".
+* Select "Skip Setup"
 
-# Fedora
-sudo dnf install android-tools zenity
-```
+2. **Developer Options:**
+* Open Settings.
+* Scroll down to and select "Device Options".
+* Go to "About Fire Tablet".
+* Tap on "Serial Number" 7 times .
 
-## MacOS
-The necessary packages need to be installed using [Brew](https://brew.sh).
+3. **USB Debugging:**
+* Go back to "Device Options" and select "Developer Options".
+* Turn the toggle switch on.
+* Scroll down to "USB debugging" and switch it on.
+* Scroll down to "Default USB configuration", tap it, then select "File Transfer" (Optional, but fixes plugdev group issues on Linux).
 
-``` shell
-# Required: Install Brew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+## Setting Up Fire Tools Dependencies
 
-# Install Packages
-brew install android-platform-tools zenity
-```
+This guide will help you install the necessary dependencies to run Fire Tools on Windows, Linux, and macOS.
 
-## Windows
+**Software Requirements:**
 
-### Drivers
-Download Offical Fire Tablet drivers or universal adb drivers:
-- [Fire Tablet Drivers](https://developer.amazon.com/docs/fire-tablets/connecting-adb-to-device.html)
-- [Universal ADB Drivers](https://adb.clockworkmod.com/).
-  
-### ADB
-Download ADB & make available system-wide 
-- [ADB Wizard](https://github.com/mrhaydendp/adb-wizard)
+* [ADB](https://developer.android.com/tools/releases/platform-tools) (Android Debug Bridge)
+* [Python](https://www.python.org/) (Python 3 with Tkinter)
+* [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) (Python GUI toolkit library)
+* [Requests](https://requests.readthedocs.io/en/latest/) (Python HTTP library)
 
-Or manually:
-``` powershell
-# Run Commands in PowerShell/Windows Terminal (Admin)
-# Grab Latest Release of Platform Tools (ADB) & Extract to Home Directory
-Start-BitsTransfer "https://dl.google.com/android/repository/platform-tools-latest-windows.zip"; Expand-Archive .\platform-tools-latest-windows.zip "$HOME"
+**Windows**
 
-# Add Environment Variable to Access ADB System-Wide & Cleanup .zip
-[Environment]::SetEnvironmentVariable("Path", "$Env:PATH" + "$HOME\platform-tools", "User")
-Remove-Item .\platform-tools-latest-windows.zip
-```
+1. **ADB:**
+    * Download the Android SDK Platform-Tools package from [Platform-Tools](https://dl.google.com/android/repository/platform-tools-latest-windows.zip).
+    * Extract the downloaded zip file.
+    * Search and launch "Edit the system environment variables" from the Start Menu.
+    * In the “System Properties” window, click the “Environment Variables” button at the bottom.
+    * Select the "Path" variable, then "Edit".
+    * Click on "New" and type in the platform-tools folder location, then hit "OK" on all open windows.
 
-### 7-Zip
-Needed to extract Fire-Tools releases, download from [website](https://www.7-zip.org/) or through Powershell:
+2. **Python:**
+    * Download the latest Python 3.x installer from [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/).
+    * Run the installer and make sure to check the option to "Add Python 3.x to PATH" during installation.
 
-``` powershell
-# Winget
-winget install -s winget 7-Zip
+3. **CustomTkinter & Requests:**
+    * Open PowerShell or Windows Terminal.
+    * Use the `pip` package manager to install CustomTkinter:
+      ``` powershell
+      python.exe -m pip install customtkinter requests
+      ```
 
-# Chocolatey
-choco install 7zip
-```
+**Linux:**
+
+1. **ADB & Python:**
+    * Open a Terminal window.
+    * Install the ADB & Python-tk package:
+      ``` bash
+      # Ubuntu/Debian/Chrome OS Linux Container
+      sudo apt install adb python3-tk
+
+      # Arch
+      sudo pacman -S android-tools tk
+
+      # Fedora
+      sudo dnf install android-tools python3-tkinter
+      ```
+      
+2. **CustomTkinter & Requests:**
+    * Use `pip` to install CustomTkinter:
+      ```bash
+      pip3 install customtkinter requests
+      ```
+
+**macOS**
+
+1. **Brew:**
+    * [Brew](https://brew.sh/) is a package manager for macOS. Install it by pasting the provided command into the Terminal.
+      ``` bash
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      ```
+
+2. **ADB & Python:**
+    * Open a Terminal window.
+    * Install the ADB & Python-tk package:
+      ``` bash
+      brew install android-platform-tools python-tk
+      ```
+    
+3. **CustomTkinter & Requests:**
+    * Use `pip` to install CustomTkinter:
+      ```bash
+      pip3 install customtkinter requests
+      ```
