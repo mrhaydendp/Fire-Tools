@@ -36,9 +36,10 @@ This guide will help you install the necessary dependencies to run Fire Tools on
 1. **ADB:**
     * Download the Android SDK Platform-Tools package from [Platform-Tools](https://dl.google.com/android/repository/platform-tools-latest-windows.zip).
     * Extract the downloaded zip file.
-    * Search and launch "Environment Variables" from the Start Menu.
+    * Search and launch "Edit the system environment variables" from the Start Menu.
     * In the “System Properties” window, click the “Environment Variables” button at the bottom.
-    * Select the "Path" variable, then "Edit" and type in the platform-tools folder location, then hit "OK" on all open windows.  
+    * Select the "Path" variable, then "Edit".
+    * Click on "New" and type in the platform-tools folder location, then hit "OK" on all open windows.
 
 2. **Python:**
     * Download the latest Python 3.x installer from [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/).
