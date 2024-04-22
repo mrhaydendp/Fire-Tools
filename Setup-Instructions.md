@@ -31,7 +31,7 @@ This guide will help you install the necessary dependencies to run Fire Tools on
 * [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) (Python GUI toolkit library)
 * [Requests](https://requests.readthedocs.io/en/latest/) (Python HTTP library)
 
-**Windows**
+**Windows:**
 
 1. **ADB:**
     * Download the Android SDK Platform-Tools package from [Platform-Tools](https://dl.google.com/android/repository/platform-tools-latest-windows.zip).
@@ -74,7 +74,7 @@ This guide will help you install the necessary dependencies to run Fire Tools on
       pip3 install customtkinter requests
       ```
 
-**macOS**
+**macOS:**
 
 1. **Brew:**
     * [Brew](https://brew.sh/) is a package manager for macOS. Install it by pasting the provided command into the Terminal.
