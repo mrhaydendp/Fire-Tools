@@ -2,7 +2,7 @@ import customtkinter as ctk
 import glob, os, requests
 
 # Build/Device Variables
-version = float(24.04.1)
+version = "24.04.1"
 platform = "(Linux/macOS)"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
@@ -17,7 +17,7 @@ print(f"{device}\n")
 
 # Window Config
 window = ctk.CTk()
-window.title(f"Fire Tools v{str(version)} - {platform} | {device}")
+window.title(f"Fire Tools v{version} - {platform} | {device}")
 window.geometry("980x550")
 window.columnconfigure(0)
 window.columnconfigure(1)
@@ -26,8 +26,8 @@ window.columnconfigure(2)
 # If Update is Available, Download main.py then Modules for your OS
 def update_tool():
     print("\nChecking for Updates...\n")
-    latest = float(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version").text)
-    if version < latest:
+    latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version").text
+    if version.replace(".","") < latest.replace(".",""):
         print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md").text)
         open("main.py", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/main.py").content)
         open("Debloat.txt", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt").content)
