@@ -1,11 +1,3 @@
-## Updated main.py, appinstaller, debloat, identify, Debloat.txt, requirements.txt (All) 04/21/2024
-- Created cross-platform interface that will keep feature parity 1:1
-- Ported to Python: Updater, Disable OTA, and APK Extractor
-- Created requriements file that can be loaded into pip
-- Alphabetized Debloat.txt and updated app names
-- Removed: `com.amazon.settings`, `com.amazon.switchaccess.root`, `com.amazon.appaccesskeyprovider`, and `com.android.musicfx`
-- Added: `com.amazon.charles`
-- Simplified & modularized functions into  scripts for PowerShell (Windows) & Posix (Linux/MacOS)
-- LauncherHijackV403 will now be installed if Fire Launcher fails to disable
-- Added select-able list to bulk enable, disable, or extract packages
-- Changelog.md will only store 1 version now
+## Updated main.py, version 04/21/2024
+- Fixed missing quotation marks breaking Custom DNS on Windows
+- Version bump (24.04.1)
