@@ -2,14 +2,16 @@ import customtkinter as ctk
 import glob, os, requests
 
 # Build/Device Variables
-version = "24.04.1"
-platform = "(Linux/macOS)"
+version = "24.05"
+platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
+shell = "Posix"
 if os.name == "nt":
-    platform = "(Windows)"
+    platform = "Windows"
     path = f"powershell -ExecutionPolicy Bypass -file {os.getcwd()}\\Scripts\\PowerShell\\"
     extension = ".ps1"
+    shell = "PowerShell"
 
 # Identify Fire Device
 device = os.popen(f"{path}identify{extension}").read()
@@ -17,7 +19,7 @@ print(f"{device}\n")
 
 # Window Config
 window = ctk.CTk()
-window.title(f"Fire Tools v{version} - {platform} | {device}")
+window.title(f"Fire Tools v{version} - ({platform}) | {device}")
 window.geometry("980x550")
 window.columnconfigure(0)
 window.columnconfigure(1)
@@ -25,18 +27,21 @@ window.columnconfigure(2)
 
 # If Update is Available, Download main.py then Modules for your OS
 def update_tool():
-    print("\nChecking for Updates...\n")
-    latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version").text
+    print("Checking for Updates...\n")
+    try:
+        latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version").text
+    except:
+        latest = version
     if version.replace(".","") < latest.replace(".",""):
+        if os.path.isfile("ft-identifying-tablet-devices.html"):
+            os.remove("ft-identifying-tablet-devices.html")
         print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md").text)
-        open("main.py", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/main.py").content)
-        open("Debloat.txt", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt").content)
-        modules = ["Posix/appinstaller.sh", "Posix/debloat.sh", "Posix/identify.sh"]
-        if os.name == "nt":    
-            modules = ["PowerShell/appinstaller.ps1", "PowerShell/debloat.ps1", "PowerShell/identify.ps1"]
+        modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}"]
         for module in modules:
-            print(f"Updating: Fire-Tools/{module}")
-            open(f"Scripts/{module}", "wb").write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Scripts/{module}").content)
+            print(f"Updating: {module}")
+            open(f"{module}", "wb").write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}").content)
+        if platform == "Linux/macOS":
+            os.popen("chmod +x Scripts/Posix/*.sh")
         print("\nUpdates Complete, Please Re-launch Application")
         quit()
     else:
@@ -48,7 +53,7 @@ def debloat(option,package):
 
 # Open Debloat.txt in Preferred Text Editor
 def editfile():
-    if platform != "(Windows)":
+    if platform != "Windows":
         os.system("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt")
     else:
         os.startfile('Debloat.txt')
