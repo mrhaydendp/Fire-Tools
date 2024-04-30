@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import glob, os, requests
 
-# Build/Device Variables
+# Platform & Device Variables
 version = "24.05"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
@@ -13,7 +13,7 @@ if os.name == "nt":
     extension = ".ps1"
     shell = "PowerShell"
 
-# Identify Fire Device
+# Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
 device = os.popen(f"{path}identify{extension}").read().splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
@@ -21,11 +21,8 @@ print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}
 window = ctk.CTk()
 window.title(f"Fire Tools v{version} - ({platform}) | {device[0]}")
 window.geometry("980x550")
-window.columnconfigure(0)
-window.columnconfigure(1)
-window.columnconfigure(2)
 
-# If Update is Available, Download main.py then Modules for your OS
+# On Update, Delete 'ft-identifying-tablet-devices.html', Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
     print("Checking for Updates...\n")
     try:
@@ -47,7 +44,7 @@ def update_tool():
     else:
         print("No Update Needed\n")
 
-# Run Debloat Script & Pass in Arguments
+# Run Debloat with Disable/Enable Option & Package Name
 def debloat(option,package):
     os.system(f"{path}debloat{extension} {option} {package}")
 
@@ -58,7 +55,7 @@ def editfile():
     else:
         os.startfile('Debloat.txt')
 
-# Set DNS Mode to Hostname and Set Selected Provider as Private DNS
+# Set DNS Mode to Hostname, then Set Selected Provider as Private DNS
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
@@ -90,23 +87,20 @@ def set_launcher():
         for launcher in glob.iglob(search):
             os.system(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
 
-# Make Folder using Package Name & Extract Package from Device
+# Extract Selected Package to Extracted/{package} If not Already Present
 def extract(package):
     if not os.path.exists(f"Extracted/{package}"):
         print("Extracting:", package)
         os.mkdir(f"Extracted/{package}")
-        for packagelocation in os.popen(f"adb shell pm path {package}").read().splitlines():
-                packagelocation = packagelocation.replace("package:","")
-                os.system(f"adb pull {packagelocation} ./Extracted/{package}")
-                if os.listdir(f"Extracted/{package}"):
-                    print("Success\n")
-                else:
-                    os.rmdir(f"Extracted/{package}")
-                    print("Fail\n")
+        for packagelocation in os.popen(f"adb shell \"pm path {package} | cut -f2 -d:\"").read().splitlines():
+            os.system(f"adb pull {packagelocation} ./Extracted/{package}")
+            if not os.listdir(f"Extracted/{package}"):
+                os.rmdir(f"Extracted/{package}")
+            print("")
     else:
         print(f"Found at: /Extracted/{package}\n")
 
-# Add Selected Packages to 'customlist' & if Package is Already Found in List, Remove it
+# Add Selected Packages to 'customlist' & Remove if Package is Already Found
 def add_package(package):
     if package in customlist:
         customlist.remove(package)
@@ -121,7 +115,7 @@ def custom(option):
         else:
             debloat(option,package)
 
-# Switch Segmented Button's Text & Command to Selected Option
+# Switch Segmented Button's Text & Command to the Selected Option
 def switch(option):
     selected.configure(text=f"{option} Selected",command=lambda: custom(option))
 
