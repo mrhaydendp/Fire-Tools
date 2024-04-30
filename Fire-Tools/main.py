@@ -1,5 +1,7 @@
+import glob
+import os
+import requests
 import customtkinter as ctk
-import glob, os, requests
 
 # Platform & Device Variables
 version = "24.05"
@@ -26,17 +28,17 @@ window.geometry("980x550")
 def update_tool():
     print("Checking for Updates...\n")
     try:
-        latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version").text
-    except:
+        latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version", timeout=10).text
+    except requests.exceptions.ConnectionError:
         latest = version
     if version.replace(".","") < latest.replace(".",""):
         if os.path.isfile("ft-identifying-tablet-devices.html"):
             os.remove("ft-identifying-tablet-devices.html")
-        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md").text)
+        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
         modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}"]
         for module in modules:
             print(f"Updating: {module}")
-            open(f"{module}", "wb").write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}").content)
+            open(f"{module}", "wb").write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}", timeout=10).content)
         if platform == "Linux/macOS":
             os.popen("chmod +x Scripts/Posix/*.sh")
         print("\nUpdates Complete, Please Re-launch Application")
@@ -61,8 +63,8 @@ def set_dns():
     if dnsprovider == "None":
         os.system(f"adb shell \"settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'\"")
     elif dnsprovider != "Select or Enter DNS Server":
-            os.system("adb shell settings put global private_dns_mode hostname")
-            os.system(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"")
+        os.system("adb shell settings put global private_dns_mode hostname")
+        os.system(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"")
 
 # Get all .apk(m) Files from Selected Folder & Pass to AppInstaller Script
 def appinstaller(folder):
@@ -72,8 +74,8 @@ def appinstaller(folder):
 
 # Attempt to Disable OTA Packages
 def disableota():
-    ota = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
-    for package in ota:
+    ota_packages = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
+    for package in ota_packages:
         debloat("Disable",package)
 
 # Pass Selected Package to Appinstaller with Launcher Argument
@@ -194,10 +196,10 @@ disabled_list.pack()
 customlist = []
 
 if device[0] != "Unknown/Undetected":
-    for package in os.popen("adb shell \"pm list packages -e | cut -f2 -d:\"").read().splitlines():
-        checkbox = ctk.CTkCheckBox(enabled_list, text=package, command = lambda param = package: add_package(param)).pack()
-    for package in os.popen("adb shell \"pm list packages -d | cut -f2 -d:\"").read().splitlines():
-        checkbox = ctk.CTkCheckBox(disabled_list, text=package, command = lambda param = package: add_package(param)).pack()
+    for enabled_package in os.popen("adb shell \"pm list packages -e | cut -f2 -d:\"").read().splitlines():
+        checkbox = ctk.CTkCheckBox(enabled_list, text=enabled_package, command = lambda param = enabled_package: add_package(param)).pack()
+    for disabled_package in os.popen("adb shell \"pm list packages -d | cut -f2 -d:\"").read().splitlines():
+        checkbox = ctk.CTkCheckBox(disabled_list, text=disabled_package, command = lambda param = disabled_package: add_package(param)).pack()
 
 window.mainloop()
 
