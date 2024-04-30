@@ -194,9 +194,13 @@ disabled_list.pack()
 customlist = []
 
 if device[0] != "Unknown/Undetected":
-    for package in os.popen("adb shell pm list packages -e").read().splitlines():
-        checkbox = ctk.CTkCheckBox(enabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
-    for package in os.popen("adb shell pm list packages -d").read().splitlines():
-        checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
+    for package in os.popen("adb shell \"pm list packages -e | cut -f2 -d:\"").read().splitlines():
+        checkbox = ctk.CTkCheckBox(enabled_list, text=package, command = lambda param = package: add_package(param)).pack()
+    for package in os.popen("adb shell \"pm list packages -d | cut -f2 -d:\"").read().splitlines():
+        checkbox = ctk.CTkCheckBox(disabled_list, text=package, command = lambda param = package: add_package(param)).pack()
 
 window.mainloop()
+
+# Remove Temp Files when Application Closes
+for file in glob.glob("*packagelist*"):
+    os.remove(file)
