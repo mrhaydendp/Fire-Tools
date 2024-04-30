@@ -14,12 +14,12 @@ if os.name == "nt":
     shell = "PowerShell"
 
 # Identify Fire Device
-device = os.popen(f"{path}identify{extension}").read()
-print(f"{device}\n")
+device = os.popen(f"{path}identify{extension}").read().splitlines()
+print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
 window = ctk.CTk()
-window.title(f"Fire Tools v{version} - ({platform}) | {device}")
+window.title(f"Fire Tools v{version} - ({platform}) | {device[0]}")
 window.geometry("980x550")
 window.columnconfigure(0)
 window.columnconfigure(1)
