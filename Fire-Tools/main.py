@@ -186,12 +186,12 @@ package_option.grid(row=5, column=2, padx=60, pady=15)
 selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: custom("Disable"))
 selected.grid(row=6, column=2, padx=60, pady=15)
 
-tabview = ctk.CTkTabview(window, width=20)
+tabview = ctk.CTkTabview(window, width=250, height=300)
 tabview.add("Enabled")
 tabview.add("Disabled")
-tabview.place(x=698, y=55)
-if os.name == "nt":
-    tabview.place(x=680, y=55)
+tabview.place(x=694, y=55)
+if platform == "Windows":
+    tabview.place(x=674, y=55)
 
 enabled_list = ctk.CTkScrollableFrame(tabview.tab("Enabled"), width=200, height=230)
 enabled_list.pack()
@@ -199,9 +199,10 @@ disabled_list = ctk.CTkScrollableFrame(tabview.tab("Disabled"), width=200, heigh
 disabled_list.pack()
 customlist = []
 
-for package in os.popen("adb shell pm list packages -e").read().splitlines():
-    checkbox = ctk.CTkCheckBox(enabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
-for package in os.popen("adb shell pm list packages -d").read().splitlines():
-   checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
+if device[0] != "Unknown/Undetected":
+    for package in os.popen("adb shell pm list packages -e").read().splitlines():
+        checkbox = ctk.CTkCheckBox(enabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
+    for package in os.popen("adb shell pm list packages -d").read().splitlines():
+        checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
 
 window.mainloop()
