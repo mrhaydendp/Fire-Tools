@@ -38,7 +38,8 @@ def update_tool():
         modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}"]
         for module in modules:
             print(f"Updating: {module}")
-            open(f"{module}", "wb").write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}", timeout=10).content)
+            with open(f"{module}", "wb") as file:
+                file.write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}", timeout=10).content)
         if platform == "Linux/macOS":
             os.popen("chmod +x Scripts/Posix/*.sh")
         print("\nUpdates Complete, Please Re-launch Application")
@@ -204,5 +205,5 @@ if device[0] != "Unknown/Undetected":
 window.mainloop()
 
 # Remove Temp Files when Application Closes
-for file in glob.glob("*packagelist*"):
-    os.remove(file)
+for temp_file in glob.glob("*packagelist*"):
+    os.remove(temp_file)
