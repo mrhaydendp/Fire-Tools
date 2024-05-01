@@ -15,3 +15,5 @@
 - Made package list bigger and scaled the scrollable frame better
 - Temporary "packagelist" files are now deleted when application closes
 - Cleaned up code by using some suggestions from Pylint
+- Made custom disable/enable/extract terminal output cleaner by adding a blank line at the end
+- Disable DNS will now remove "private_dns_specifier" key from device
