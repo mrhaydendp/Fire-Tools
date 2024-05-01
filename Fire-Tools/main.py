@@ -1,66 +1,72 @@
+import glob
+import os
+import requests
 import customtkinter as ctk
-import glob, os, requests
 
-# Build/Device Variables
-version = "24.04.1"
-platform = "(Linux/macOS)"
+# Platform & Device Variables
+version = "24.05"
+platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
+shell = "Posix"
 if os.name == "nt":
-    platform = "(Windows)"
+    platform = "Windows"
     path = f"powershell -ExecutionPolicy Bypass -file {os.getcwd()}\\Scripts\\PowerShell\\"
     extension = ".ps1"
+    shell = "PowerShell"
 
-# Identify Fire Device
-device = os.popen(f"{path}identify{extension}").read()
-print(f"{device}\n")
+# Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
+device = os.popen(f"{path}identify{extension}").read().splitlines()
+print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
 window = ctk.CTk()
-window.title(f"Fire Tools v{version} - {platform} | {device}")
+window.title(f"Fire Tools v{version} - ({platform}) | {device[0]}")
 window.geometry("980x550")
-window.columnconfigure(0)
-window.columnconfigure(1)
-window.columnconfigure(2)
 
-# If Update is Available, Download main.py then Modules for your OS
+# On Update, Delete 'ft-identifying-tablet-devices.html', Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
-    print("\nChecking for Updates...\n")
-    latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version").text
+    print("Checking for Updates...\n")
+    try:
+        latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version", timeout=10).text
+    except requests.exceptions.ConnectionError:
+        latest = version
     if version.replace(".","") < latest.replace(".",""):
-        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md").text)
-        open("main.py", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/main.py").content)
-        open("Debloat.txt", "wb").write(requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Debloat.txt").content)
-        modules = ["Posix/appinstaller.sh", "Posix/debloat.sh", "Posix/identify.sh"]
-        if os.name == "nt":    
-            modules = ["PowerShell/appinstaller.ps1", "PowerShell/debloat.ps1", "PowerShell/identify.ps1"]
+        if os.path.isfile("ft-identifying-tablet-devices.html"):
+            os.remove("ft-identifying-tablet-devices.html")
+        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
+        modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}"]
         for module in modules:
-            print(f"Updating: Fire-Tools/{module}")
-            open(f"Scripts/{module}", "wb").write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/Scripts/{module}").content)
+            print(f"Updating: {module}")
+            with open(f"{module}", "wb") as file:
+                file.write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}", timeout=10).content)
+        if platform == "Linux/macOS":
+            os.popen("chmod +x Scripts/Posix/*.sh")
         print("\nUpdates Complete, Please Re-launch Application")
         quit()
     else:
         print("No Update Needed\n")
 
-# Run Debloat Script & Pass in Arguments
+# Run Debloat with Disable/Enable Option & Package Name
 def debloat(option,package):
     os.system(f"{path}debloat{extension} {option} {package}")
 
 # Open Debloat.txt in Preferred Text Editor
 def editfile():
-    if platform != "(Windows)":
+    if platform != "Windows":
         os.system("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt")
     else:
         os.startfile('Debloat.txt')
 
-# Set DNS Mode to Hostname and Set Selected Provider as Private DNS
+# Set DNS Mode to Hostname, then Set Selected Provider as Private DNS
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
-        os.system(f"adb shell \"settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'\"")
+        os.system("adb shell \"settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'\"")
+        os.system("adb shell settings delete global private_dns_specifier")
     elif dnsprovider != "Select or Enter DNS Server":
-            os.system("adb shell settings put global private_dns_mode hostname")
-            os.system(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"")
+        os.system("adb shell settings put global private_dns_mode hostname")
+        os.system(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"")
 
 # Get all .apk(m) Files from Selected Folder & Pass to AppInstaller Script
 def appinstaller(folder):
@@ -70,8 +76,8 @@ def appinstaller(folder):
 
 # Attempt to Disable OTA Packages
 def disableota():
-    ota = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
-    for package in ota:
+    ota_packages = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
+    for package in ota_packages:
         debloat("Disable",package)
 
 # Pass Selected Package to Appinstaller with Launcher Argument
@@ -85,23 +91,19 @@ def set_launcher():
         for launcher in glob.iglob(search):
             os.system(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
 
-# Make Folder using Package Name & Extract Package from Device
+# Extract Selected Package to Extracted/{package} If not Already Present
 def extract(package):
     if not os.path.exists(f"Extracted/{package}"):
         print("Extracting:", package)
         os.mkdir(f"Extracted/{package}")
-        for packagelocation in os.popen(f"adb shell pm path {package}").read().splitlines():
-                packagelocation = packagelocation.replace("package:","")
-                os.system(f"adb pull {packagelocation} ./Extracted/{package}")
-                if os.listdir(f"Extracted/{package}"):
-                    print("Success\n")
-                else:
-                    os.rmdir(f"Extracted/{package}")
-                    print("Fail\n")
+        for packagelocation in os.popen(f"adb shell \"pm path {package} | cut -f2 -d:\"").read().splitlines():
+            os.system(f"adb pull {packagelocation} ./Extracted/{package}")
+            if not os.listdir(f"Extracted/{package}"):
+                os.rmdir(f"Extracted/{package}")
     else:
-        print(f"Found at: /Extracted/{package}\n")
+        print(f"Found at: /Extracted/{package}")
 
-# Add Selected Packages to 'customlist' & if Package is Already Found in List, Remove it
+# Add Selected Packages to 'customlist' & Remove if Package is Already Found
 def add_package(package):
     if package in customlist:
         customlist.remove(package)
@@ -115,8 +117,9 @@ def custom(option):
             extract(package)
         else:
             debloat(option,package)
+    print("")
 
-# Switch Segmented Button's Text & Command to Selected Option
+# Switch Segmented Button's Text & Command to the Selected Option
 def switch(option):
     selected.configure(text=f"{option} Selected",command=lambda: custom(option))
 
@@ -181,12 +184,12 @@ package_option.grid(row=5, column=2, padx=60, pady=15)
 selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: custom("Disable"))
 selected.grid(row=6, column=2, padx=60, pady=15)
 
-tabview = ctk.CTkTabview(window, width=20)
+tabview = ctk.CTkTabview(window, width=250, height=300)
 tabview.add("Enabled")
 tabview.add("Disabled")
-tabview.place(x=698, y=55)
-if os.name == "nt":
-    tabview.place(x=680, y=55)
+tabview.place(x=694, y=55)
+if platform == "Windows":
+    tabview.place(x=674, y=55)
 
 enabled_list = ctk.CTkScrollableFrame(tabview.tab("Enabled"), width=200, height=230)
 enabled_list.pack()
@@ -194,9 +197,14 @@ disabled_list = ctk.CTkScrollableFrame(tabview.tab("Disabled"), width=200, heigh
 disabled_list.pack()
 customlist = []
 
-for package in os.popen("adb shell pm list packages -e").read().splitlines():
-    checkbox = ctk.CTkCheckBox(enabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
-for package in os.popen("adb shell pm list packages -d").read().splitlines():
-   checkbox = ctk.CTkCheckBox(disabled_list, text=package.replace("package:",""), command = lambda param = package.replace("package:",""): add_package(param)).pack()
+if device[0] != "Unknown/Undetected":
+    for enabled_package in os.popen("adb shell \"pm list packages -e | cut -f2 -d:\"").read().splitlines():
+        checkbox = ctk.CTkCheckBox(enabled_list, text=enabled_package, command = lambda param = enabled_package: add_package(param)).pack()
+    for disabled_package in os.popen("adb shell \"pm list packages -d | cut -f2 -d:\"").read().splitlines():
+        checkbox = ctk.CTkCheckBox(disabled_list, text=disabled_package, command = lambda param = disabled_package: add_package(param)).pack()
 
 window.mainloop()
+
+# Remove Temp Files when Application Closes
+for temp_file in glob.glob("*packagelist*"):
+    os.remove(temp_file)

@@ -1,4 +1,19 @@
-## Updated main.py, version 04/23/2024
-- Fixed missing quotation marks breaking Custom DNS on Windows
-- Fixed update tool breaking when there's more than one decimal point in version number
-- Version bump (24.04.1)
+## Updated main.py, identify, version 05/01/2024
+- Version bump (24.05)
+- Updated & cleaned up code comments
+- Removed parenthesis from platform names
+- Removed `window.columnconfigure` as it's implied and not needed
+- Added shell variable to determine which scripts to install during updates
+- Added Fire OS version, Fire Tools version, and platform output to terminal
+- Made update tool more resilient to internet issues
+- Update tool now uses `with` context manager to ensure files are fully downloaded and written before closing
+- Cached "ft-identifying-fire-tablets.html" is now deleted during updates
+- "requirements.txt" will now get updated
+- Remade update tool and it now tells you which files are being updated and can now add or remove files in future updates
+- Simplified folder deletion during failed package extraction
+- Sped up package list generation by pre-formatting list on device
+- Made package list bigger and scaled the scrollable frame better
+- Temporary "packagelist" files are now deleted when application closes
+- Cleaned up code by using some suggestions from Pylint
+- Made custom disable/enable/extract terminal output cleaner by adding a blank line at the end
+- Disable DNS will now remove "private_dns_specifier" key from device
