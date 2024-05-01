@@ -63,6 +63,7 @@ def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
         os.system("adb shell \"settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'\"")
+        os.system("adb shell settings delete global private_dns_specifier")
     elif dnsprovider != "Select or Enter DNS Server":
         os.system("adb shell settings put global private_dns_mode hostname")
         os.system(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"")
@@ -99,9 +100,8 @@ def extract(package):
             os.system(f"adb pull {packagelocation} ./Extracted/{package}")
             if not os.listdir(f"Extracted/{package}"):
                 os.rmdir(f"Extracted/{package}")
-            print("")
     else:
-        print(f"Found at: /Extracted/{package}\n")
+        print(f"Found at: /Extracted/{package}")
 
 # Add Selected Packages to 'customlist' & Remove if Package is Already Found
 def add_package(package):
@@ -117,6 +117,7 @@ def custom(option):
             extract(package)
         else:
             debloat(option,package)
+    print("")
 
 # Switch Segmented Button's Text & Command to the Selected Option
 def switch(option):
