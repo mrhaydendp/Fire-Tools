@@ -1,6 +1,7 @@
 import glob
 import os
 import requests
+import subprocess
 import customtkinter as ctk
 
 # Platform & Device Variables
@@ -26,13 +27,13 @@ window.geometry("980x550")
 
 # Run Debloat with Disable/Enable Option & Package Name
 def debloat(option,package):
-    os.system(f"{path}debloat{extension} {option} {package}")
+    subprocess.run(f"{path}debloat{extension} {option} {package}")
 
 # Pass Folder or .apk(m) to Appinstaller Script for Installation
 def appinstaller(folder):
     search = f"{os.getcwd()}/{folder}*.apk*"
     for app in glob.iglob(search):
-        os.system(f"{path}appinstaller{extension} \"{app}\"")
+        subprocess.run(f"{path}appinstaller{extension} \"{app}\"")
 
 # On Update, Delete 'ft-identifying-tablet-devices.html', Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
@@ -60,7 +61,7 @@ def update_tool():
 # Open Debloat.txt in Preferred Text Editor
 def editfile():
     if platform != "Windows":
-        os.system("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt")
+        subprocess.run("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt")
     else:
         os.startfile('Debloat.txt')
 
@@ -68,11 +69,11 @@ def editfile():
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
-        os.system("adb shell \"settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'\"")
-        os.system("adb shell settings delete global private_dns_specifier")
+        subprocess.run("adb shell \"settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'\"")
+        subprocess.run("adb shell settings delete global private_dns_specifier")
     elif dnsprovider != "Select or Enter DNS Server":
-        os.system("adb shell settings put global private_dns_mode hostname")
-        os.system(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"")
+        subprocess.run("adb shell settings put global private_dns_mode hostname")
+        subprocess.run(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"")
 
 # Attempt to Disable OTA Packages
 def disableota():
@@ -85,11 +86,11 @@ def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
         if launcher:
-            os.system(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
+            subprocess.run(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
     elif customlauncher.get() != "Select Launcher":
         search = f"{os.getcwd()}/{customlauncher.get()}*.apk"
         for launcher in glob.iglob(search):
-            os.system(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
+            subprocess.run(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
 
 # Extract Selected Package to Extracted/{package} If not Already Present
 def extract(package):
@@ -97,7 +98,7 @@ def extract(package):
         print("Extracting:", package)
         os.mkdir(f"Extracted/{package}")
         for packagelocation in os.popen(f"adb shell \"pm path {package} | cut -f2 -d:\"").read().splitlines():
-            os.system(f"adb pull {packagelocation} ./Extracted/{package}")
+            subprocess.run(f"adb pull {packagelocation} ./Extracted/{package}")
             if not os.listdir(f"Extracted/{package}"):
                 os.rmdir(f"Extracted/{package}")
     else:
