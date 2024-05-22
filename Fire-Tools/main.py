@@ -4,7 +4,7 @@ import requests
 import customtkinter as ctk
 
 # Platform & Device Variables
-version = "24.05"
+version = "24.06"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
@@ -23,6 +23,16 @@ print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}
 window = ctk.CTk()
 window.title(f"Fire Tools v{version} - ({platform}) | {device[0]}")
 window.geometry("980x550")
+
+# Run Debloat with Disable/Enable Option & Package Name
+def debloat(option,package):
+    os.system(f"{path}debloat{extension} {option} {package}")
+
+# Pass Folder or .apk(m) to Appinstaller Script for Installation
+def appinstaller(folder):
+    search = f"{os.getcwd()}/{folder}*.apk*"
+    for app in glob.iglob(search):
+        os.system(f"{path}appinstaller{extension} \"{app}\"")
 
 # On Update, Delete 'ft-identifying-tablet-devices.html', Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
@@ -47,10 +57,6 @@ def update_tool():
     else:
         print("No Update Needed\n")
 
-# Run Debloat with Disable/Enable Option & Package Name
-def debloat(option,package):
-    os.system(f"{path}debloat{extension} {option} {package}")
-
 # Open Debloat.txt in Preferred Text Editor
 def editfile():
     if platform != "Windows":
@@ -67,12 +73,6 @@ def set_dns():
     elif dnsprovider != "Select or Enter DNS Server":
         os.system("adb shell settings put global private_dns_mode hostname")
         os.system(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"")
-
-# Get all .apk(m) Files from Selected Folder & Pass to AppInstaller Script
-def appinstaller(folder):
-    search = f"{os.getcwd()}/{folder}*.apk*"
-    for app in glob.iglob(search):
-        os.system(f"{path}appinstaller{extension} \"{app}\"")
 
 # Attempt to Disable OTA Packages
 def disableota():
