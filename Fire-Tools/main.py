@@ -70,7 +70,7 @@ def set_dns():
 
 # Get all .apk(m) Files from Selected Folder & Pass to AppInstaller Script
 def appinstaller(folder):
-    search = f"{os.getcwd()}{folder}/*.apk*"
+    search = f"{os.getcwd()}/{folder}*.apk*"
     for app in glob.iglob(search):
         os.system(f"{path}appinstaller{extension} \"{app}\"")
 
@@ -154,10 +154,10 @@ setdns.grid(row=6, column=0, padx=60, pady=15)
 label2 = ctk.CTkLabel(window, text="Utilities", font=("default",25))
 label2.grid(row=0, column=1, padx=60, pady=15)
 
-googleservices = ctk.CTkButton(window, text="Install Google Services", width=200, height=50, command=lambda: appinstaller("/Gapps"))
+googleservices = ctk.CTkButton(window, text="Install Google Services", width=200, height=50, command=lambda: appinstaller("Gapps/"))
 googleservices.grid(row=1, column=1, padx=60, pady=15)
 
-batchinstall = ctk.CTkButton(window, text="Batch Install", width=200, height=50, command=lambda: appinstaller("/Batch"))
+batchinstall = ctk.CTkButton(window, text="Batch Install", width=200, height=50, command=lambda: appinstaller("Batch/"))
 batchinstall.grid(row=2, column=1, padx=60, pady=15)
 
 ota = ctk.CTkButton(window, text="Disable OTA", width=200, height=50, command=disableota)
