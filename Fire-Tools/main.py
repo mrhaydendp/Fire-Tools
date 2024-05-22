@@ -17,7 +17,7 @@ if os.name == "nt":
     shell = "PowerShell"
 
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
-device = os.popen(f"{path}identify{extension}").read().splitlines()
+device = subprocess.check_output(f"{path}identify{extension}", universal_newlines=True).splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
@@ -35,7 +35,7 @@ def appinstaller(folder):
     for app in glob.iglob(search):
         subprocess.run(f"{path}appinstaller{extension} \"{app}\"")
 
-# On Update, Delete 'ft-identifying-tablet-devices.html', Update Modules, and Make Scripts Executable (Linux/macOS)
+# On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
     print("Checking for Updates...\n")
     try:
@@ -52,7 +52,8 @@ def update_tool():
             with open(f"{module}", "wb") as file:
                 file.write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}", timeout=10).content)
         if platform == "Linux/macOS":
-            os.popen("chmod +x Scripts/Posix/*.sh")
+            for script in glob.glob(f"{os.getcwd()}/Scripts/Posix/*.sh"):
+                os.chmod(script, 0o775 )
         print("\nUpdates Complete, Please Re-launch Application")
         quit()
     else:
@@ -63,7 +64,7 @@ def editfile():
     if platform != "Windows":
         subprocess.run("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt")
     else:
-        os.startfile('Debloat.txt')
+        os.startfile("Debloat.txt")
 
 # Set DNS Mode to Hostname, then Set Selected Provider as Private DNS
 def set_dns():
@@ -97,21 +98,21 @@ def extract(package):
     if not os.path.exists(f"Extracted/{package}"):
         print("Extracting:", package)
         os.mkdir(f"Extracted/{package}")
-        for packagelocation in os.popen(f"adb shell \"pm path {package} | cut -f2 -d:\"").read().splitlines():
+        for packagelocation in subprocess.check_output(f"adb shell \"pm path {package} | cut -f2 -d:\"", universal_newlines=True).splitlines():
             subprocess.run(f"adb pull {packagelocation} ./Extracted/{package}")
             if not os.listdir(f"Extracted/{package}"):
                 os.rmdir(f"Extracted/{package}")
     else:
         print(f"Found at: /Extracted/{package}")
 
-# Add Selected Packages to 'customlist' & Remove if Package is Already Found
+# Add Selected Packages to "customlist" & Remove if Package is Already Found
 def add_package(package):
     if package in customlist:
         customlist.remove(package)
     else:
         customlist.append(package)
 
-# Read Packages from 'customlist' & Pass to Debloat or Extract Function
+# Read Packages from "customlist" & Pass to Debloat or Extract Function
 def custom(option):
     for package in customlist:
         if option == "Extract":
@@ -199,9 +200,9 @@ disabled_list.pack()
 customlist = []
 
 if device[0] != "Unknown/Undetected":
-    for enabled_package in os.popen("adb shell \"pm list packages -e | cut -f2 -d:\"").read().splitlines():
+    for enabled_package in subprocess.check_output("adb shell \"pm list packages -e | cut -f2 -d:\"", universal_newlines=True).splitlines():
         checkbox = ctk.CTkCheckBox(enabled_list, text=enabled_package, command = lambda param = enabled_package: add_package(param)).pack()
-    for disabled_package in os.popen("adb shell \"pm list packages -d | cut -f2 -d:\"").read().splitlines():
+    for disabled_package in subprocess.check_output("adb shell \"pm list packages -d | cut -f2 -d:\"", universal_newlines=True).splitlines():
         checkbox = ctk.CTkCheckBox(disabled_list, text=disabled_package, command = lambda param = disabled_package: add_package(param)).pack()
 
 window.mainloop()
