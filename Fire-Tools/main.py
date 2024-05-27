@@ -27,13 +27,16 @@ window.geometry("980x550")
 
 # Run Debloat with Disable/Enable Option & Package Name
 def debloat(option,package):
-    subprocess.run(f"{path}debloat{extension} {option} {package}")
+    if package:
+        subprocess.run(f"{path}debloat{extension} {option} {package}".split())
+    else:
+        subprocess.run(f"{path}debloat{extension} {option}".split())
 
 # Pass Folder or .apk(m) to Appinstaller Script for Installation
 def appinstaller(folder):
     search = f"{os.getcwd()}/{folder}*.apk*"
     for app in glob.iglob(search):
-        subprocess.run(f"{path}appinstaller{extension} \"{app}\"")
+        subprocess.run(f"{path}appinstaller{extension} \"{app}\"".split())
 
 # On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
@@ -62,7 +65,7 @@ def update_tool():
 # Open Debloat.txt in Preferred Text Editor
 def editfile():
     if platform != "Windows":
-        subprocess.run("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt")
+        subprocess.run("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt", shell=True)
     else:
         os.startfile("Debloat.txt")
 
@@ -70,11 +73,11 @@ def editfile():
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
-        subprocess.run("adb shell \"settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'\"")
-        subprocess.run("adb shell settings delete global private_dns_specifier")
+        subprocess.run("adb shell \"settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'\"".split())
+        subprocess.run("adb shell settings delete global private_dns_specifier".split())
     elif dnsprovider != "Select or Enter DNS Server":
-        subprocess.run("adb shell settings put global private_dns_mode hostname")
-        subprocess.run(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"")
+        subprocess.run("adb shell settings put global private_dns_mode hostname".split)()
+        subprocess.run(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"".split())
 
 # Attempt to Disable OTA Packages
 def disableota():
@@ -87,11 +90,11 @@ def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
         if launcher:
-            subprocess.run(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
+            subprocess.run(f"{path}appinstaller{extension} \"{launcher}\" Launcher".split())
     elif customlauncher.get() != "Select Launcher":
         search = f"{os.getcwd()}/{customlauncher.get()}*.apk"
         for launcher in glob.iglob(search):
-            subprocess.run(f"{path}appinstaller{extension} \"{launcher}\" Launcher")
+            subprocess.run(f"{path}appinstaller{extension} \"{launcher}\" Launcher".split())
 
 # Extract Selected Package to Extracted/{package} If not Already Present
 def extract(package):
@@ -99,7 +102,7 @@ def extract(package):
         print("Extracting:", package)
         os.mkdir(f"Extracted/{package}")
         for packagelocation in subprocess.check_output(f"adb shell \"pm path {package} | cut -f2 -d:\"", universal_newlines=True).splitlines():
-            subprocess.run(f"adb pull {packagelocation} ./Extracted/{package}")
+            subprocess.run(["adb", "pull", {packagelocation}, f"./Extracted/{package}"])
             if not os.listdir(f"Extracted/{package}"):
                 os.rmdir(f"Extracted/{package}")
     else:
@@ -200,9 +203,9 @@ disabled_list.pack()
 customlist = []
 
 if device[0] != "Unknown/Undetected":
-    for enabled_package in subprocess.check_output("adb shell \"pm list packages -e | cut -f2 -d:\"", universal_newlines=True).splitlines():
+    for enabled_package in subprocess.check_output("adb shell \"pm list packages -e | cut -f2 -d:\"", universal_newlines=True, shell=True).splitlines():
         checkbox = ctk.CTkCheckBox(enabled_list, text=enabled_package, command = lambda param = enabled_package: add_package(param)).pack()
-    for disabled_package in subprocess.check_output("adb shell \"pm list packages -d | cut -f2 -d:\"", universal_newlines=True).splitlines():
+    for disabled_package in subprocess.check_output("adb shell \"pm list packages -d | cut -f2 -d:\"", universal_newlines=True, shell=True).splitlines():
         checkbox = ctk.CTkCheckBox(disabled_list, text=disabled_package, command = lambda param = disabled_package: add_package(param)).pack()
 
 window.mainloop()
