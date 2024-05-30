@@ -74,7 +74,7 @@ def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
         subprocess.run(["adb shell settings put global private_dns_mode off"], shell=True)
-        subprocess.run(["adb shell settings delete global private_dns_specifier"], shell=True)
+        subprocess.run(["adb shell settings delete global private_dns_specifier"], stdout=subprocess.PIPE, shell=True)
         print("Disabled Private DNS\n")
     elif dnsprovider != "Select or Enter DNS Server":
         try:
