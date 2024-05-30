@@ -17,7 +17,7 @@ if os.name == "nt":
     shell = "PowerShell"
 
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
-device = subprocess.check_output(f"{path}identify{extension}", universal_newlines=True).splitlines()
+device = subprocess.check_output([f"{path}identify{extension}"], universal_newlines=True).splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
@@ -65,7 +65,7 @@ def update_tool():
 # Open Debloat.txt in Preferred Text Editor
 def editfile():
     if platform != "Windows":
-        subprocess.run("xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt", shell=True)
+        subprocess.run(["xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt"], shell=True)
     else:
         os.startfile("Debloat.txt")
 
@@ -73,13 +73,13 @@ def editfile():
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
-        subprocess.run("adb shell settings put global private_dns_mode off", shell=True)
-        subprocess.run("adb shell settings delete global private_dns_specifier", shell=True)
+        subprocess.run(["adb shell settings put global private_dns_mode off"], shell=True)
+        subprocess.run(["adb shell settings delete global private_dns_specifier"], shell=True)
         print("Disabled Private DNS\n")
     elif dnsprovider != "Select or Enter DNS Server":
         try:
-            subprocess.check_output("adb shell settings put global private_dns_mode hostname", stderr=subprocess.PIPE, shell=True)
-            subprocess.check_output(f"adb shell settings put global private_dns_specifier {dnsprovider}", shell=True)
+            subprocess.check_output(["adb shell settings put global private_dns_mode hostname"], stderr=subprocess.PIPE, shell=True)
+            subprocess.check_output([f"adb shell settings put global private_dns_specifier {dnsprovider}"], shell=True)
             print(f"Successfully Set DNS Provider to: {dnsprovider}\n")
         except subprocess.CalledProcessError:
             print("Failed to Set Private DNS\n")
@@ -106,8 +106,8 @@ def extract(package):
     if not os.path.exists(f"Extracted/{package}"):
         print("Extracting:", package)
         os.mkdir(f"Extracted/{package}")
-        for packagelocation in subprocess.check_output(f"adb shell \"pm path {package} | cut -f2 -d:\"", universal_newlines=True).splitlines():
-            subprocess.run(["adb", "pull", {packagelocation}, f"./Extracted/{package}"])
+        for packagelocation in subprocess.check_output([f"adb shell \"pm path {package} | cut -f2 -d:\""], universal_newlines=True, shell=True).splitlines():
+            subprocess.run([f"adb pull {packagelocation} ./Extracted/{package}"], shell=True)
             if not os.listdir(f"Extracted/{package}"):
                 os.rmdir(f"Extracted/{package}")
     else:
