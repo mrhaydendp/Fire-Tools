@@ -84,6 +84,11 @@ def set_dns():
         except subprocess.CalledProcessError:
             print("Failed to Set Private DNS\n")
 
+# Install Gapps in Gapps Folder then Re-install Play Store
+def install_gapps():
+    appinstaller("Gapps/")
+    appinstaller("Gapps/Google Play Store")
+
 # Attempt to Disable OTA Packages
 def disableota():
     ota_packages = "com.amazon.device.software.ota", "com.amazon.device.software.ota.override", "com.amazon.kindle.otter.oobe.forced.ota"
@@ -164,7 +169,7 @@ setdns.grid(row=6, column=0, padx=60, pady=15)
 label2 = ctk.CTkLabel(window, text="Utilities", font=("default",25))
 label2.grid(row=0, column=1, padx=60, pady=15)
 
-googleservices = ctk.CTkButton(window, text="Install Google Services", width=200, height=50, command=lambda: appinstaller("Gapps/"))
+googleservices = ctk.CTkButton(window, text="Install Google Services", width=200, height=50, command=install_gapps)
 googleservices.grid(row=1, column=1, padx=60, pady=15)
 
 batchinstall = ctk.CTkButton(window, text="Batch Install", width=200, height=50, command=lambda: appinstaller("Batch/"))
