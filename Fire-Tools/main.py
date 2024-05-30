@@ -28,15 +28,15 @@ window.geometry("980x550")
 # Run Debloat with Disable/Enable Option & Package Name
 def debloat(option,package):
     if package:
-        subprocess.run(f"{path}debloat{extension} {option} {package}".split())
+        subprocess.run([f"{path}debloat{extension}", option, package])
     else:
-        subprocess.run(f"{path}debloat{extension} {option}".split())
+        subprocess.run([f"{path}debloat{extension}", option])
 
 # Pass Folder or .apk(m) to Appinstaller Script for Installation
 def appinstaller(folder):
     search = f"{os.getcwd()}/{folder}*.apk*"
     for app in glob.iglob(search):
-        subprocess.run(f"{path}appinstaller{extension} \"{app}\"".split())
+        subprocess.run([f"{path}appinstaller{extension}", app])
 
 # On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
@@ -94,12 +94,12 @@ def disableota():
 def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
-        if launcher:
-            subprocess.run(f"{path}appinstaller{extension} \"{launcher}\" Launcher".split())
+        if not launcher:
+            return
     elif customlauncher.get() != "Select Launcher":
-        search = f"{os.getcwd()}/{customlauncher.get()}*.apk"
-        for launcher in glob.iglob(search):
-            subprocess.run(f"{path}appinstaller{extension} \"{launcher}\" Launcher".split())
+        for app in glob.iglob(f"{os.getcwd()}/{customlauncher.get()}*.apk"):
+            launcher = app
+    subprocess.run([f"{path}appinstaller{extension}", launcher, "Launcher"])
 
 # Extract Selected Package to Extracted/{package} If not Already Present
 def extract(package):
