@@ -73,11 +73,16 @@ def editfile():
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
-        subprocess.run("adb shell \"settings put global private_dns_mode off && printf 'Disabled Private DNS\\n\\n'\"".split())
-        subprocess.run("adb shell settings delete global private_dns_specifier".split())
+        subprocess.run("adb shell settings put global private_dns_mode off", shell=True)
+        subprocess.run("adb shell settings delete global private_dns_specifier", shell=True)
+        print("Disabled Private DNS\n")
     elif dnsprovider != "Select or Enter DNS Server":
-        subprocess.run("adb shell settings put global private_dns_mode hostname".split)()
-        subprocess.run(f"adb shell \"settings put global private_dns_specifier {dnsprovider} && printf 'Successfully Set Private DNS to: {dnsprovider}\\n\\n'\"".split())
+        try:
+            subprocess.check_output("adb shell settings put global private_dns_mode hostname", stderr=subprocess.PIPE, shell=True)
+            subprocess.check_output(f"adb shell settings put global private_dns_specifier {dnsprovider}", shell=True)
+            print(f"Successfully Set DNS Provider to: {dnsprovider}\n")
+        except subprocess.CalledProcessError:
+            print("Failed to Set Private DNS\n")
 
 # Attempt to Disable OTA Packages
 def disableota():
