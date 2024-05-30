@@ -213,9 +213,9 @@ disabled_list.pack()
 customlist = []
 
 if device[0] != "Unknown/Undetected":
-    for enabled_package in subprocess.check_output("adb shell \"pm list packages -e | cut -f2 -d:\"", universal_newlines=True, shell=True).splitlines():
+    for enabled_package in subprocess.check_output(["adb shell \"pm list packages -e | cut -f2 -d:\""], universal_newlines=True, shell=True).splitlines():
         checkbox = ctk.CTkCheckBox(enabled_list, text=enabled_package, command = lambda param = enabled_package: add_package(param)).pack()
-    for disabled_package in subprocess.check_output("adb shell \"pm list packages -d | cut -f2 -d:\"", universal_newlines=True, shell=True).splitlines():
+    for disabled_package in subprocess.check_output(["adb shell \"pm list packages -d | cut -f2 -d:\""], universal_newlines=True, shell=True).splitlines():
         checkbox = ctk.CTkCheckBox(disabled_list, text=disabled_package, command = lambda param = disabled_package: add_package(param)).pack()
 
 window.mainloop()
