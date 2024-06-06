@@ -110,7 +110,10 @@ def set_launcher():
     elif customlauncher.get() != "Select Launcher":
         for app in glob.iglob(f"{os.getcwd()}/{customlauncher.get()}*.apk"):
             launcher = app
-    subprocess.run(f"{path}appinstaller{extension} {launcher} Launcher".split())
+    cmdlist = f"{path}appinstaller{extension}".split()
+    cmdlist.append(launcher)
+    cmdlist.append("Launcher")
+    subprocess.run(cmdlist)
 
 # Extract Selected Package to Extracted/{package} If not Already Present
 def extract(package):
