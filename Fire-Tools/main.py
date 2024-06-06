@@ -17,7 +17,7 @@ if os.name == "nt":
     shell = "PowerShell"
 
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
-device = subprocess.check_output([f"{path}identify{extension}"], universal_newlines=True).splitlines()
+device = subprocess.check_output(f"{path}identify{extension}".split(), universal_newlines=True).splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
@@ -26,17 +26,20 @@ window.title(f"Fire Tools v{version} - ({platform}) | {device[0]}")
 window.geometry("980x550")
 
 # Run Debloat with Disable/Enable Option & Package Name
-def debloat(option,package):
+def debloat(option, package=""):
+    cmdlist = f"{path}debloat{extension} {option}".split()
     if package:
-        subprocess.run([f"{path}debloat{extension}", option, package])
-    else:
-        subprocess.run([f"{path}debloat{extension}", option])
+        cmdlist.append(package)
+    subprocess.run(cmdlist)
 
 # Pass Folder or .apk(m) to Appinstaller Script for Installation
 def appinstaller(folder):
+    cmdlist = f"{path}appinstaller{extension}".split()
     search = f"{os.getcwd()}/{folder}*.apk*"
     for app in glob.iglob(search):
-        subprocess.run([f"{path}appinstaller{extension}", app])
+        cmdlist.append(app)
+        subprocess.run(cmdlist)
+        cmdlist.remove(app)
 
 # On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
@@ -65,7 +68,10 @@ def update_tool():
 # Open Debloat.txt in Preferred Text Editor
 def editfile():
     if platform != "Windows":
-        subprocess.run(["xdg-open Debloat.txt >/dev/null 2>&1 || open -e Debloat.txt"], shell=True)
+        try:
+            subprocess.run(["xdg-open", "Debloat.txt"], check=True, stderr=subprocess.PIPE)
+        except subprocess.CalledProcessError:
+            subprocess.run(["open", "-e", "Debloat.txt"], check=True, stderr=subprocess.PIPE)
     else:
         os.startfile("Debloat.txt")
 
@@ -73,13 +79,13 @@ def editfile():
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "None":
-        subprocess.run(["adb shell settings put global private_dns_mode off"], shell=True)
-        subprocess.run(["adb shell settings delete global private_dns_specifier"], stdout=subprocess.PIPE, shell=True)
+        subprocess.run(["adb", "shell", "settings", "put", "global", "private_dns_mode", "off"])
+        subprocess.run(["adb", "shell", "settings", "delete", "global", "private_dns_specifier"], stdout=subprocess.PIPE)
         print("Disabled Private DNS\n")
     elif dnsprovider != "Select or Enter DNS Server":
         try:
-            subprocess.check_output(["adb shell settings put global private_dns_mode hostname"], stderr=subprocess.PIPE, shell=True)
-            subprocess.check_output([f"adb shell settings put global private_dns_specifier {dnsprovider}"], shell=True)
+            subprocess.check_output(["adb", "shell", "settings", "put", "global", "private_dns_mode", "hostname"], stderr=subprocess.PIPE)
+            subprocess.check_output(["adb", "shell", "settings", "put", "global", "private_dns_specifier", dnsprovider])
             print(f"Successfully Set DNS Provider to: {dnsprovider}\n")
         except subprocess.CalledProcessError:
             print("Failed to Set Private DNS\n")
@@ -104,17 +110,18 @@ def set_launcher():
     elif customlauncher.get() != "Select Launcher":
         for app in glob.iglob(f"{os.getcwd()}/{customlauncher.get()}*.apk"):
             launcher = app
-    subprocess.run([f"{path}appinstaller{extension}", launcher, "Launcher"])
+    subprocess.run(f"{path}appinstaller{extension} {launcher} Launcher".split())
 
 # Extract Selected Package to Extracted/{package} If not Already Present
 def extract(package):
     if not os.path.exists(f"Extracted/{package}"):
         print("Extracting:", package)
         os.mkdir(f"Extracted/{package}")
-        for packagelocation in subprocess.check_output([f"adb shell \"pm path {package} | cut -f2 -d:\""], universal_newlines=True, shell=True).splitlines():
-            subprocess.run([f"adb pull {packagelocation} ./Extracted/{package}"], shell=True)
+        for packagelocation in subprocess.check_output(["adb", "shell", "pm", "path", package], universal_newlines=True).splitlines():
+            subprocess.run(["adb", "pull", packagelocation.replace("package:",""), f"./Extracted/{package}"])
             if not os.listdir(f"Extracted/{package}"):
                 os.rmdir(f"Extracted/{package}")
+            print("")
     else:
         print(f"Found at: /Extracted/{package}")
 
@@ -146,10 +153,10 @@ update.place(x=15, y=15)
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
 label.grid(row=0, column=0, padx=60, pady=15)
 
-disable = ctk.CTkButton(window, text="Debloat", width=200, height=50, command=lambda: debloat("Disable",""))
+disable = ctk.CTkButton(window, text="Debloat", width=200, height=50, command=lambda: debloat("Disable"))
 disable.grid(row=1, column=0, padx=60, pady=15)
 
-undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=lambda: debloat("Enable",""))
+undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=lambda: debloat("Enable"))
 undo.grid(row=2, column=0, padx=60, pady=15)
 
 edit = ctk.CTkButton(window, text="Edit", width=200, height=50, command=editfile)
@@ -213,10 +220,12 @@ disabled_list.pack()
 customlist = []
 
 if device[0] != "Unknown/Undetected":
-    for enabled_package in subprocess.check_output(["adb shell \"pm list packages -e | cut -f2 -d:\""], universal_newlines=True, shell=True).splitlines():
-        checkbox = ctk.CTkCheckBox(enabled_list, text=enabled_package, command = lambda param = enabled_package: add_package(param)).pack()
-    for disabled_package in subprocess.check_output(["adb shell \"pm list packages -d | cut -f2 -d:\""], universal_newlines=True, shell=True).splitlines():
-        checkbox = ctk.CTkCheckBox(disabled_list, text=disabled_package, command = lambda param = disabled_package: add_package(param)).pack()
+    enabled = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages", "-e"], universal_newlines=True).splitlines()]
+    disabled = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages", "-d"], universal_newlines=True).splitlines()]
+    for package in enabled:
+        checkbox = ctk.CTkCheckBox(enabled_list, text=package, command = lambda param = package: add_package(param)).pack()
+    for package in disabled:
+        checkbox = ctk.CTkCheckBox(disabled_list, text=package, command = lambda param = package: add_package(param)).pack()
 
 window.mainloop()
 
