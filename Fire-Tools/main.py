@@ -2,6 +2,7 @@ import glob
 import os
 import requests
 import subprocess
+import time
 import customtkinter as ctk
 
 # Platform & Device Variables
@@ -143,6 +144,17 @@ def custom(option):
 def switch(option):
     selected.configure(text=f"{option} Selected",command=lambda: custom(option))
 
+def filter_packagelist(event):
+    filtered = [package for package in packages if search.get() in package]
+    generate_list(filtered)
+
+def generate_list(items):
+    for package in packages:
+        checkboxes[package].pack_forget()
+    for package in items:
+        checkboxes[package] = ctk.CTkCheckBox(master=package_list, text=package)
+        checkboxes[package].pack(anchor="w", pady=5)
+
 # Update Button
 update = ctk.CTkButton(window, text="⟳", font=("default",20), width=30, height=30, command=update_tool)
 update.place(x=15, y=15)
@@ -210,15 +222,18 @@ if platform == "Windows":
     package_list.place(x=670, y=75)
 
 search = ctk.CTkEntry(package_list, placeholder_text="Filter Packages")
-search.bind("<Return>")
+search.bind("<Return>", command=filter_packagelist)
 search.pack()
 
 if device[0] != "Unknown/Undetected":
+    print("Generating Packagelist")
+    start = time.time()
     packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
         checkboxes[package] = ctk.CTkCheckBox(package_list, text=package)
         checkboxes[package].pack(anchor="w", pady=5)
+    print(f"Completed in {round(time.time() - start, 2)}s\n")
 
 window.mainloop()
 
