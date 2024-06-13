@@ -128,15 +128,10 @@ def extract(package):
     else:
         print(f"Found at: /Extracted/{package}")
 
-# Add Selected Packages to "customlist" & Remove if Package is Already Found
-def add_package(package):
-    if package in customlist:
-        customlist.remove(package)
-    else:
-        customlist.append(package)
 
 # Read Packages from "customlist" & Pass to Debloat or Extract Function
 def custom(option):
+    customlist = [package for package in packages if checkboxes[package].get()]
     for package in customlist:
         if option == "Extract":
             extract(package)
@@ -209,26 +204,21 @@ package_option.grid(row=5, column=2, padx=60, pady=15)
 selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: custom("Disable"))
 selected.grid(row=6, column=2, padx=60, pady=15)
 
-tabview = ctk.CTkTabview(window, width=250, height=300)
-tabview.add("Enabled")
-tabview.add("Disabled")
-tabview.place(x=694, y=55)
+package_list = ctk.CTkScrollableFrame(window, width=235, height=270)
+package_list.place(x=690, y=75)
 if platform == "Windows":
-    tabview.place(x=674, y=55)
+    package_list.place(x=670, y=75)
 
-enabled_list = ctk.CTkScrollableFrame(tabview.tab("Enabled"), width=200, height=230)
-enabled_list.pack()
-disabled_list = ctk.CTkScrollableFrame(tabview.tab("Disabled"), width=200, height=230)
-disabled_list.pack()
-customlist = []
+search = ctk.CTkEntry(package_list, placeholder_text="Filter Packages")
+search.bind("<Return>")
+search.pack()
 
 if device[0] != "Unknown/Undetected":
-    enabled = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages", "-e"], universal_newlines=True).splitlines()]
-    disabled = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages", "-d"], universal_newlines=True).splitlines()]
-    for package in enabled:
-        checkbox = ctk.CTkCheckBox(enabled_list, text=package, command = lambda param = package: add_package(param)).pack()
-    for package in disabled:
-        checkbox = ctk.CTkCheckBox(disabled_list, text=package, command = lambda param = package: add_package(param)).pack()
+    packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
+    checkboxes = {}
+    for package in packages:
+        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package)
+        checkboxes[package].pack(anchor="w", pady=5)
 
 window.mainloop()
 
