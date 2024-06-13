@@ -6,7 +6,7 @@ import time
 import customtkinter as ctk
 
 # Platform & Device Variables
-version = "24.06"
+version = "24.07"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
