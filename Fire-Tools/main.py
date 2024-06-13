@@ -116,7 +116,7 @@ def set_launcher():
     cmdlist.append("Launcher")
     subprocess.run(cmdlist)
 
-# Extract Selected Package to Extracted/{package} If not Already Present
+# Extract Selected Package to Extracted/{package} if not Already Present
 def extract(package):
     if not os.path.exists(f"Extracted/{package}"):
         print("Extracting:", package)
@@ -144,10 +144,12 @@ def custom(option):
 def switch(option):
     selected.configure(text=f"{option} Selected",command=lambda: custom(option))
 
+# If Search Input is Found in "package", add to Filtered List & Regenerate Package List (UI)
 def filter_packagelist(event):
     filtered = [package for package in packages if search.get() in package]
     generate_list(filtered)
 
+# Remove all Checkboxes and Replace with ones from Filtered List
 def generate_list(items):
     for package in packages:
         checkboxes[package].pack_forget()
