@@ -152,7 +152,6 @@ def generate_list(items):
     for package in packages:
         checkboxes[package].pack_forget()
     for package in items:
-        checkboxes[package] = ctk.CTkCheckBox(master=package_list, text=package)
         checkboxes[package].pack(anchor="w", pady=5)
 
 # Update Button
