@@ -4,4 +4,4 @@ customtkinter==5.2.2
 darkdetect==0.8.0
 packaging==24.0
 requests==2.32.0
-urllib3==2.2.1
+urllib3==2.2.2
