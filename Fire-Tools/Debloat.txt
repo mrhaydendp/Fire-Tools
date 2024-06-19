@@ -78,7 +78,7 @@ com.amazon.smartgenie                            # Alexa Device Dashboard
 com.amazon.speakscreen                           # Speak Selection
 com.amazon.sync.provider.ipc                     # Sync Provider Executor
 com.amazon.sync.service                          # Amazon Sync Service
-com.amazon.tahoe                                 # Amazon Kids
+com.amazon.tahoe                                 # Amazon Kids+ (Kids Space)
 com.amazon.tcomm                                 # Amazon Communication Services
 com.amazon.tcomm.client                          # Amazon Communication Services Client Library
 com.amazon.tcomm.jackson                         # Amazon Communication Service (Jackson19)
