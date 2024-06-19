@@ -2,6 +2,7 @@ amazon.jackson19                                 # Jackson19
 amazon.speech.sim                                # Alexa Speech
 com.amazon.aca                                   # ACA Application
 com.amazon.advertisingidsettings                 # Advertising ID
+com.amazon.afe.app                               # Tap to Alexa
 com.amazon.ags.app                               # Amazon GameCircle
 com.amazon.alexa.multimodal.gemini               # Alexa Cards
 com.amazon.alexa.youtube.app                     # Alexa YouTube Player
@@ -15,7 +16,7 @@ com.amazon.charles                               # Charles Proxy
 com.amazon.client.metrics                        # Amazon Client Metrics
 com.amazon.client.metrics.api                    # Amazon Client Metrics API
 com.amazon.cloud9.contentservice                 # Silk Browser Content Service
-com.amazon.cloud9.kids                           # Kids Silk Browser
+com.amazon.cloud9.kids                           # Kids Web Browser
 com.amazon.cloud9.systembrowserprovider          # Silk Browser Provider
 com.amazon.comms.kids                            # Alexa Communication
 com.amazon.communication.discovery               # Amazon Communication Discovery
@@ -25,6 +26,7 @@ com.amazon.dcp                                   # Amazon Device Middleware Debu
 com.amazon.dcp.contracts.framework.library       # DCP Contracts Framework
 com.amazon.dcp.contracts.library                 # DCP Platform Contracts
 com.amazon.dcpms.fos.service                     # DCPMSFOSService
+com.amazon.dee.alexaonandroidos                  # Alexa on Android OS
 com.amazon.dee.app                               # Alexa
 com.amazon.device.messaging                      # Amazon Device Messaging (ADM)
 com.amazon.device.metrics                        # Amazon Device Metrics
@@ -42,6 +44,7 @@ com.amazon.geo.client.maps                       # Amazon Maps App
 com.amazon.geo.mapsv2                            # Map API v2
 com.amazon.geo.mapsv3.resources                  # Map API v3 Resources
 com.amazon.geo.mapsv3.services                   # Map API v3 Services
+com.amazon.h2settingsfortablet                   # Profile Settings (Amazon Profiles & Family Library)
 com.amazon.hybridadidservice                     # Hybrid AD ID Service
 com.amazon.identity.auth.device.authorization    # Mobile Authentication Platform
 com.amazon.imdb.tv.mobile.app                    # Freevee (IMDb)
@@ -61,6 +64,7 @@ com.amazon.minerva.client.api                    # Amazon Minerva Client API
 com.amazon.mp3                                   # Amazon Music
 com.amazon.nimh                                  # Arcus Android Client
 com.amazon.ods.kindleconnect                     # Mayday Screen Sharing
+com.amazon.parentalcontrols                      # Parental Controls
 com.amazon.photos                                # Amazon Photos
 com.amazon.photos.importer                       # Amazon Photos Importer
 com.amazon.platform                              # Amazon Metrics Service Application
@@ -71,6 +75,7 @@ com.amazon.recess                                # Amazon Recess
 com.amazon.securitysyncclient                    # Security Sync Client
 com.amazon.shpm                                  # Ship Mode
 com.amazon.smartgenie                            # Alexa Device Dashboard
+com.amazon.speakscreen                           # Speak Selection
 com.amazon.sync.provider.ipc                     # Sync Provider Executor
 com.amazon.sync.service                          # Amazon Sync Service
 com.amazon.tahoe                                 # Amazon Kids
@@ -90,16 +95,10 @@ com.amazon.windowshop                            # Amazon App
 com.amazon.wirelessmetrics.service               # Amazon Wireless Metrics Service
 com.amazon.zico                                  # Documents
 com.android.bookmarkprovider                     # Bookmarks Provider
-com.android.calendar                             # Calendar
-com.android.calllogbackup                        # Call Logs Backup
 com.android.carrierconfig                        # Carrier Network Configuration
-com.android.contacts                             # Contacts
 com.android.dreams.basic                         # Screensaver
 com.android.email                                # AOSP Mail
-com.android.music                                # AOSP Music Player
 com.android.protips                              # Home Screen Tips
-com.android.providers.calendar                   # Calendar Storage
-com.android.providers.contacts                   # Contacts Storage
 com.android.providers.downloads.ui               # Downloads App
 com.android.providers.partnerbookmarks           # Provider Bookmarks
 com.android.quicksearchbox                       # Search
