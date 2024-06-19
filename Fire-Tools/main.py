@@ -2,10 +2,11 @@ import glob
 import os
 import requests
 import subprocess
+import time
 import customtkinter as ctk
 
 # Platform & Device Variables
-version = "24.06"
+version = "24.07"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
@@ -115,7 +116,7 @@ def set_launcher():
     cmdlist.append("Launcher")
     subprocess.run(cmdlist)
 
-# Extract Selected Package to Extracted/{package} If not Already Present
+# Extract Selected Package to Extracted/{package} if not Already Present
 def extract(package):
     if not os.path.exists(f"Extracted/{package}"):
         print("Extracting:", package)
@@ -128,15 +129,10 @@ def extract(package):
     else:
         print(f"Found at: /Extracted/{package}")
 
-# Add Selected Packages to "customlist" & Remove if Package is Already Found
-def add_package(package):
-    if package in customlist:
-        customlist.remove(package)
-    else:
-        customlist.append(package)
 
 # Read Packages from "customlist" & Pass to Debloat or Extract Function
 def custom(option):
+    customlist = [package for package in packages if checkboxes[package].get()]
     for package in customlist:
         if option == "Extract":
             extract(package)
@@ -147,6 +143,18 @@ def custom(option):
 # Switch Segmented Button's Text & Command to the Selected Option
 def switch(option):
     selected.configure(text=f"{option} Selected",command=lambda: custom(option))
+
+# If Search Input is Found in "package", add to Filtered List & Regenerate Package List (UI)
+def filter_packagelist(event):
+    filtered = [package for package in packages if search.get() in package]
+    generate_list(filtered)
+
+# Remove all Checkboxes and Replace with ones from Filtered List
+def generate_list(items):
+    for package in packages:
+        checkboxes[package].pack_forget()
+    for package in items:
+        checkboxes[package].pack(anchor="w", pady=5)
 
 # Update Button
 update = ctk.CTkButton(window, text="⟳", font=("default",20), width=30, height=30, command=update_tool)
@@ -209,26 +217,24 @@ package_option.grid(row=5, column=2, padx=60, pady=15)
 selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, command=lambda: custom("Disable"))
 selected.grid(row=6, column=2, padx=60, pady=15)
 
-tabview = ctk.CTkTabview(window, width=250, height=300)
-tabview.add("Enabled")
-tabview.add("Disabled")
-tabview.place(x=694, y=55)
+package_list = ctk.CTkScrollableFrame(window, width=235, height=270)
+package_list.place(x=690, y=75)
 if platform == "Windows":
-    tabview.place(x=674, y=55)
+    package_list.place(x=670, y=75)
 
-enabled_list = ctk.CTkScrollableFrame(tabview.tab("Enabled"), width=200, height=230)
-enabled_list.pack()
-disabled_list = ctk.CTkScrollableFrame(tabview.tab("Disabled"), width=200, height=230)
-disabled_list.pack()
-customlist = []
+search = ctk.CTkEntry(package_list, placeholder_text="Filter Packages")
+search.bind("<Return>", command=filter_packagelist)
+search.pack()
 
 if device[0] != "Unknown/Undetected":
-    enabled = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages", "-e"], universal_newlines=True).splitlines()]
-    disabled = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages", "-d"], universal_newlines=True).splitlines()]
-    for package in enabled:
-        checkbox = ctk.CTkCheckBox(enabled_list, text=package, command = lambda param = package: add_package(param)).pack()
-    for package in disabled:
-        checkbox = ctk.CTkCheckBox(disabled_list, text=package, command = lambda param = package: add_package(param)).pack()
+    print("Generating Packagelist")
+    start = time.time()
+    packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
+    checkboxes = {}
+    for package in packages:
+        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package)
+        checkboxes[package].pack(anchor="w", pady=5)
+    print(f"Completed in {round(time.time() - start, 2)}s\n")
 
 window.mainloop()
 
