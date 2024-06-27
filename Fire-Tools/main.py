@@ -5,6 +5,9 @@ import subprocess
 import time
 import customtkinter as ctk
 
+# Set Path
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
 # Platform & Device Variables
 version = "24.07"
 platform = "Linux/macOS"
