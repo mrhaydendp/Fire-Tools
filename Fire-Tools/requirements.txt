@@ -1,4 +1,4 @@
-certifi==2024.2.2
+certifi==2024.7.4
 charset-normalizer==3.3.2
 customtkinter==5.2.2
 darkdetect==0.8.0
