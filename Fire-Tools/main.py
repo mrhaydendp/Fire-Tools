@@ -2,7 +2,6 @@ import glob
 import os
 import requests
 import subprocess
-import time
 import customtkinter as ctk
 
 # Set Path
@@ -231,14 +230,11 @@ search.bind("<Return>", command=filter_packagelist)
 search.pack()
 
 if device[0] != "Unknown/Undetected":
-    print("Generating Packagelist")
-    start = time.time()
     packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
         checkboxes[package] = ctk.CTkCheckBox(package_list, text=package)
         checkboxes[package].pack(anchor="w", pady=5)
-    print(f"Completed in {round(time.time() - start, 2)}s\n")
 
 window.mainloop()
 
