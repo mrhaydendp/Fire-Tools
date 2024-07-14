@@ -11,14 +11,13 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 # Platform & Device Variables
 version = "24.07"
 platform = "Linux/macOS"
-appdir = os.path.dirname(os.path.abspath(__file__))
-path = f"{appdir}/Scripts/Posix/"
+path = f"{os.getcwd()}/Scripts/Posix/"
 
 extension = ".sh"
 shell = "Posix"
 if os.name == "nt":
     platform = "Windows"
-    path = f"powershell -ExecutionPolicy Bypass -file {appdir}\\Scripts\\PowerShell\\"
+    path = f"powershell -ExecutionPolicy Bypass -file {os.getcwd()}\\Scripts\\PowerShell\\"
     extension = ".ps1"
     shell = "PowerShell"
 
@@ -64,7 +63,7 @@ def update_tool():
             with open(f"{module}", "wb") as file:
                 file.write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}", timeout=10).content)
         if platform == "Linux/macOS":
-            for script in glob.glob(f"{appdir}/Scripts/Posix/*.sh"):
+            for script in glob.glob(f"{os.getcwd()}/Scripts/Posix/*.sh"):
                 os.chmod(script, 0o775 )
         print("\nUpdates Complete, Please Re-launch Application")
         quit()
