@@ -48,7 +48,8 @@ This guide will help you install the necessary dependencies to run Fire Tools on
 3. **CustomTkinter & Requests:**
     * Open PowerShell or Windows Terminal.
     * Use the `pip` package manager to install CustomTkinter:
-      ``` powershell
+
+      ```powershell
       python.exe -m pip install customtkinter requests
       ```
 
@@ -57,7 +58,8 @@ This guide will help you install the necessary dependencies to run Fire Tools on
 1. **ADB & Python:**
     * Open a Terminal window.
     * Install the ADB & Python-tk package:
-      ``` bash
+
+      ```bash
       # Ubuntu/Debian/Chrome OS Linux Container
       sudo apt install adb python3-tk
 
@@ -67,7 +69,7 @@ This guide will help you install the necessary dependencies to run Fire Tools on
       # Fedora
       sudo dnf install android-tools python3-tkinter
       ```
-      
+
 2. **CustomTkinter & Requests:**
     * Use `pip` to install CustomTkinter:
       ```bash

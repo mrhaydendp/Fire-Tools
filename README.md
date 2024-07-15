@@ -23,7 +23,9 @@ Follow the steps outlined in [Setup-Instructions.md](/Setup-Instructions.md) the
 # Download Latest Release & Extract, Then Run
 curl -LO https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.zip
 unzip Fire-Tools.zip && rm Fire-Tools.zip
-cd Fire-Tools && python3 main.py
+cd Fire-Tools
+pip install -r requirements.txt
+python3 main.py
 ```
 
 **Windows Powershell:**
@@ -33,7 +35,9 @@ cd Fire-Tools && python3 main.py
 Start-BitsTransfer "https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.zip"
 Expand-Archive Fire-Tools.zip; mv Fire-Tools\Fire-Tools\* Fire-Tools
 Remove-Item Fire-Tools.zip, Fire-Tools\Fire-Tools
-Set-Location Fire-Tools; python main.py
+Set-Location Fire-Tools; 
+pip install -r requirements.txt
+python main.py
 ```
 
 **Important Notes:**
