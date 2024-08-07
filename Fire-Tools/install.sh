@@ -12,7 +12,7 @@ linux_dependencies () {
     [ "$something" = "apt" ] && cmd="sudo apt install -y adb python3-tk"
     [ "$something" = "dnf" ] && cmd="sudo dnf install -y android-tools python3-tkinter"
     [ "$something" = "pacman" ] && cmd="sudo pacman -Sy android-tools tk"
-    exec $cmd
+    $cmd
 }
 
 # Install Brew (https://brew.sh) and use it to install ADB & Python-TK
@@ -22,8 +22,18 @@ mac_dependencies () {
 }
 
 # If Linux, run Linux function else run MacOS function
-[ "$(uname -s)" = "Linux" ] && linux_dependencies || mac_dependencies
+if [ "$(uname -s)" = "Linux" ]; then
+    linux_dependencies 
+else
+    mac_dependencies
+fi
 
 # Download "requirements.txt" and import into Pip
 curl -LO "https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/main/Fire-Tools/requirements.txt"
 pip install -r requirements.txt
+
+# Download Latest Release & Extract, Then Run
+curl -LO https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.zip
+unzip Fire-Tools.zip && rm Fire-Tools.zip
+cd Fire-Tools || return
+python3 main.py
