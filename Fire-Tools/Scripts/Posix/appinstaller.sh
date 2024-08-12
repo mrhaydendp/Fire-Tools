@@ -21,5 +21,5 @@ if [ "$2" = "Launcher" ]; then
     launcher=$(diff packagelist* | grep -E -o "[a-z0-9]*(\.[a-z0-9]+)+[a-z0-9]")
     [ -n "$launcher" ] && adb shell appwidget grantbind --package "$launcher"
     adb shell pm disable-user -k com.amazon.firelauncher >/dev/null 2>&1 ||
-    ./Scripts/Posix/appinstaller.sh LauncherHijackV403.apk
+    grep -q "com.baronkiko.launcherhijack" ./packagelist || ./Scripts/Posix/appinstaller.sh LauncherHijackV403.apk
 fi
