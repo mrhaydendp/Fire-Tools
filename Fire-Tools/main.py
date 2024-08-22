@@ -8,7 +8,7 @@ import customtkinter as ctk
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # Platform & Device Variables
-version = "24.07"
+version = "24.08"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 
@@ -49,13 +49,13 @@ def appinstaller(folder):
 def update_tool():
     print("Checking for Updates...\n")
     try:
-        latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version", timeout=10).text
+        latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version", timeout=10).text.rstrip()
     except requests.exceptions.ConnectionError:
         latest = version
     if version.replace(".","") < latest.replace(".",""):
         if os.path.isfile("ft-identifying-tablet-devices.html"):
             os.remove("ft-identifying-tablet-devices.html")
-        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
+        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text, "\n")
         modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}"]
         for module in modules:
             print(f"Updating: {module}")

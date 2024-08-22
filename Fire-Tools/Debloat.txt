@@ -44,6 +44,7 @@ com.amazon.geo.client.maps                       # Amazon Maps App
 com.amazon.geo.mapsv2                            # Map API v2
 com.amazon.geo.mapsv3.resources                  # Map API v3 Resources
 com.amazon.geo.mapsv3.services                   # Map API v3 Services
+com.amazon.hedwig                                # Fire TV Channels
 com.amazon.h2settingsfortablet                   # Profile Settings (Amazon Profiles & Family Library)
 com.amazon.hybridadidservice                     # Hybrid AD ID Service
 com.amazon.identity.auth.device.authorization    # Mobile Authentication Platform
