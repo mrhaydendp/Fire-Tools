@@ -1,33 +1,35 @@
+# Set Variables & Export Package List
+$option = $args[0]
+$app = $args[1]
+$disable = Get-Content .\Debloat.txt
+adb shell pm list packages | Out-File packagelist
+
 # Enable or Disable Specified Package and Provide Clean Output
 function debloat {
-    if ($args[0] -eq "Disable"){
-        adb shell pm disable-user $args[1] *> $null
-        if ("$?" -eq "True") {adb shell pm clear $args[1] *> $null}
-    } elseif ($args[0] -eq "Enable"){
-        adb shell pm enable $args[1] *> $null
+    if ($option -eq "Disable"){
+        adb shell pm disable-user $app *> $null
+        if ("$?" -eq "True") {adb shell pm clear $app *> $null}
+    } elseif ($option -eq "Enable"){
+        adb shell pm enable $app *> $null
     }
     if ("$?" -eq "True"){
-        Write-Host "$($args[0])d: $($args[1])"
+        Write-Host "$($option)d: $($app)"
     } else {
-        Write-Host "Failed to $($args[0]): $($args[1])"
+        Write-Host "Failed to $($option): $($app)"
     }
 }
 
 # If a Package is Specified, Only run Debloat Function
-if ($args[1]){
-    debloat $args[0] $args[1]
+if ($app){
+    debloat $option $app
 } else {
-    # Save Debloat.txt to a Variable & Export Package List
-    $disable = Get-Content .\Debloat.txt
-    adb shell pm list packages | Out-File packagelist
-
     # Loop & Check if Package from Debloat.txt is Present in 'packagelist' if so, Send to the Debloat Function with Enable/Disable Option
     foreach ($package in $disable){
         if (Select-String $package.split(' #')[0] .\packagelist){
-            debloat $args[0] $package.split(" #")[0]
+            debloat $option $package.split(" #")[0]
         }
     }
-    if ($args[0] -eq "Enable"){
+    if ($option -eq "Enable"){
         Write-Host "Disabling Private DNS"
         adb shell settings put global private_dns_mode off
         Write-Host "Enabling Location Services"
