@@ -2,7 +2,7 @@
 
 # Set Variables & Export Package List
 app="$1"
-$option="$2"
+option="$2"
 adb shell pm list packages -3 > packagelist
 
 # Change Application Installation Method Based on Filetype
