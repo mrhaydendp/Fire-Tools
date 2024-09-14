@@ -1,7 +1,5 @@
-## Updated main.py, requirements.txt, version, appinstaller.sh, appinstaller.ps1 08/21/2024
-- Version bump (24.08)
-- Added Fire TV Channels (com.amazon.hedwig) to debloat list
-- Added space between changelog and "Updating: module" text during update process
-- Updated Packaging and Requests version in requirements.txt
-- Fixed update tool endlessly having updates available
-- LauncherHijack will now only be installed if you don't have it
+## Updated: appinstaller, debloat, install, main, version | Date: 09/15/2024
+- Version bump (24.09)
+- Added "packagelist" file check before checking for custom launcher to reduce errors
+- Improved readability and consistency of scripts by replacing $args[1]/$1 variables with $app/option throughout all scripts
+- Initial Windows install script (Downloads and sets up Fire-Tools, Python, & ADB and creates start menu entry)
