@@ -1,12 +1,14 @@
 # Download, Extract to AppData\Roaming, then Delete Fire-Tools.zip
 Start-BitsTransfer -Source "https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.zip"
-Expand-Archive -Path .\Fire-Tools.zip -Destination "$env:APPDATA"
+Expand-Archive -Path .\Fire-Tools.zip -Destination "$env:APPDATA" -Force
 Remove-Item -Path .\Fire-Tools.zip
 
 # Add Shortcut to Start Menu
-$startmenu = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs"
-$targetPath = "$env:APPDATA\Fire-Tools\main.py"
-New-Item -ItemType SymbolicLink -Path "$startmenu" -TargetPath "$targetPath"
+$WshShell = New-Object -COMObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Fire Tools.lnk")
+$Shortcut.TargetPath = "$env:APPDATA\Fire-Tools\main.py"
+$Shortcut.WorkingDirectory = "$env:APPDATA\Fire-Tools"
+$Shortcut.Save()
 
 # Check / Install Python & Requirements
 if (!(Select-String -Pattern "Python" -InputObject "$env:PATH" -Quiet)) {
@@ -15,11 +17,21 @@ if (!(Select-String -Pattern "Python" -InputObject "$env:PATH" -Quiet)) {
     } else {
         # Find Latest Python Version by Scraping Page & Install 
         $latest = (Invoke-WebRequest -Uri "https://www.python.org/downloads/").Links.href -like "*.exe"
-        Start-BitsTransfer -Source "$latest"
-        .\*python*.exe /passive PrependPath=1
+        Start-BitsTransfer -Source "$latest" -Destination .\python-latest.exe
+        .\python-latest.exe /passive PrependPath=1
         while (!(Get-Package -Name "*Python*" -ErrorAction SilentlyContinue)) {}
-        Remove-Item .\*python*.exe
+        Remove-Item -Path .\python-latest.exe
     }
     Start-BitsTransfer -Source "https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/main/Fire-Tools/requirements.txt" -Destination "$env:APPDATA\Fire-Tools"
     pip install -r "$env:APPDATA\Fire-Tools\requirements.txt"
+}
+
+# Check / Install ADB (Download, Extract, Backup & Set Environment Variable)
+if (!(Select-String -Pattern "platform-tools" -InputObject "$env:PATH" -Quiet)) {
+    Start-BitsTransfer -Source "https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
+    Expand-Archive -Path .\platform-tools-latest-windows.zip -Destination "$HOME" -Force
+    Remove-Item -Path .\platform-tools-latest-windows.zip
+    [Environment]::SetEnvironmentVariable("PATH_BACKUP","$env:PATH","User")
+    Set-Item -Path Env:\PATH -Value ("$env:PATH;$HOME\platform-tools")
+    [Environment]::SetEnvironmentVariable("Path","$env:PATH","User")
 }
