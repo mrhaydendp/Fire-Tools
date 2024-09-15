@@ -1,22 +1,34 @@
 #!/usr/bin/env sh
 
+# Install Brew Without Interaction
+install_brew() {
+    yes | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    (echo; echo "eval \"\$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"") >> "$HOME/.bashrc"
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+}
+
 # Download & Unzip Fire Tools
 curl -LO https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.zip
 unzip -o Fire-Tools.zip -d "$HOME"
 rm Fire-Tools.zip
 
 # Install Dependencies with Respective Package Manager
-if command -v apt >/dev/null 2>&1; then
-    sudo apt install -y adb python3 python3-tk python3-pip
-elif command -v pacman >/dev/null 2>&1; then
-    sudo pacman -S --noconfirm android-tools tk python-pip
-elif command -v dnf >/dev/null 2>&1; then
-    sudo dnf install -y android-tools python3-tkinter python3-pip
-elif command -v brew >/dev/null 2>&1; then
-    yes | brew install android-platform-tools python-tk
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    case "$ID_LIKE" in
+        *debian*)
+            sudo apt install -y adb python3 python3-tk python3-pip;;
+        *arch*)
+            sudo pacman -S --noconfirm android-tools tk python-pip;;
+        *fedora*)
+            sudo dnf install -y android-tools python3-tkinter python3-pip;;
+        *)
+            echo "Unknown/Unsupported OS"
+            exit 1;;
+    esac
 else
-    echo "Unsupported OS"
-    exit 1
+    command -v brew >/dev/null 2>&1 || install_brew
+    yes | brew install android-platform-tools python-tk
 fi
 
 # Download Latest Requirements File & Install with Pip
