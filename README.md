@@ -46,13 +46,14 @@ python main.py
 
 **Important Notes:**
 
+* Although this project has similar goals, it is not affiliated with [Datastream33's Amazon Fire Toolbox](https://xdaforums.com/t/windows-linux-tool-fire-toolbox-v36-1.3889604/)
 * Some features of the Fire Tools may break due to Fire OS updates but I'll try my best to keep them working.
 * Set timezone settings before debloat! (re-enable `com.amazon.kindle.otter.oobe` to change date & time settings)
 * Google Apps are downloaded from [ApkMirror](https://www.apkmirror.com/) and are included in releases for convienence see [terms](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire-Tools/Gapps/README.md).
 * Debloat will disable most amazon apps with the exception of: `Calculator`, `Camera`, `Clock`, `Files`, `Fire Launcher`, `Silk Browser`, and `Settings`
 * Warranty and Reset: Using Fire Tools doesn't void your warranty and all changes can be reversed with a factory reset.
 * Disclaimer: While I developed this tool, I am not responsible for any issues arising from its use.
-  
+
 **Credits:**  Fire Tools thanks and acknowledges the following projects. They are included for your convenience:
 
 * [Google](https://www.android.com/) (GApps)
