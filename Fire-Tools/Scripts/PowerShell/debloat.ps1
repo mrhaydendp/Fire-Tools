@@ -1,32 +1,28 @@
 # Set Variables & Export Package List
 $option = $args[0]
 $app = $args[1]
-$disable = Get-Content .\Debloat.txt
+$packages = Get-Content .\Debloat.txt | % { $_.Split(" #")[0] }
 adb shell pm list packages | Out-File packagelist
 
 # Enable or Disable Specified Package and Provide Clean Output
 function debloat {
-    if ($option -eq "Disable"){
+    if ("$option" -eq "Disable"){
         adb shell pm disable-user "$app" *> $null
         if ("$?" -eq "True") {adb shell pm clear "$app" *> $null}
-    } elseif ($option -eq "Enable"){
+    } elseif ("$option" -eq "Enable"){
         adb shell pm enable "$app" *> $null
     }
-    if ("$?" -eq "True"){
-        Write-Host "$($option)d: $($app)"
-    } else {
-        Write-Host "Failed to $($option): $($app)"
-    }
+    if ("$?" -eq "True"){Write-Host "$($option)d: $($app)"} else {Write-Host "Failed to $($option): $($app)"}
 }
 
 # If a Package is Specified, Only run Debloat Function
-if ($app){
+if ("$app"){
     debloat "$option" "$app"
-} else {
+} elseif ("$option") {
     # Loop & Check if Package from Debloat.txt is Present in 'packagelist' if so, Send to the Debloat Function with Enable/Disable Option
-    foreach ($package in $disable){
-        if (Select-String $package.split(' #')[0] .\packagelist){
-            debloat "$option" $package.split(" #")[0]
+    foreach ($app in $packages){
+        if (Select-String "$app" .\packagelist){
+            debloat "$option" "$app"
         }
     }
     if ("$option" -eq "Enable"){
@@ -36,8 +32,8 @@ if ($app){
         adb shell settings put global location_global_kill_switch 0
         Write-Host "Enabling Core Apps"
         $core = @("firelauncher", "device.software.ota", "device.software.ota.override", "kindle.otter.oobe.forced.ota")
-        foreach ($package in $core){
-            debloat Enable com.amazon."$package"
+        foreach ($app in $core){
+            debloat Enable "com.amazon.$app"
         }
         Write-Host "Enabling Background Activities"
         adb shell settings put global always_finish_activities 0
