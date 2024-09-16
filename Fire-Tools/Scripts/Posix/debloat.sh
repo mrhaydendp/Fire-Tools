@@ -21,7 +21,7 @@ debloat () {
 # If a Package is Specified, Only run Debloat Function
 if [ -n "$app" ]; then
     debloat "$option" "$app"
-else
+elif [ -n "$option" ]; then
     # Loop & Check if Package from Debloat.txt is Present in 'packagelist' if so, Send to the Debloat Function with Enable/Disable Option
     for app in ${packages}; do
         grep -q "$package" < packagelist && debloat "$option" "$app"
