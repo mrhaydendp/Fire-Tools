@@ -20,7 +20,7 @@ esac
 # Grant Launcher Appwidget Permission & Attempt to Disable Fire Launcher. If Failed, Install LauncherHijack
 if [ "$option" = "Launcher" ]; then
     adb shell pm list packages -3 > packagelist.new
-    if [ -s packagelist ];
+    if [ -s packagelist ]; then
         launcher=$(diff packagelist* | grep -E -o "[a-z0-9]*(\.[a-z0-9]+)+[a-z0-9]")
         [ -n "$launcher" ] && adb shell appwidget grantbind --package "$launcher"
     fi
