@@ -25,5 +25,5 @@ if [ "$option" = "Launcher" ]; then
         [ -n "$launcher" ] && adb shell appwidget grantbind --package "$launcher"
     fi
     adb shell pm disable-user -k com.amazon.firelauncher >/dev/null 2>&1 ||
-    ./Scripts/Posix/appinstaller.sh LauncherHijackV403.apk
+    grep -q "com.baronkiko.launcherhijack" ./packagelist || ./Scripts/Posix/appinstaller.sh LauncherHijackV403.apk
 fi
