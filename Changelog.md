@@ -2,4 +2,7 @@
 - Version bump (24.09)
 - Added "packagelist" file check before checking for custom launcher to reduce errors
 - Improved readability and consistency of scripts by replacing $args[1]/$1 variables with $app/option throughout all scripts
-- Initial Windows & Posix install script (Downloads and sets up Fire-Tools, Python, & ADB and creates app menu entry)
+- Debloat script now requires an option to run instead of automatically debloating
+- Simplified/sped up PowerShell debloat script by formatting Debloat.txt instead of every string it outputs into the array (to match Linux/macOS)
+- Formatting fixes
+- Created install script for all platforms that installs dependencies and adds Fire Tools to start/app menu
