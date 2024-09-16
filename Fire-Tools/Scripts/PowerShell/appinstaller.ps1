@@ -17,8 +17,10 @@ if ("$?" -eq "True"){Write-Host "Success`n"} else {Write-Host "Fail`n"}
 
 # Grant Launcher Appwidget Permission & Attempt to Disable Fire Launcher. If Failed, Install LauncherHijack
 if ("$option" -eq "Launcher"){
-    (Compare-Object (Get-Content .\packagelist) (adb shell pm list packages -3)).InputObject | Select -First 1 | % {
-        adb shell appwidget grantbind --package "$_".split(":")[1]
+    if (Get-Content .\packagelist){
+        (Compare-Object (Get-Content .\packagelist) (adb shell pm list packages -3)).InputObject | Select -First 1 | % {
+            adb shell appwidget grantbind --package "$_".split(":")[1]
+        }
     }
     adb shell pm disable-user -k com.amazon.firelauncher *> $null
     if ("$?" -eq "False") {
