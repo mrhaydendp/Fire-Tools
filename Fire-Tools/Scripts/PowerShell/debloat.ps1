@@ -7,10 +7,10 @@ adb shell pm list packages | Out-File packagelist
 # Enable or Disable Specified Package and Provide Clean Output
 function debloat {
     if ($option -eq "Disable"){
-        adb shell pm disable-user $app *> $null
-        if ("$?" -eq "True") {adb shell pm clear $app *> $null}
+        adb shell pm disable-user "$app" *> $null
+        if ("$?" -eq "True") {adb shell pm clear "$app" *> $null}
     } elseif ($option -eq "Enable"){
-        adb shell pm enable $app *> $null
+        adb shell pm enable "$app" *> $null
     }
     if ("$?" -eq "True"){
         Write-Host "$($option)d: $($app)"
@@ -21,15 +21,15 @@ function debloat {
 
 # If a Package is Specified, Only run Debloat Function
 if ($app){
-    debloat $option $app
+    debloat "$option" "$app"
 } else {
     # Loop & Check if Package from Debloat.txt is Present in 'packagelist' if so, Send to the Debloat Function with Enable/Disable Option
     foreach ($package in $disable){
         if (Select-String $package.split(' #')[0] .\packagelist){
-            debloat $option $package.split(" #")[0]
+            debloat "$option" $package.split(" #")[0]
         }
     }
-    if ($option -eq "Enable"){
+    if ("$option" -eq "Enable"){
         Write-Host "Disabling Private DNS"
         adb shell settings put global private_dns_mode off
         Write-Host "Enabling Location Services"
@@ -42,7 +42,7 @@ if ($app){
         Write-Host "Enabling Background Activities"
         adb shell settings put global always_finish_activities 0
         Write-Host "Successfully Enabled Fire OS Bloat`n"
-    } else {
+    } elseif ("$option" -eq "Disable") {
         Write-Host "Disabling Telemetry & Resetting Advertising ID"
         adb shell settings put secure limit_ad_tracking 1
         adb shell settings put secure usage_metrics_marketing_enabled 0
