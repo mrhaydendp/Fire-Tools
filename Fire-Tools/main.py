@@ -7,8 +7,8 @@ import customtkinter as ctk
 # Set Path
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-# Platform & Device Variables
-version = "24.09"
+# Platform Variables
+version = "24.10"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
@@ -35,7 +35,7 @@ def debloat(option, package=""):
         cmdlist.append(package)
     subprocess.run(cmdlist)
 
-# Pass Folder or .apk(m) to Appinstaller Script for Installation
+# Pass Folder or .apk(m) File to Appinstaller Script for Installation
 def appinstaller(folder):
     cmdlist = f"{path}appinstaller{extension}".split()
     search = f"{os.getcwd()}/{folder}*.apk*"
@@ -55,7 +55,7 @@ def update_tool():
         if os.path.isfile("ft-identifying-tablet-devices.html"):
             os.remove("ft-identifying-tablet-devices.html")
         print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text, "\n")
-        modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}"]
+        modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
         for module in modules:
             print(f"Updating: {module}")
             with open(f"{module}", "wb") as file:
