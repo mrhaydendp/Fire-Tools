@@ -52,6 +52,11 @@ def update_tool():
     except requests.exceptions.ConnectionError:
         latest = version
     if version.replace(".","") < latest.replace(".",""):
+        # Grab Latest requirements.txt and Install with PIP3
+        print("Grabing Latest 'requirements.txt'")
+        with open("requirements.txt", "wb") as file:
+            file.write(requests.get("https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/refs/heads/main/Fire-Tools/requirements.txt", timeout=10).content)
+        subprocess.run(["pip3","install","-r","requirements.txt"])
         if os.path.isfile("ft-identifying-tablet-devices.html"):
             os.remove("ft-identifying-tablet-devices.html")
         print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text, "\n")
