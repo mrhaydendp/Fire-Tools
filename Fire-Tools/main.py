@@ -7,7 +7,7 @@ import customtkinter as ctk
 # Set Path
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-# Platform & Device Variables
+# Platform Variables
 version = "24.12"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
@@ -70,7 +70,7 @@ def update_tool():
         if os.path.isfile("ft-identifying-tablet-devices.html"):
             os.remove("ft-identifying-tablet-devices.html")
         print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text, "\n")
-        modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}"]
+        modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
         for module in modules:
             print(f"Updating: {module}")
             with open(f"{module}", "wb") as file:
