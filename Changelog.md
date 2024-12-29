@@ -1,8 +1,9 @@
-## Updated: appinstaller, debloat, install, main, version | Date: 09/15/2024
-- Version bump (24.09)
-- Added "packagelist" file check before checking for custom launcher to reduce errors
-- Improved readability and consistency of scripts by replacing $args[1]/$1 variables with $app/option throughout all scripts
-- Debloat script now requires an option to run instead of automatically debloating
-- Simplified/sped up PowerShell debloat script by formatting Debloat.txt instead of every string it outputs into the array (to match Linux/macOS)
-- Formatting fixes
-- Created install script for all platforms that installs dependencies and adds Fire Tools to start/app menu
+## Updated: main, install, version | Date: 12/29/2024
+- Version bump (24.12)
+- Merged #63 from @angeld7, which adds a select all checkbox to the package list
+- Update tool now grabs the latest `requirements.txt` file and installs it using PIP
+- Added install script to updated modules
+- Python path will now be added $PATH live so the later PIP commands work (install script)
+- Appinstaller function now officially supports single application installs
+- If the Batch folder is empty when running batch install, the file picker dialog will pop up to let you select an `.apk(m)` file
+- Merged APK and Split filetypes into APK/Split in file dialog file filter

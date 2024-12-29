@@ -7,8 +7,8 @@ import customtkinter as ctk
 # Set Path
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-# Platform & Device Variables
-version = "24.09"
+# Platform Variables
+version = "24.12"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
@@ -35,14 +35,24 @@ def debloat(option, package=""):
         cmdlist.append(package)
     subprocess.run(cmdlist)
 
-# Pass Folder or .apk(m) to Appinstaller Script for Installation
+# Pass Folder or .apk(m) File to Appinstaller Script for Installation
 def appinstaller(folder):
     cmdlist = f"{path}appinstaller{extension}".split()
-    search = f"{os.getcwd()}/{folder}*.apk*"
-    for app in glob.iglob(search):
-        cmdlist.append(app)
+    if not os.path.isfile(folder):
+        search = f"{os.getcwd()}/{folder}*.apk*"
+        apps = 0
+        for app in glob.iglob(search):
+            apps =+ 1
+            appinstaller(app)
+        if apps == 0:
+            print(f"{folder} is Empty, Opening File Picker")
+            app = ctk.filedialog.askopenfilename(title="Select .apk(m) File",filetype=(("APK/Split","*.apk*"),("All Files","*.*")))
+            if app:
+                appinstaller(app)
+    else:
+        cmdlist.append(folder)
         subprocess.run(cmdlist)
-        cmdlist.remove(app)
+        cmdlist.remove(folder)
 
 # On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
@@ -52,10 +62,15 @@ def update_tool():
     except requests.exceptions.ConnectionError:
         latest = version
     if version.replace(".","") < latest.replace(".",""):
+        # Grab Latest requirements.txt and Install with PIP3
+        print("Grabing Latest 'requirements.txt'")
+        with open("requirements.txt", "wb") as file:
+            file.write(requests.get("https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/refs/heads/main/Fire-Tools/requirements.txt", timeout=10).content)
+        subprocess.run(["pip3","install","-r","requirements.txt"])
         if os.path.isfile("ft-identifying-tablet-devices.html"):
             os.remove("ft-identifying-tablet-devices.html")
         print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text, "\n")
-        modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}"]
+        modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
         for module in modules:
             print(f"Updating: {module}")
             with open(f"{module}", "wb") as file:
@@ -107,7 +122,7 @@ def disableota():
 # Pass Selected Package to Appinstaller with Launcher Argument
 def set_launcher():
     if customlauncher.get() == "Custom":
-        launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
+        launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK/Split","*.apk*"),("All Files","*.*")))
         if not launcher:
             return
     elif customlauncher.get() != "Select Launcher":
@@ -142,6 +157,23 @@ def custom(option):
             debloat(option,package)
     print("")
 
+# Select packages currently in the filtered view.
+def select_all():
+    select_none()
+    if select_all_bx.get():
+        for package in packages:
+            if checkboxes[package].winfo_ismapped():
+                checkboxes[package].select()
+
+# Removes all package selections
+def select_none():
+    for package in packages:
+        checkboxes[package].deselect()
+
+# Deselect the select all check box
+def clear_select_all():
+    select_all_bx.deselect()
+
 # Switch Segmented Button's Text & Command to the Selected Option
 def switch(option):
     selected.configure(text=f"{option} Selected",command=lambda: custom(option))
@@ -157,6 +189,8 @@ def generate_list(items):
         checkboxes[package].pack_forget()
     for package in items:
         checkboxes[package].pack(anchor="w", pady=5)
+    select_none()
+    clear_select_all()
 
 # Update Button
 update = ctk.CTkButton(window, text="⟳", font=("default",20), width=30, height=30, command=update_tool)
@@ -224,15 +258,19 @@ package_list.place(x=690, y=75)
 if platform == "Windows":
     package_list.place(x=670, y=75)
 
-search = ctk.CTkEntry(package_list, placeholder_text="Filter Packages")
+options_frame = ctk.CTkFrame(package_list)
+select_all_bx = ctk.CTkCheckBox(options_frame, width=30, text="", command=lambda: select_all())
+select_all_bx.grid(row=0, column = 0, pady=1)
+search = ctk.CTkEntry(options_frame, width=200, placeholder_text="Filter Packages")
 search.bind("<Return>", command=filter_packagelist)
-search.pack()
+search.grid(row=0, column = 1, pady=1)
+options_frame.pack()
 
 if device[0] != "Unknown/Undetected":
     packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
-        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package)
+        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package, command=clear_select_all)
         checkboxes[package].pack(anchor="w", pady=5)
 
 window.mainloop()
