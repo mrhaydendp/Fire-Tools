@@ -8,7 +8,7 @@ import customtkinter as ctk
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # Platform & Device Variables
-version = "24.09"
+version = "24.12"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
@@ -35,14 +35,24 @@ def debloat(option, package=""):
         cmdlist.append(package)
     subprocess.run(cmdlist)
 
-# Pass Folder or .apk(m) to Appinstaller Script for Installation
+# Pass Folder or .apk(m) File to Appinstaller Script for Installation
 def appinstaller(folder):
     cmdlist = f"{path}appinstaller{extension}".split()
-    search = f"{os.getcwd()}/{folder}*.apk*"
-    for app in glob.iglob(search):
-        cmdlist.append(app)
+    if not os.path.isfile(folder):
+        search = f"{os.getcwd()}/{folder}*.apk*"
+        apps = 0
+        for app in glob.iglob(search):
+            apps =+ 1
+            appinstaller(app)
+        if apps == 0:
+            print(f"{folder} is Empty, Opening File Picker")
+            app = ctk.filedialog.askopenfilename(title="Select .apk(m) File",filetype=(("APK/Split","*.apk*"),("All Files","*.*")))
+            if app:
+                appinstaller(app)
+    else:
+        cmdlist.append(folder)
         subprocess.run(cmdlist)
-        cmdlist.remove(app)
+        cmdlist.remove(folder)
 
 # On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
@@ -112,7 +122,7 @@ def disableota():
 # Pass Selected Package to Appinstaller with Launcher Argument
 def set_launcher():
     if customlauncher.get() == "Custom":
-        launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK","*.apk"),("Split APK","*.apkm"),("all files","*.*")))
+        launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK/Split","*.apk*"),("All Files","*.*")))
         if not launcher:
             return
     elif customlauncher.get() != "Select Launcher":
