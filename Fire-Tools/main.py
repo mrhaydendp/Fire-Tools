@@ -142,6 +142,7 @@ def custom(option):
             debloat(option,package)
     print("")
 
+# Select packages currently in the filtered view.
 def select_all():
     select_none()
     if select_all_bx.get():
@@ -149,10 +150,12 @@ def select_all():
             if checkboxes[package].winfo_ismapped():
                 checkboxes[package].select()
 
+# Removes all package selections
 def select_none():
     for package in packages:
         checkboxes[package].deselect()
 
+# Deselect the select all check box
 def clear_select_all():
     select_all_bx.deselect()
 
