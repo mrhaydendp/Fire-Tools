@@ -142,6 +142,23 @@ def custom(option):
             debloat(option,package)
     print("")
 
+# Select packages currently in the filtered view.
+def select_all():
+    select_none()
+    if select_all_bx.get():
+        for package in packages:
+            if checkboxes[package].winfo_ismapped():
+                checkboxes[package].select()
+
+# Removes all package selections
+def select_none():
+    for package in packages:
+        checkboxes[package].deselect()
+
+# Deselect the select all check box
+def clear_select_all():
+    select_all_bx.deselect()
+
 # Switch Segmented Button's Text & Command to the Selected Option
 def switch(option):
     selected.configure(text=f"{option} Selected",command=lambda: custom(option))
@@ -157,6 +174,8 @@ def generate_list(items):
         checkboxes[package].pack_forget()
     for package in items:
         checkboxes[package].pack(anchor="w", pady=5)
+    select_none()
+    clear_select_all()
 
 # Update Button
 update = ctk.CTkButton(window, text="⟳", font=("default",20), width=30, height=30, command=update_tool)
@@ -224,15 +243,19 @@ package_list.place(x=690, y=75)
 if platform == "Windows":
     package_list.place(x=670, y=75)
 
-search = ctk.CTkEntry(package_list, placeholder_text="Filter Packages")
+options_frame = ctk.CTkFrame(package_list)
+select_all_bx = ctk.CTkCheckBox(options_frame, width=30, text="", command=lambda: select_all())
+select_all_bx.grid(row=0, column = 0, pady=1)
+search = ctk.CTkEntry(options_frame, width=200, placeholder_text="Filter Packages")
 search.bind("<Return>", command=filter_packagelist)
-search.pack()
+search.grid(row=0, column = 1, pady=1)
+options_frame.pack()
 
 if device[0] != "Unknown/Undetected":
     packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
-        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package)
+        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package, command=clear_select_all)
         checkboxes[package].pack(anchor="w", pady=5)
 
 window.mainloop()
