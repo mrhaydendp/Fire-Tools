@@ -161,7 +161,7 @@ def custom(option):
 def select_all_click():
     # Clear all selections
     select_none()
-    # Select packages currently in the filtered view, if the box is selected.
+    # If seleect_all_bx is selected, select packages currently in the filtered view.
     if select_all_bx.get():
         for package in packages:
             if checkboxes[package].winfo_ismapped():
