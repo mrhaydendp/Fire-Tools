@@ -2,6 +2,7 @@ import glob
 import os
 import requests
 import subprocess
+import shlex
 import customtkinter as ctk
 
 # Set Path
@@ -15,12 +16,15 @@ extension = ".sh"
 shell = "Posix"
 if os.name == "nt":
     platform = "Windows"
-    path = f"powershell -ExecutionPolicy Bypass -file {os.getcwd()}\\Scripts\\PowerShell\\"
-    extension = ".ps1"
+    path = f"powershell -ExecutionPolicy Bypass -file \"{os.getcwd()}\\Scripts\\PowerShell\\"
+    extension = ".ps1\""
     shell = "PowerShell"
 
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
-device = subprocess.check_output(f"{path}identify{extension}".split(), universal_newlines=True).splitlines()
+if platform == "Windows":
+    device = subprocess.check_output(f"{path}identify{extension}", shell=True, universal_newlines=True).splitlines()
+else:
+    device = subprocess.check_output(shlex.split(f"{path}identify{extension}"), universal_newlines=True).splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
@@ -30,7 +34,7 @@ window.geometry("980x550")
 
 # Run Debloat with Disable/Enable Option & Package Name
 def debloat(option, package=""):
-    cmdlist = f"{path}debloat{extension} {option}".split()
+    cmdlist = shlex.split(f"{path}debloat{extension} {option}")
     if package:
         cmdlist.append(package)
     subprocess.run(cmdlist)
@@ -128,7 +132,7 @@ def set_launcher():
     elif customlauncher.get() != "Select Launcher":
         for app in glob.iglob(f"{os.getcwd()}/{customlauncher.get()}*.apk"):
             launcher = app
-    cmdlist = f"{path}appinstaller{extension}".split()
+    cmdlist = shlex.split(f"{path}appinstaller{extension}")
     cmdlist.append(launcher)
     cmdlist.append("Launcher")
     subprocess.run(cmdlist)
