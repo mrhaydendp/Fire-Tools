@@ -22,6 +22,9 @@ if (!(Select-String -Pattern "Python" -InputObject "$env:PATH" -Quiet)) {
         while (!(Get-Package -Name "*Python*" -ErrorAction SilentlyContinue)) {}
         Remove-Item -Path .\python-latest.exe
     }
+    $python_path = Get-ChildItem "$env:LOCALAPPDATA\Programs\Python" -Include *Python* | Select-Object -Last 1
+    Set-Item -Path Env:\PATH -Value ("$env:PATH;$python_path")
+    [Environment]::SetEnvironmentVariable("Path","$env:PATH","User")
     Start-BitsTransfer -Source "https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/main/Fire-Tools/requirements.txt" -Destination "$env:APPDATA\Fire-Tools"
     pip install -r "$env:APPDATA\Fire-Tools\requirements.txt"
 }
