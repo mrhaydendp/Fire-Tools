@@ -41,22 +41,12 @@ def debloat(option, package=""):
 
 # Pass Folder or .apk(m) File to Appinstaller Script for Installation
 def appinstaller(folder):
-    cmdlist = f"{path}appinstaller{extension}".split()
-    if not os.path.isfile(folder):
-        search = f"{os.getcwd()}/{folder}*.apk*"
-        apps = 0
-        for app in glob.iglob(search):
-            apps =+ 1
-            appinstaller(app)
-        if apps == 0:
-            print(f"{folder} is Empty, Opening File Picker")
-            app = ctk.filedialog.askopenfilename(title="Select .apk(m) File",filetype=(("APK/Split","*.apk*"),("All Files","*.*")))
-            if app:
-                appinstaller(app)
-    else:
-        cmdlist.append(folder)
+    cmdlist = shlex.split(f"{path}appinstaller{extension}")
+    search = f"{os.getcwd()}/{folder}*.apk*"
+    for app in glob.iglob(search):
+        cmdlist.append(app)
         subprocess.run(cmdlist)
-        cmdlist.remove(folder)
+        cmdlist.remove(app)
 
 # On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
