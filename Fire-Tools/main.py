@@ -158,13 +158,16 @@ def custom(option):
             debloat(option,package)
     print("")
 
-# Select packages currently in the filtered view.
-def select_all():
+# Action to be performed when the select all checkbox is clicked.
+def select_all_click():
+    # Clear all selections
     select_none()
+    # If seleect_all_bx is selected, select packages currently in the filtered view.
     if select_all_bx.get():
         for package in packages:
             if checkboxes[package].winfo_ismapped():
                 checkboxes[package].select()
+
 
 # Removes all package selections
 def select_none():
@@ -174,6 +177,16 @@ def select_none():
 # Deselect the select all check box
 def clear_select_all():
     select_all_bx.deselect()
+
+# Check if all currently filtered packages are selected, mark the select all if they are.
+def check_select_all():
+    select_all_bx.select()
+    for package in packages:
+        # Deselect check all if any currently filtered package is not selected
+        if checkboxes[package].winfo_ismapped() and not checkboxes[package].get():
+            clear_select_all()
+            break
+
 
 # Switch Segmented Button's Text & Command to the Selected Option
 def switch(option):
@@ -187,11 +200,12 @@ def filter_packagelist(event):
 # Remove all Checkboxes and Replace with ones from Filtered List
 def generate_list(items):
     for package in packages:
-        checkboxes[package].pack_forget()
-    for package in items:
-        checkboxes[package].pack(anchor="w", pady=5)
-    select_none()
-    clear_select_all()
+        if package in items:
+            checkboxes[package].pack(anchor="w", pady=5)
+        else:
+            checkboxes[package].deselect()
+            checkboxes[package].pack_forget()
+    check_select_all()
 
 # Update Button
 update = ctk.CTkButton(window, text="⟳", font=("default",20), width=30, height=30, command=update_tool)
@@ -260,18 +274,18 @@ if platform == "Windows":
     package_list.place(x=670, y=75)
 
 options_frame = ctk.CTkFrame(package_list)
-select_all_bx = ctk.CTkCheckBox(options_frame, width=30, text="", command=lambda: select_all())
-select_all_bx.grid(row=0, column = 0, pady=1)
+select_all_bx = ctk.CTkCheckBox(options_frame, width=30, text="", command=lambda: select_all_click())
+select_all_bx.grid(row=0, column = 0)
 search = ctk.CTkEntry(options_frame, width=200, placeholder_text="Filter Packages")
 search.bind("<Return>", command=filter_packagelist)
-search.grid(row=0, column = 1, pady=1)
-options_frame.pack()
+search.grid(row=0, column = 1)
+options_frame.pack(anchor="w", pady=5)
 
 if device[0] != "Unknown/Undetected":
     packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
-        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package, command=clear_select_all)
+        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package, command=check_select_all)
         checkboxes[package].pack(anchor="w", pady=5)
 
 window.mainloop()
