@@ -21,10 +21,7 @@ if os.name == "nt":
     shell = "PowerShell"
 
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
-if platform == "Windows":
-    device = subprocess.check_output(f"{path}identify{extension}", shell=True, universal_newlines=True).splitlines()
-else:
-    device = subprocess.check_output(shlex.split(f"{path}identify{extension}"), universal_newlines=True).splitlines()
+device = subprocess.check_output(shlex.split(f"{path}identify{extension}"), universal_newlines=True).splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
@@ -41,25 +38,22 @@ def debloat(option, package=""):
 
 # Pass Folder or .apk(m) File to Appinstaller Script for Installation
 def appinstaller(folder):
+    cmdlist = shlex.split(f"{path}appinstaller{extension}")
     if not os.path.isfile(folder):
         search = f"{os.getcwd()}/{folder}*.apk*"
         apps = 0
         for app in glob.iglob(search):
-            apps += 1
-            cmdlist = shlex.split(f"{path}appinstaller{extension}")
-            cmdlist.append(app)
-            subprocess.run(cmdlist)
+            apps =+ 1
+            appinstaller(app)
         if apps == 0:
             print(f"{folder} is Empty, Opening File Picker")
             app = ctk.filedialog.askopenfilename(title="Select .apk(m) File", filetypes=(("APK/Split", "*.apk*"), ("All Files", "*.*")))
             if app:
-                cmdlist = shlex.split(f"{path}appinstaller{extension}")
-                cmdlist.append(app)
-                subprocess.run(cmdlist)
+                appinstaller(app)
     else:
-        cmdlist = shlex.split(f"{path}appinstaller{extension}")
         cmdlist.append(folder)
         subprocess.run(cmdlist)
+        cmdlist.remove(folder)
 
 # On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
@@ -129,7 +123,7 @@ def disableota():
 # Pass Selected Package to Appinstaller with Launcher Argument
 def set_launcher():
     if customlauncher.get() == "Custom":
-        launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK/Split","*.apk*"),("All Files","*.*")))
+        launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File", filetypes=(("APK/Split", "*.apk*"), ("All Files", "*.*")))
         if not launcher:
             return
     elif customlauncher.get() != "Select Launcher":
