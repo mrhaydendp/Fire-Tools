@@ -168,7 +168,6 @@ def select_all_click():
             if checkboxes[package].winfo_ismapped():
                 checkboxes[package].select()
 
-
 # Removes all package selections
 def select_none():
     for package in packages:
@@ -186,7 +185,6 @@ def check_select_all():
         if checkboxes[package].winfo_ismapped() and not checkboxes[package].get():
             clear_select_all()
             break
-
 
 # Switch Segmented Button's Text & Command to the Selected Option
 def switch(option):
