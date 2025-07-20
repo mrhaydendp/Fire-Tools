@@ -268,6 +268,8 @@ selected = ctk.CTkButton(window, text="Disable Selected", width=200, height=50, 
 selected.grid(row=6, column=2, padx=60, pady=15)
 
 package_list = ctk.CTkScrollableFrame(window, width=235, height=270)
+package_list.bind_all("<Button-5>", lambda e: package_list._parent_canvas.yview("scroll", 1, "units"))
+package_list.bind_all("<Button-4>", lambda e: package_list._parent_canvas.yview("scroll", -1, "units"))
 package_list.place(x=690, y=75)
 if platform == "Windows":
     package_list.place(x=670, y=75)
