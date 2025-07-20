@@ -35,8 +35,6 @@ if ("$app"){
         foreach ($app in $core){
             debloat Enable "com.amazon.$app"
         }
-        Write-Host "Enabling Background Activities"
-        adb shell settings put global always_finish_activities 0
         Write-Host "Successfully Enabled Fire OS Bloat`n"
     } elseif ("$option" -eq "Disable") {
         Write-Host "Disabling Telemetry & Resetting Advertising ID"

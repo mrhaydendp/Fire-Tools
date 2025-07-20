@@ -2,25 +2,26 @@ import glob
 import os
 import requests
 import subprocess
+import shlex
 import customtkinter as ctk
 
 # Set Path
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # Platform Variables
-version = "24.12"
+version = "25.07"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
 shell = "Posix"
 if os.name == "nt":
     platform = "Windows"
-    path = f"powershell -ExecutionPolicy Bypass -file {os.getcwd()}\\Scripts\\PowerShell\\"
-    extension = ".ps1"
+    path = f"powershell -ExecutionPolicy Bypass -file \"{os.getcwd()}\\Scripts\\PowerShell\\"
+    extension = ".ps1\""
     shell = "PowerShell"
 
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
-device = subprocess.check_output(f"{path}identify{extension}".split(), universal_newlines=True).splitlines()
+device = subprocess.check_output(shlex.split(f"{path}identify{extension}"), universal_newlines=True).splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
@@ -30,14 +31,14 @@ window.geometry("980x550")
 
 # Run Debloat with Disable/Enable Option & Package Name
 def debloat(option, package=""):
-    cmdlist = f"{path}debloat{extension} {option}".split()
+    cmdlist = shlex.split(f"{path}debloat{extension} {option}")
     if package:
         cmdlist.append(package)
     subprocess.run(cmdlist)
 
 # Pass Folder or .apk(m) File to Appinstaller Script for Installation
 def appinstaller(folder):
-    cmdlist = f"{path}appinstaller{extension}".split()
+    cmdlist = shlex.split(f"{path}appinstaller{extension}")
     if not os.path.isfile(folder):
         search = f"{os.getcwd()}/{folder}*.apk*"
         apps = 0
@@ -46,7 +47,7 @@ def appinstaller(folder):
             appinstaller(app)
         if apps == 0:
             print(f"{folder} is Empty, Opening File Picker")
-            app = ctk.filedialog.askopenfilename(title="Select .apk(m) File",filetype=(("APK/Split","*.apk*"),("All Files","*.*")))
+            app = ctk.filedialog.askopenfilename(title="Select .apk(m) File", filetypes=(("APK/Split", "*.apk*"), ("All Files", "*.*")))
             if app:
                 appinstaller(app)
     else:
@@ -96,10 +97,11 @@ def editfile():
 # Set DNS Mode to Hostname, then Set Selected Provider as Private DNS
 def set_dns():
     dnsprovider = customdns.get()
-    if dnsprovider == "None":
+    if dnsprovider == "Disable":
         subprocess.run(["adb", "shell", "settings", "put", "global", "private_dns_mode", "off"])
         subprocess.run(["adb", "shell", "settings", "delete", "global", "private_dns_specifier"], stdout=subprocess.PIPE)
         print("Disabled Private DNS\n")
+        customdns.set("Select or Enter DNS Server")
     elif dnsprovider != "Select or Enter DNS Server":
         try:
             subprocess.check_output(["adb", "shell", "settings", "put", "global", "private_dns_mode", "hostname"], stderr=subprocess.PIPE)
@@ -122,13 +124,13 @@ def disableota():
 # Pass Selected Package to Appinstaller with Launcher Argument
 def set_launcher():
     if customlauncher.get() == "Custom":
-        launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File",filetypes=(("APK/Split","*.apk*"),("All Files","*.*")))
+        launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File", filetypes=(("APK/Split", "*.apk*"), ("All Files", "*.*")))
         if not launcher:
             return
     elif customlauncher.get() != "Select Launcher":
         for app in glob.iglob(f"{os.getcwd()}/{customlauncher.get()}*.apk"):
             launcher = app
-    cmdlist = f"{path}appinstaller{extension}".split()
+    cmdlist = shlex.split(f"{path}appinstaller{extension}")
     cmdlist.append(launcher)
     cmdlist.append("Launcher")
     subprocess.run(cmdlist)
@@ -157,9 +159,11 @@ def custom(option):
             debloat(option,package)
     print("")
 
-# Select packages currently in the filtered view.
-def select_all():
+# Action to be performed when the select all checkbox is clicked.
+def select_all_click():
+    # Clear all selections
     select_none()
+    # If seleect_all_bx is selected, select packages currently in the filtered view.
     if select_all_bx.get():
         for package in packages:
             if checkboxes[package].winfo_ismapped():
@@ -174,6 +178,15 @@ def select_none():
 def clear_select_all():
     select_all_bx.deselect()
 
+# Check if all currently filtered packages are selected, mark the select all if they are.
+def check_select_all():
+    select_all_bx.select()
+    for package in packages:
+        # Deselect check all if any currently filtered package is not selected
+        if checkboxes[package].winfo_ismapped() and not checkboxes[package].get():
+            clear_select_all()
+            break
+
 # Switch Segmented Button's Text & Command to the Selected Option
 def switch(option):
     selected.configure(text=f"{option} Selected",command=lambda: custom(option))
@@ -186,11 +199,12 @@ def filter_packagelist(event):
 # Remove all Checkboxes and Replace with ones from Filtered List
 def generate_list(items):
     for package in packages:
-        checkboxes[package].pack_forget()
-    for package in items:
-        checkboxes[package].pack(anchor="w", pady=5)
-    select_none()
-    clear_select_all()
+        if package in items:
+            checkboxes[package].pack(anchor="w", pady=5)
+        else:
+            checkboxes[package].deselect()
+            checkboxes[package].pack_forget()
+    check_select_all()
 
 # Update Button
 update = ctk.CTkButton(window, text="⟳", font=("default",20), width=30, height=30, command=update_tool)
@@ -212,7 +226,7 @@ edit.grid(row=3, column=0, padx=60, pady=15)
 label1 = ctk.CTkLabel(window, text="Custom DNS", font=("default",25))
 label1.grid(row=4, column=0, padx=60, pady=15)
 
-customdns = ctk.CTkComboBox(window, values=["dns.adguard.com", "security.cloudflare-dns.com", "None"], width=200, height=30)
+customdns = ctk.CTkComboBox(window, values=["one.one.one.one", "dns.quad9.net", "dns.adguard.com", "adblock.dns.mullvad.net", "family.cloudflare-dns.com", "family.adguard-dns.com", "Disable"], width=200, height=30)
 customdns.grid(row=5, column=0, padx=60, pady=15)
 customdns.set("Select or Enter DNS Server")
 
@@ -259,18 +273,21 @@ if platform == "Windows":
     package_list.place(x=670, y=75)
 
 options_frame = ctk.CTkFrame(package_list)
-select_all_bx = ctk.CTkCheckBox(options_frame, width=30, text="", command=lambda: select_all())
-select_all_bx.grid(row=0, column = 0, pady=1)
+select_all_bx = ctk.CTkCheckBox(options_frame, width=30, text="", command=lambda: select_all_click())
+select_all_bx.grid(row=0, column = 0)
 search = ctk.CTkEntry(options_frame, width=200, placeholder_text="Filter Packages")
 search.bind("<Return>", command=filter_packagelist)
-search.grid(row=0, column = 1, pady=1)
-options_frame.pack()
+search.grid(row=0, column = 1)
+options_frame.pack(anchor="w", pady=5)
 
-if device[0] != "Unknown/Undetected":
+if device[0] != "Not Detected":
+    dnsprovider = subprocess.check_output(["adb", "shell", "settings", "get", "global", "private_dns_specifier"], universal_newlines=True).splitlines()
+    if "null" not in dnsprovider:
+        customdns.set(dnsprovider)
     packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
-        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package, command=clear_select_all)
+        checkboxes[package] = ctk.CTkCheckBox(package_list, text=package, command=check_select_all)
         checkboxes[package].pack(anchor="w", pady=5)
 
 window.mainloop()
