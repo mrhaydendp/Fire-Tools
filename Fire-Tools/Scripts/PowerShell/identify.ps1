@@ -1,9 +1,12 @@
 # Set Placeholder Values for Device Name & Fire OS Version
-$device = "Unknown/Undetected"
-$fireos = "Unknown"
+$device = "Not Detected"
+$fireos = "N/A"
 
 # Find Device Name by Regexing Model Number & Subtracting 3 Lines on Amazon Developer Docs, Then get Fire OS Version
 if (adb shell echo "Device Found" 2> $null){
+    if (!(adb shell getprop ro.build.mktg.fireos)){
+        $device = "Generic ADB"
+    }
     $model = (adb shell getprop ro.product.model)
     if (!(Test-Path .\ft-identifying-tablet-devices.html)){
         Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile ft-identifying-tablet-devices.html

@@ -279,7 +279,7 @@ search.bind("<Return>", command=filter_packagelist)
 search.grid(row=0, column = 1)
 options_frame.pack(anchor="w", pady=5)
 
-if device[0] != "Unknown/Undetected":
+if device[0] != "Not Detected":
     packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
