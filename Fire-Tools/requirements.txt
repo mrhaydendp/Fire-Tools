@@ -3,5 +3,5 @@ charset-normalizer==3.3.2
 customtkinter==5.2.2
 darkdetect==0.8.0
 packaging==24.1
-requests==2.32.3
-urllib3==2.2.2
+requests==2.32.4
+urllib3==2.5.0

@@ -10,7 +10,7 @@ if (adb shell echo "Device Found" 2> $null){
     }
     $modelLine = (Select-String -Pattern "$model" -Path .\ft-identifying-tablet-devices.html).LineNumber
     if ($modelLine){
-        $device = (Get-Content .\ft-identifying-tablet-devices.html | Select -Index ("$modelLine" - 3) | Select-String "(Kindle|Fire) (.*?)[Gg]en\)").Matches.Value
+        $device = (Get-Content .\ft-identifying-tablet-devices.html | Select -Index ("$modelLine" - 3) | Select-String "(?:Kindle|Fire) (?:.*?)[Gg]en\)").Matches.Value
         $fireos = (adb shell getprop ro.build.mktg.fireos)
     }
 }
