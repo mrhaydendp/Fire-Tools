@@ -5,4 +5,9 @@
 - Optimized regex pattern for faster device identification
 - Simplified and optimized identify
 - New device state names: Not Detected & Generic ADB
+- Package selector now shows packages when using non Amazon devices
+- Changed DNS reset option to "Disable" instead of "None"
+- When DNS is disabled the DNS dropdown now resets back to default
+- DNS dropdown now shows you what DNS is enabled on startup
+- Added DNS providers: one.one.one.one, dns.quad9.net, adblock.dns.mullvad.net, family.cloudflare-dns.com, and family.adguard-dns.com
 - Updated dependencies
