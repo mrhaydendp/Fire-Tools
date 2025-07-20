@@ -97,10 +97,11 @@ def editfile():
 # Set DNS Mode to Hostname, then Set Selected Provider as Private DNS
 def set_dns():
     dnsprovider = customdns.get()
-    if dnsprovider == "None":
+    if dnsprovider == "Disable":
         subprocess.run(["adb", "shell", "settings", "put", "global", "private_dns_mode", "off"])
         subprocess.run(["adb", "shell", "settings", "delete", "global", "private_dns_specifier"], stdout=subprocess.PIPE)
         print("Disabled Private DNS\n")
+        customdns.set("Select or Enter DNS Server")
     elif dnsprovider != "Select or Enter DNS Server":
         try:
             subprocess.check_output(["adb", "shell", "settings", "put", "global", "private_dns_mode", "hostname"], stderr=subprocess.PIPE)
@@ -225,7 +226,7 @@ edit.grid(row=3, column=0, padx=60, pady=15)
 label1 = ctk.CTkLabel(window, text="Custom DNS", font=("default",25))
 label1.grid(row=4, column=0, padx=60, pady=15)
 
-customdns = ctk.CTkComboBox(window, values=["dns.adguard.com", "security.cloudflare-dns.com", "None"], width=200, height=30)
+customdns = ctk.CTkComboBox(window, values=["one.one.one.one", "dns.quad9.net", "dns.adguard.com", "adblock.dns.mullvad.net", "family.cloudflare-dns.com", "family.adguard-dns.com", "Disable"], width=200, height=30)
 customdns.grid(row=5, column=0, padx=60, pady=15)
 customdns.set("Select or Enter DNS Server")
 
@@ -280,6 +281,9 @@ search.grid(row=0, column = 1)
 options_frame.pack(anchor="w", pady=5)
 
 if device[0] != "Not Detected":
+    dnsprovider = subprocess.check_output(["adb", "shell", "settings", "get", "global", "private_dns_specifier"], universal_newlines=True).splitlines()
+    if "null" not in dnsprovider:
+        customdns.set(dnsprovider)
     packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
