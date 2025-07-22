@@ -9,7 +9,7 @@ import customtkinter as ctk
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # Platform Variables
-version = "25.07"
+version = "25.07.1"
 platform = "Linux/macOS"
 path = f"{os.getcwd()}/Scripts/Posix/"
 extension = ".sh"
