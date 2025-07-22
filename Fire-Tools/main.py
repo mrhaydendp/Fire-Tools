@@ -148,8 +148,10 @@ def extract(package):
                 os.rmdir(f"Extracted/{package}")
             print("")
     else:
-        print(f"Found at: /Extracted/{package}")
-
+        if platform == "Windows":
+            print(f"Skipping, Found at: {os.getcwd()}\\Extracted\\{package}")
+        else:
+            print(f"Skipping, Found at: {os.getcwd()}/Extracted/{package}")
 
 # Read Packages from "customlist" & Pass to Debloat or Extract Function
 def custom(option):
