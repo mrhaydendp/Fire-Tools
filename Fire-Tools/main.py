@@ -20,6 +20,9 @@ if os.name == "nt":
     extension = ".ps1\""
     shell = "PowerShell"
 
+# Start ADB Server
+subprocess.run(["adb", "start-server"], check=True, stderr=subprocess.PIPE)
+
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
 device = subprocess.check_output(shlex.split(f"{path}identify{extension}"), universal_newlines=True).splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
