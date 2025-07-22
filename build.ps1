@@ -6,7 +6,7 @@ $path=".\Fire-Tools"
 
 # Build into Seperate Folder with Batch, Gapps, Extracted, Scripts, and Debloat.txt Included
 nuitka $path\main.py --output-filename=fire-tools --mode=standalone --enable-plugin=tk-inter `
---product-name="$name" --product-version=25.07 --copyright="$author" --file-description="$name" `
+--product-name="$name" --product-version="$version" --copyright="$author" --file-description="$name" `
 --include-data-dir="$path\Batch"=.\Batch `
 --include-data-dir="$path\Extracted"=.\Extracted `
 --include-data-dir="$path\Gapps"=.\Gapps `
