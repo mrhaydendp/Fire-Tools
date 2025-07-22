@@ -8,6 +8,7 @@
 - Took requirements.txt out of modules since it already gets updated and ran before the modules get installed
 - Apk Extractor path output now displays backslash or forward slash based on system
 - Fixed hang on first boot of Fire Tools on Windows by starting ADB server before identify script
+- Fixed ADB error when work profile is enabled by targeting default user
 - Added build scripts for for compiling application binaries
 
 ## Updated: main, identify, version | Date: 07/19/2025
