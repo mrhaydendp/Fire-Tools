@@ -63,24 +63,26 @@ def update_tool():
     except requests.exceptions.ConnectionError:
         latest = version
     if version.replace(".","") < latest.replace(".",""):
-        # Grab Latest requirements.txt and Install with PIP3
-        print("Grabing Latest 'requirements.txt'")
-        with open("requirements.txt", "wb") as file:
-            file.write(requests.get("https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/refs/heads/main/Fire-Tools/requirements.txt", timeout=10).content)
-        subprocess.run(["pip3","install","-r","requirements.txt"])
+        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
         if os.path.isfile("ft-identifying-tablet-devices.html"):
             os.remove("ft-identifying-tablet-devices.html")
-        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text, "\n")
-        modules = ["main.py", "Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
+        modules = ["Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
+        # Check if User is Running in Python or Binary Mode
+        if not glob.glob("fire-tools*"):
+            # Grab Latest requirements.txt and Install with Pip
+            print("Updating Dependencies")
+            with open("requirements.txt", "wb") as file:
+                file.write(requests.get("https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/refs/heads/main/Fire-Tools/requirements.txt", timeout=10).content)
+            subprocess.run(["pip3","install","-r","requirements.txt"])
+            modules.add("main.py")        
         for module in modules:
-            print(f"Updating: {module}")
-            with open(f"{module}", "wb") as file:
-                file.write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}", timeout=10).content)
+            print(f"Updating: {module.replace("\"","")}")
+            with open(f"{module.replace("\"","")}", "wb") as file:
+                file.write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module.replace("\"","")}", timeout=10).content)
         if platform == "Linux/macOS":
             for script in glob.glob(f"{os.getcwd()}/Scripts/Posix/*.sh"):
                 os.chmod(script, 0o775 )
         print("\nUpdates Complete, Please Re-launch Application")
-        quit()
     else:
         print("No Update Needed\n")
 
