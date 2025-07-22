@@ -66,7 +66,7 @@ def update_tool():
         print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
         if os.path.isfile("ft-identifying-tablet-devices.html"):
             os.remove("ft-identifying-tablet-devices.html")
-        modules = ["Debloat.txt", "requirements.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
+        modules = ["Debloat.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
         # Check if User is Running in Python or Binary Mode
         if not glob.glob("fire-tools*"):
             # Grab Latest requirements.txt and Install with Pip
