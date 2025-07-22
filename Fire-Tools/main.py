@@ -293,7 +293,7 @@ if device[0] != "Not Detected":
     dnsprovider = subprocess.check_output(["adb", "shell", "settings", "get", "global", "private_dns_specifier"], universal_newlines=True).splitlines()
     if "null" not in dnsprovider:
         customdns.set(dnsprovider)
-    packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages"], universal_newlines=True).splitlines()]
+    packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages", "--user", "0"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
         checkboxes[package] = ctk.CTkCheckBox(package_list, text=package, command=check_select_all)
