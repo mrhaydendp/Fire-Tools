@@ -1,6 +1,6 @@
 # Set Application Tags
 $name = "Fire Tools"
-$version = "25.07"
+$version = "25.07.1"
 $author = "Hayden Plumley & Contributors"
 $path=".\Fire-Tools"
 
