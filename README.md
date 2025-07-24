@@ -10,16 +10,17 @@ Fire Tools is a powerful collection of tools that helps debloat and install Goog
 **Features:**
 * Cross Platform (Linux, macOS, & Windows)
 * Powerful Debloat Tool
+* Limits Amazon Tracking & Ads
 * Google Play Installer (Android 8+/Fire OS 7+)
-* Custom Launcher Support
+* Custom Launcher Support (LauncherHijack on Newer Fire OS Versions)
 * Disable OTA Updates
 * Apk Extractor
 * Batch Installer (.apk & .apkm files)
-* Private DNS Switcher
+* Custom DNS Selector (AdGuard, Cloudlfare, etc.)
 
-**Installation Instructions:**
+**Installation Instructions (Python):**
 
-Follow the steps outlined in [Setup-Instructions.md](/Setup-Instructions.md) then proceed to installation. After installation run update tool to get the latest version of scripts!
+Follow the steps outlined in [Setup-Instructions.md](/Setup-Instructions.md) first! then proceed to installation instructions. After installation run update tool to get the latest version of scripts!
 
 **Linux/macOS:**
 
