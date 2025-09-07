@@ -79,9 +79,11 @@ def update_tool():
             run(["pip3","install","-r","requirements.txt"])
             modules.append("main.py")        
         for module in modules:
-            print(f"Updating: {module.replace("\"","")}")
-            with open(f"{module.replace("\"","")}", "wb") as file:
-                file.write(get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module.replace("\"","")}", timeout=10).content)
+            if platform == "Windows":
+                module = module.replace(".ps1\"",".ps1")
+            print(f"Updating: {module}")
+            with open(f"{module}", "wb") as file:
+                file.write(get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}", timeout=10).content)
         if platform == "Linux/macOS":
             for script in glob(f"{getcwd()}/Scripts/Posix/*.sh"):
                 chmod(script, 0o775 )
