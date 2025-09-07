@@ -2,9 +2,9 @@
 
 # Set Application Tags
 name="Fire Tools"
-version="25.08"
 author="Hayden Plumley & Contributors"
 path="./Fire-Tools"
+version=$(cat "$path/version")
 
 # Set Scripts as Executables
 chmod +x "$path"/Scripts/Posix/*.sh

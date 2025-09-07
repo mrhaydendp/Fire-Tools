@@ -1,8 +1,8 @@
 # Set Application Tags
 $name = "Fire Tools"
-$version = "25.08"
 $author = "Hayden Plumley & Contributors"
 $path=".\Fire-Tools"
+$version = (Get-Content "$path\version")
 
 # Build into Seperate Folder with Batch, Gapps, Extracted, Scripts, and Debloat.txt Included
 python -m nuitka $path\main.py --output-filename=fire-tools --mode=standalone --enable-plugin=tk-inter `
