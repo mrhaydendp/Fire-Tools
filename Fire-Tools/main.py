@@ -45,7 +45,7 @@ def appinstaller(folder):
     if not path.isfile(folder):
         search = f"{getcwd()}/{folder}*.apk*"
         apps = 0
-        for app in glob.iglob(search):
+        for app in iglob(search):
             apps =+ 1
             appinstaller(app)
         if apps == 0:
@@ -71,7 +71,7 @@ def update_tool():
             remove("ft-identifying-tablet-devices.html")
         modules = ["Debloat.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
         # Check if User is Running in Python or Binary Mode
-        if not glob.glob("fire-tools*"):
+        if not glob("fire-tools*"):
             # Grab Latest requirements.txt and Install with Pip
             print("Updating Dependencies")
             with open("requirements.txt", "wb") as file:
@@ -83,7 +83,7 @@ def update_tool():
             with open(f"{module.replace("\"","")}", "wb") as file:
                 file.write(get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module.replace("\"","")}", timeout=10).content)
         if platform == "Linux/macOS":
-            for script in glob.glob(f"{getcwd()}/Scripts/Posix/*.sh"):
+            for script in glob(f"{getcwd()}/Scripts/Posix/*.sh"):
                 chmod(script, 0o775 )
         print("\nUpdates Complete, Please Re-launch Application")
     else:
@@ -133,7 +133,7 @@ def set_launcher():
         if not launcher:
             return
     elif customlauncher.get() != "Select Launcher":
-        for app in glob.iglob(f"{getcwd()}/{customlauncher.get()}*.apk"):
+        for app in iglob(f"{getcwd()}/{customlauncher.get()}*.apk"):
             launcher = app
     cmdlist = shlex.split(f"{path}appinstaller{extension}")
     cmdlist.append(launcher)
@@ -302,5 +302,5 @@ if device[0] != "Not Detected":
 window.mainloop()
 
 # Remove Temp Files when Application Closes
-for temp_file in glob.glob("*packagelist*"):
+for temp_file in glob("*packagelist*"):
     remove(temp_file)
