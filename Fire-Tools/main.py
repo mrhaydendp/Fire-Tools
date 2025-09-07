@@ -1,4 +1,4 @@
-from os import chdir, chmod, path, getcwd, remove, name, startfile
+from os import chdir, chmod, path, getcwd, remove, name
 from glob import glob, iglob
 from requests import get
 from subprocess import run, check_output, PIPE, CalledProcessError
@@ -99,7 +99,7 @@ def editfile():
         except CalledProcessError:
             run(["open", "-e", "Debloat.txt"], check=True, stderr=PIPE)
     else:
-        startfile("Debloat.txt")
+        run(["notepad.exe", "Debloat.txt"])
 
 # Set DNS Mode to Hostname, then Set Selected Provider as Private DNS
 def set_dns():
