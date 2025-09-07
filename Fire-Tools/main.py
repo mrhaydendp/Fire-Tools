@@ -9,7 +9,7 @@ import customtkinter as ctk
 chdir(path.dirname(path.realpath(__file__)))
 
 # Platform Variables
-version = "25.08"
+version = "25.09"
 platform = "Linux/macOS"
 path = f"{getcwd()}/Scripts/Posix/"
 extension = ".sh"
@@ -67,17 +67,17 @@ def update_tool():
         latest = version
     if version.replace(".","") < latest.replace(".",""):
         print("Latest Changelog:\n", get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
-        if path.isfile("ft-identifying-tablet-devices.html"):
-            remove("ft-identifying-tablet-devices.html")
+        for identify_cache in glob("*ft-identifying-tablet-devices.html*"):
+            remove(identify_cache)
         modules = ["Debloat.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
         # Check if User is Running in Python or Binary Mode
         if not glob("fire-tools*"):
             # Grab Latest requirements.txt and Install with Pip
-            print("Updating Dependencies")
+            print("\nUpdating Dependencies")
             with open("requirements.txt", "wb") as file:
                 file.write(get("https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/refs/heads/main/Fire-Tools/requirements.txt", timeout=10).content)
             run(["pip3","install","-r","requirements.txt"])
-            modules.add("main.py")        
+            modules.append("main.py")        
         for module in modules:
             print(f"Updating: {module.replace("\"","")}")
             with open(f"{module.replace("\"","")}", "wb") as file:
