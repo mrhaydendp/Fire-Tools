@@ -1,4 +1,4 @@
-## Updated main, build, version | Date: 09/07/25
+## Updated main, build, version | Date: 09/21/25
 - Version bump (25.09)
 - Build scripts now use python module mode
 - Platform binaries now only include necessary scripts
