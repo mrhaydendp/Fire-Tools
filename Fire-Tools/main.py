@@ -1,4 +1,4 @@
-from os import chdir, chmod, path, getcwd, remove, name
+from os import chdir, chmod, path, getcwd, remove, name, listdir, rmdir, mkdir
 from glob import glob, iglob
 from requests import get
 from subprocess import run, check_output, PIPE, CalledProcessError
@@ -11,12 +11,12 @@ chdir(path.dirname(path.realpath(__file__)))
 # Platform Variables
 version = "25.09"
 platform = "Linux/macOS"
-path = f"{getcwd()}/Scripts/Posix/"
+default_path = f"{getcwd()}/Scripts/Posix/"
 extension = ".sh"
 shell = "Posix"
 if name == "nt":
     platform = "Windows"
-    path = f"powershell -ExecutionPolicy Bypass -file \"{getcwd()}\\Scripts\\PowerShell\\"
+    default_path = f"powershell -ExecutionPolicy Bypass -file \"{getcwd()}\\Scripts\\PowerShell\\"
     extension = ".ps1\""
     shell = "PowerShell"
 
@@ -24,7 +24,7 @@ if name == "nt":
 run(["adb", "start-server"], check=True, stderr=PIPE)
 
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
-device = check_output(shlex.split(f"{path}identify{extension}"), universal_newlines=True).splitlines()
+device = check_output(shlex.split(f"{default_path}identify{extension}"), universal_newlines=True).splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
@@ -34,14 +34,14 @@ window.geometry("980x550")
 
 # Run Debloat with Disable/Enable Option & Package Name
 def debloat(option, package=""):
-    cmdlist = shlex.split(f"{path}debloat{extension} {option}")
+    cmdlist = shlex.split(f"{default_path}debloat{extension} {option}")
     if package:
         cmdlist.append(package)
     run(cmdlist)
 
 # Pass Folder or .apk(m) File to Appinstaller Script for Installation
 def appinstaller(folder):
-    cmdlist = shlex.split(f"{path}appinstaller{extension}")
+    cmdlist = shlex.split(f"{default_path}appinstaller{extension}")
     if not path.isfile(folder):
         search = f"{getcwd()}/{folder}*.apk*"
         apps = 0
@@ -137,7 +137,7 @@ def set_launcher():
     elif customlauncher.get() != "Select Launcher":
         for app in iglob(f"{getcwd()}/{customlauncher.get()}*.apk"):
             launcher = app
-    cmdlist = shlex.split(f"{path}appinstaller{extension}")
+    cmdlist = shlex.split(f"{default_path}appinstaller{extension}")
     cmdlist.append(launcher)
     cmdlist.append("Launcher")
     run(cmdlist)
