@@ -1,30 +1,30 @@
-import glob
-import os
-import requests
-import subprocess
+from os import chdir, chmod, path, getcwd, remove, name, listdir, rmdir, mkdir
+from glob import glob, iglob
+from requests import get
+from subprocess import run, check_output, PIPE, CalledProcessError
 import shlex
 import customtkinter as ctk
 
 # Set Path
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
+chdir(path.dirname(path.realpath(__file__)))
 
 # Platform Variables
-version = "25.07.1"
+version = "25.09"
 platform = "Linux/macOS"
-path = f"{os.getcwd()}/Scripts/Posix/"
+default_path = f"{getcwd()}/Scripts/Posix/"
 extension = ".sh"
 shell = "Posix"
-if os.name == "nt":
+if name == "nt":
     platform = "Windows"
-    path = f"powershell -ExecutionPolicy Bypass -file \"{os.getcwd()}\\Scripts\\PowerShell\\"
+    default_path = f"powershell -ExecutionPolicy Bypass -file \"{getcwd()}\\Scripts\\PowerShell\\"
     extension = ".ps1\""
     shell = "PowerShell"
 
 # Start ADB Server
-subprocess.run(["adb", "start-server"], check=True, stderr=subprocess.PIPE)
+run(["adb", "start-server"], check=True, stderr=PIPE)
 
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
-device = subprocess.check_output(shlex.split(f"{path}identify{extension}"), universal_newlines=True).splitlines()
+device = check_output(shlex.split(f"{default_path}identify{extension}"), universal_newlines=True).splitlines()
 print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
 
 # Window Config
@@ -34,18 +34,18 @@ window.geometry("980x550")
 
 # Run Debloat with Disable/Enable Option & Package Name
 def debloat(option, package=""):
-    cmdlist = shlex.split(f"{path}debloat{extension} {option}")
+    cmdlist = shlex.split(f"{default_path}debloat{extension} {option}")
     if package:
         cmdlist.append(package)
-    subprocess.run(cmdlist)
+    run(cmdlist)
 
 # Pass Folder or .apk(m) File to Appinstaller Script for Installation
 def appinstaller(folder):
-    cmdlist = shlex.split(f"{path}appinstaller{extension}")
-    if not os.path.isfile(folder):
-        search = f"{os.getcwd()}/{folder}*.apk*"
+    cmdlist = shlex.split(f"{default_path}appinstaller{extension}")
+    if not path.isfile(folder):
+        search = f"{getcwd()}/{folder}*.apk*"
         apps = 0
-        for app in glob.iglob(search):
+        for app in iglob(search):
             apps =+ 1
             appinstaller(app)
         if apps == 0:
@@ -55,36 +55,38 @@ def appinstaller(folder):
                 appinstaller(app)
     else:
         cmdlist.append(folder)
-        subprocess.run(cmdlist)
+        run(cmdlist)
         cmdlist.remove(folder)
 
-# On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
+# On Update, Delete "ft-identify-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
     print("Checking for Updates...\n")
     try:
-        latest = requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version", timeout=10).text.rstrip()
-    except requests.exceptions.ConnectionError:
+        latest = get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/version", timeout=10).text.rstrip()
+    except exceptions.ConnectionError:
         latest = version
     if version.replace(".","") < latest.replace(".",""):
-        print("Latest Changelog:\n", requests.get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
-        if os.path.isfile("ft-identifying-tablet-devices.html"):
-            os.remove("ft-identifying-tablet-devices.html")
+        print("Latest Changelog:\n", get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
+        for identify_cache in glob("*ft-identify-tablet-devices.html*"):
+            remove(identify_cache)
         modules = ["Debloat.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
         # Check if User is Running in Python or Binary Mode
-        if not glob.glob("fire-tools*"):
+        if not glob("fire-tools*"):
             # Grab Latest requirements.txt and Install with Pip
-            print("Updating Dependencies")
+            print("\nUpdating Dependencies")
             with open("requirements.txt", "wb") as file:
-                file.write(requests.get("https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/refs/heads/main/Fire-Tools/requirements.txt", timeout=10).content)
-            subprocess.run(["pip3","install","-r","requirements.txt"])
-            modules.add("main.py")        
+                file.write(get("https://raw.githubusercontent.com/mrhaydendp/Fire-Tools/refs/heads/main/Fire-Tools/requirements.txt", timeout=10).content)
+            run(["pip3","install","-r","requirements.txt"])
+            modules.append("main.py")        
         for module in modules:
-            print(f"Updating: {module.replace("\"","")}")
-            with open(f"{module.replace("\"","")}", "wb") as file:
-                file.write(requests.get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module.replace("\"","")}", timeout=10).content)
+            if platform == "Windows":
+                module = module.replace(".ps1\"",".ps1")
+            print(f"Updating: {module}")
+            with open(f"{module}", "wb") as file:
+                file.write(get(f"https://github.com/mrhaydendp/Fire-Tools/raw/main/Fire-Tools/{module}", timeout=10).content)
         if platform == "Linux/macOS":
-            for script in glob.glob(f"{os.getcwd()}/Scripts/Posix/*.sh"):
-                os.chmod(script, 0o775 )
+            for script in glob(f"{getcwd()}/Scripts/Posix/*.sh"):
+                chmod(script, 0o775 )
         print("\nUpdates Complete, Please Re-launch Application")
     else:
         print("No Update Needed\n")
@@ -93,26 +95,26 @@ def update_tool():
 def editfile():
     if platform != "Windows":
         try:
-            subprocess.run(["xdg-open", "Debloat.txt"], check=True, stderr=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            subprocess.run(["open", "-e", "Debloat.txt"], check=True, stderr=subprocess.PIPE)
+            run(["xdg-open", "Debloat.txt"], check=True, stderr=PIPE)
+        except CalledProcessError:
+            run(["open", "-e", "Debloat.txt"], check=True, stderr=PIPE)
     else:
-        os.startfile("Debloat.txt")
+        run(["notepad.exe", "Debloat.txt"])
 
 # Set DNS Mode to Hostname, then Set Selected Provider as Private DNS
 def set_dns():
     dnsprovider = customdns.get()
     if dnsprovider == "Disable":
-        subprocess.run(["adb", "shell", "settings", "put", "global", "private_dns_mode", "off"])
-        subprocess.run(["adb", "shell", "settings", "delete", "global", "private_dns_specifier"], stdout=subprocess.PIPE)
+        run(["adb", "shell", "settings", "put", "global", "private_dns_mode", "off"])
+        run(["adb", "shell", "settings", "delete", "global", "private_dns_specifier"], stdout=PIPE)
         print("Disabled Private DNS\n")
         customdns.set("Select or Enter DNS Server")
     elif dnsprovider != "Select or Enter DNS Server":
         try:
-            subprocess.check_output(["adb", "shell", "settings", "put", "global", "private_dns_mode", "hostname"], stderr=subprocess.PIPE)
-            subprocess.check_output(["adb", "shell", "settings", "put", "global", "private_dns_specifier", dnsprovider])
+            check_output(["adb", "shell", "settings", "put", "global", "private_dns_mode", "hostname"], stderr=PIPE)
+            check_output(["adb", "shell", "settings", "put", "global", "private_dns_specifier", dnsprovider])
             print(f"Successfully Set DNS Provider to: {dnsprovider}\n")
-        except subprocess.CalledProcessError:
+        except CalledProcessError:
             print("Failed to Set Private DNS\n")
 
 # Install Gapps in Gapps Folder then Re-install Play Store
@@ -133,28 +135,28 @@ def set_launcher():
         if not launcher:
             return
     elif customlauncher.get() != "Select Launcher":
-        for app in glob.iglob(f"{os.getcwd()}/{customlauncher.get()}*.apk"):
+        for app in iglob(f"{getcwd()}/{customlauncher.get()}*.apk"):
             launcher = app
-    cmdlist = shlex.split(f"{path}appinstaller{extension}")
+    cmdlist = shlex.split(f"{default_path}appinstaller{extension}")
     cmdlist.append(launcher)
     cmdlist.append("Launcher")
-    subprocess.run(cmdlist)
+    run(cmdlist)
 
 # Extract Selected Package to Extracted/{package} if not Already Present
 def extract(package):
-    if not os.path.exists(f"Extracted/{package}"):
+    if not path.exists(f"Extracted/{package}"):
         print("Extracting:", package)
-        os.mkdir(f"Extracted/{package}")
-        for packagelocation in subprocess.check_output(["adb", "shell", "pm", "path", package], universal_newlines=True).splitlines():
-            subprocess.run(["adb", "pull", packagelocation.replace("package:",""), f"./Extracted/{package}"])
-            if not os.listdir(f"Extracted/{package}"):
-                os.rmdir(f"Extracted/{package}")
+        mkdir(f"Extracted/{package}")
+        for packagelocation in check_output(["adb", "shell", "pm", "path", package], universal_newlines=True).splitlines():
+            run(["adb", "pull", packagelocation.replace("package:",""), f"./Extracted/{package}"])
+            if not listdir(f"Extracted/{package}"):
+                rmdir(f"Extracted/{package}")
             print("")
     else:
         if platform == "Windows":
-            print(f"Skipping, Found at: {os.getcwd()}\\Extracted\\{package}")
+            print(f"Skipping, Found at: {getcwd()}\\Extracted\\{package}")
         else:
-            print(f"Skipping, Found at: {os.getcwd()}/Extracted/{package}")
+            print(f"Skipping, Found at: {getcwd()}/Extracted/{package}")
 
 # Read Packages from "customlist" & Pass to Debloat or Extract Function
 def custom(option):
@@ -170,7 +172,7 @@ def custom(option):
 def select_all_click():
     # Clear all selections
     select_none()
-    # If seleect_all_bx is selected, select packages currently in the filtered view.
+    # If select_all_bx is selected, select packages currently in the filtered view.
     if select_all_bx.get():
         for package in packages:
             if checkboxes[package].winfo_ismapped():
@@ -290,10 +292,10 @@ search.grid(row=0, column = 1)
 options_frame.pack(anchor="w", pady=5)
 
 if device[0] != "Not Detected":
-    dnsprovider = subprocess.check_output(["adb", "shell", "settings", "get", "global", "private_dns_specifier"], universal_newlines=True).splitlines()
+    dnsprovider = check_output(["adb", "shell", "settings", "get", "global", "private_dns_specifier"], universal_newlines=True).splitlines()
     if "null" not in dnsprovider:
         customdns.set(dnsprovider)
-    packages = [package.replace("package:","") for package in subprocess.check_output(["adb", "shell", "pm", "list", "packages", "--user", "0"], universal_newlines=True).splitlines()]
+    packages = [package.replace("package:","") for package in check_output(["adb", "shell", "pm", "list", "packages", "--user", "0"], universal_newlines=True).splitlines()]
     checkboxes = {}
     for package in packages:
         checkboxes[package] = ctk.CTkCheckBox(package_list, text=package, command=check_select_all)
@@ -302,5 +304,5 @@ if device[0] != "Not Detected":
 window.mainloop()
 
 # Remove Temp Files when Application Closes
-for temp_file in glob.glob("*packagelist*"):
-    os.remove(temp_file)
+for temp_file in glob("*packagelist*"):
+    remove(temp_file)

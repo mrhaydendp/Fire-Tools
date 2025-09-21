@@ -29,6 +29,7 @@ Follow the steps outlined in [Setup-Instructions.md](/Setup-Instructions.md) fir
 curl -LO https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.zip
 unzip Fire-Tools.zip && rm Fire-Tools.zip
 cd Fire-Tools
+chmod +x Scripts/Posix/*.sh
 pip3 install -r requirements.txt
 python3 main.py
 ```

@@ -9,10 +9,10 @@ if (adb shell echo "Device Found" 2> $null){
         $device = "Generic ADB"
     } else {
         $model = (adb shell getprop ro.product.model)
-        if (!(Test-Path .\ft-identifying-tablet-devices.html)){
-            Invoke-RestMethod "https://developer.amazon.com/docs/fire-tablets/ft-identifying-tablet-devices.html" -OutFile ft-identifying-tablet-devices.html
+        if (!(Test-Path .\ft-identify-tablet-devices.html)){
+            Invoke-RestMethod "https://developer.amazon.com/docs/device-specs/ft-identify-tablet-devices.html" -OutFile ft-identify-tablet-devices.html
         }
-        $device = ((Select-String -Pattern "$model" -Path .\ft-identifying-tablet-devices.html -Context 3).Context.PreContext[1] | Select-String "(?:Kindle|Fire) (?:.*?)[Gg]en\)").Matches.Value
+        $device = ((Select-String -Pattern "$model" -Path .\ft-identify-tablet-devices.html -Context 3).Context.PreContext[1] | Select-String "(?:Kindle|Fire) (?:.*?)[Gg]en\)").Matches.Value
         $fireos = "$amazon"
     }
 }
