@@ -25,8 +25,8 @@ run(["adb", "start-server"], check=True, stderr=PIPE)
 
 # Get Device Name & Fire OS Version from identify Script, then Print Fire Tools Version, Platform, Device Name, and Software Version
 device = check_output(shlex.split(f"{path}identify{extension}"), universal_newlines=True).splitlines()
-print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
-
+#print(f"Fire Tools Version: {version}\nPlatform: {platform}\nDevice: {device[0]}\nSoftware: {device[1]}\n")
+print(device)
 # Window Config
 window = ctk.CTk()
 window.title(f"Fire Tools v{version} - ({platform}) | {device[0]}")
@@ -58,7 +58,7 @@ def appinstaller(folder):
         run(cmdlist)
         cmdlist.remove(folder)
 
-# On Update, Delete "ft-identifying-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
+# On Update, Delete "ft-identify-tablet-devices.html", Update Modules, and Make Scripts Executable (Linux/macOS)
 def update_tool():
     print("Checking for Updates...\n")
     try:
@@ -67,7 +67,7 @@ def update_tool():
         latest = version
     if version.replace(".","") < latest.replace(".",""):
         print("Latest Changelog:\n", get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
-        for identify_cache in glob("*ft-identifying-tablet-devices.html*"):
+        for identify_cache in glob("*ft-identify-tablet-devices.html*"):
             remove(identify_cache)
         modules = ["Debloat.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
         # Check if User is Running in Python or Binary Mode
