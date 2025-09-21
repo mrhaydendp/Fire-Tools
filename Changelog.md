@@ -10,6 +10,8 @@
 - Build scripts will now use the version file to automatically set the version variable
 - Added build directories to .gitignore
 - Updated Amazon device docs link for identifer scripts
+- Updated imports
+- Renamed path variable to default_path to fix conflict with path function 
 
 ## Updated main, build, version | Date: 07/21/25
 - Version bump (25.07.1)
