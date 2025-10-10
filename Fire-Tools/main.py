@@ -130,13 +130,24 @@ def disableota():
 
 # Pass Selected Package to Appinstaller with Launcher Argument
 def set_launcher():
-    if customlauncher.get() == "Custom":
+    # Ensure launcher is always defined before use
+    launcher = None
+    selection = customlauncher.get()
+    if selection == "Custom":
         launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File", filetypes=(("APK/Split", "*.apk*"), ("All Files", "*.*")))
         if not launcher:
+            print("No custom launcher selected, aborting.")
             return
-    elif customlauncher.get() != "Select Launcher":
-        for app in iglob(f"{getcwd()}/{customlauncher.get()}*.apk"):
+    elif selection != "Select Launcher":
+        # Try to find a matching apk in the working directory
+        for app in iglob(f"{getcwd()}/{selection}*.apk"):
             launcher = app
+            break
+
+    if not launcher:
+        print("No launcher specified or found. Please select a launcher.")
+        return
+
     cmdlist = shlex.split(f"{default_path}appinstaller{extension}")
     cmdlist.append(launcher)
     cmdlist.append("Launcher")
