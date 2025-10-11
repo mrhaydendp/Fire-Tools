@@ -9,7 +9,7 @@ import customtkinter as ctk
 chdir(path.dirname(path.realpath(__file__)))
 
 # Platform Variables
-version = "25.09"
+version = "25.10"
 platform = "Linux/macOS"
 default_path = f"{getcwd()}/Scripts/Posix/"
 extension = ".sh"
@@ -132,15 +132,11 @@ def disableota():
 def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File", filetypes=(("APK/Split", "*.apk*"), ("All Files", "*.*")))
-        if not launcher:
-            return
+        if launcher:
+            run(shlex.split(f"{default_path}appinstaller{extension} '{launcher}' Launcher"))
     elif customlauncher.get() != "Select Launcher":
-        for app in iglob(f"{getcwd()}/{customlauncher.get()}*.apk"):
-            launcher = app
-    cmdlist = shlex.split(f"{default_path}appinstaller{extension}")
-    cmdlist.append(launcher)
-    cmdlist.append("Launcher")
-    run(cmdlist)
+        for launcher in iglob(f"{getcwd()}/{customlauncher.get()}*.apk"):
+            run(shlex.split(f"{default_path}appinstaller{extension} '{launcher}' Launcher"))
 
 # Extract Selected Package to Extracted/{package} if not Already Present
 def extract(package):
