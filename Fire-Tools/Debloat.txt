@@ -34,7 +34,7 @@ com.amazon.device.sale.service                   # Amazon Sale Service
 com.amazon.device.sync                           # Amazon Sync Service
 com.amazon.device.sync.sdk.internal              # Amazon Sync SDK
 com.amazon.diode                                 # Diode Apk
-com.amazon.dp.contacts                           # Amazon Contacts Sync Adapter
+com.amazon.dp.contacts                           # Contact Sync Adapter
 com.amazon.dp.fbcontacts                         # Facebook Sync Adapter
 com.amazon.dp.logger                             # Amazon DP Logger
 com.amazon.dpcclient                             # Amazon DCPCClient Application
@@ -69,6 +69,7 @@ com.amazon.parentalcontrols                      # Parental Controls
 com.amazon.photos                                # Amazon Photos
 com.amazon.photos.importer                       # Amazon Photos Importer
 com.amazon.platform                              # Amazon Metrics Service Application
+com.amazon.platform.fdra                         # Factory Data Reset Allowlist Manager
 com.amazon.pm                                    # Parental Monitoring Service
 com.amazon.providers.contentsupport              # Content Support Manager
 com.amazon.readynowcore                          # On Deck
@@ -79,6 +80,7 @@ com.amazon.smartgenie                            # Alexa Device Dashboard
 com.amazon.speakscreen                           # Speak Selection
 com.amazon.sync.provider.ipc                     # Sync Provider Executor
 com.amazon.sync.service                          # Amazon Sync Service
+com.amazon.tablet.voiceassistant                 # Alexa Voice Assistant
 com.amazon.tahoe                                 # Amazon Kids+ (Kids Space)
 com.amazon.tcomm                                 # Amazon Communication Services
 com.amazon.tcomm.client                          # Amazon Communication Services Client Library
