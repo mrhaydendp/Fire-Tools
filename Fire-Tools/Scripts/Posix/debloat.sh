@@ -29,8 +29,10 @@ elif [ -n "$option" ]; then
     if [ "$option" = "Enable" ]; then
         printf "%s\n" "Disabling Private DNS"
         adb shell settings put global private_dns_mode off
-        printf "%s\n" "Enabling Location"
+        printf "%s\n" "Enabling Location Services"
         adb shell settings put global location_global_kill_switch 0
+        printf "%s\n" "Resetting Background Process Limit"
+        adb shell /system/bin/device_config set_sync_disabled_for_tests none
         printf "%s\n" "Enabling Core Apps"
         export core="firelauncher device.software.ota device.software.ota.override kindle.otter.oobe.forced.ota"
         for package in ${core}; do
@@ -52,6 +54,9 @@ elif [ -n "$option" ]; then
         adb shell settings put global window_animation_scale 0.50
         adb shell settings put global transition_animation_scale 0.50
         adb shell settings put global animator_duration_scale 0.50
+        printf "%s\n" "Setting Background Process Limit to 4"
+        adb shell /system/bin/device_config set_sync_disabled_for_tests persistent
+        adb shell /system/bin/device_config put activity_manager max_cached_processes 4
         printf "%s\n\n" "Successfully Debloated Fire OS"
     fi
 fi

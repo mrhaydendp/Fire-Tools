@@ -30,6 +30,8 @@ if ("$app"){
         adb shell settings put global private_dns_mode off
         Write-Host "Enabling Location Services"
         adb shell settings put global location_global_kill_switch 0
+        Write-Host "Resetting Background Process Limit"
+        adb shell /system/bin/device_config set_sync_disabled_for_tests none
         Write-Host "Enabling Core Apps"
         $core = @("firelauncher", "device.software.ota", "device.software.ota.override", "kindle.otter.oobe.forced.ota")
         foreach ($app in $core){
@@ -51,6 +53,9 @@ if ("$app"){
         adb shell settings put global window_animation_scale 0.50
         adb shell settings put global transition_animation_scale 0.50
         adb shell settings put global animator_duration_scale 0.50
+        Write-Host "Setting Background Process Limit to 4"
+        adb shell /system/bin/device_config set_sync_disabled_for_tests persistent
+        adb shell /system/bin/device_config put activity_manager max_cached_processes 4
         Write-Host "Successfully Debloated Fire OS`n"
     }
 }
