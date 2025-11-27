@@ -63,6 +63,7 @@ com.amazon.logan                                 # Voice View
 com.amazon.media.session.monitor                 # Media Session Monitor
 com.amazon.minerva.client.api                    # Amazon Minerva Client API
 com.amazon.mp3                                   # Amazon Music
+com.amazon.sharingservice.android.client.proxy   # Amazon Sharing Proxy Service
 com.amazon.nimh                                  # Arcus Android Client
 com.amazon.ods.kindleconnect                     # Mayday Screen Sharing
 com.amazon.parentalcontrols                      # Parental Controls
