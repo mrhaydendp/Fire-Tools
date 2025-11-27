@@ -63,7 +63,6 @@ com.amazon.logan                                 # Voice View
 com.amazon.media.session.monitor                 # Media Session Monitor
 com.amazon.minerva.client.api                    # Amazon Minerva Client API
 com.amazon.mp3                                   # Amazon Music
-com.amazon.sharingservice.android.client.proxy   # Amazon Sharing Proxy Service
 com.amazon.nimh                                  # Arcus Android Client
 com.amazon.ods.kindleconnect                     # Mayday Screen Sharing
 com.amazon.parentalcontrols                      # Parental Controls
@@ -76,6 +75,7 @@ com.amazon.providers.contentsupport              # Content Support Manager
 com.amazon.readynowcore                          # On Deck
 com.amazon.recess                                # Amazon Recess
 com.amazon.securitysyncclient                    # Security Sync Client
+com.amazon.sharingservice.android.client.proxy   # Amazon Sharing Proxy Service
 com.amazon.shpm                                  # Ship Mode
 com.amazon.smartgenie                            # Alexa Device Dashboard
 com.amazon.speakscreen                           # Speak Selection
@@ -87,7 +87,7 @@ com.amazon.tcomm                                 # Amazon Communication Services
 com.amazon.tcomm.client                          # Amazon Communication Services Client Library
 com.amazon.tcomm.jackson                         # Amazon Communication Service (Jackson19)
 com.amazon.tv.launcher                           # Amazon VideoStore
-com.amazon.tv.ottssocompanionapp                 # OttSsoCompanionApp
+com.amazon.tv.ottssocompanionapp                 # Amazon TV Provider SSO
 com.amazon.venezia                               # Amazon Appstore
 com.amazon.wallpaper                             # Amazon Wallpaper
 com.amazon.weather                               # Weather
