@@ -29,7 +29,7 @@ elif [ -n "$option" ]; then
     if [ "$option" = "Enable" ]; then
         printf "%s\n" "Disabling Private DNS"
         adb shell settings put global private_dns_mode off
-        printf "%s\n" "Enabling Location"
+        printf "%s\n" "Enabling Location Services"
         adb shell settings put global location_global_kill_switch 0
         printf "%s\n" "Enabling Core Apps"
         export core="firelauncher device.software.ota device.software.ota.override kindle.otter.oobe.forced.ota"
@@ -42,7 +42,7 @@ elif [ -n "$option" ]; then
         adb shell settings put secure limit_ad_tracking 1
         adb shell settings put secure usage_metrics_marketing_enabled 0
         adb shell settings put secure USAGE_METRICS_UPLOAD_ENABLED 0
-        printf "%s\n" "Disabling Location"
+        printf "%s\n" "Disabling Location Services"
         adb shell settings put global location_global_kill_switch 1
         printf "%s\n" "Disabling Lockscreen Ads"
         adb shell settings put global LOCKSCREEN_AD_ENABLED 0

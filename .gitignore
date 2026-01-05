@@ -1,4 +1,7 @@
+Fire-Tools/*apk*
+Fire-Tools/Extracted/
 Fire-Tools/ft-identify-tablet-devices.html
-packagelist
+Fire-Tools/Gapps/
+Fire-Tools/packagelist
 main.build
 main.dist
