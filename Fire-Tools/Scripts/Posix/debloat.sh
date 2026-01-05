@@ -42,7 +42,7 @@ elif [ -n "$option" ]; then
         adb shell settings put secure limit_ad_tracking 1
         adb shell settings put secure usage_metrics_marketing_enabled 0
         adb shell settings put secure USAGE_METRICS_UPLOAD_ENABLED 0
-        printf "%s\n" "Disabling Location"
+        printf "%s\n" "Disabling Location Services"
         adb shell settings put global location_global_kill_switch 1
         printf "%s\n" "Disabling Lockscreen Ads"
         adb shell settings put global LOCKSCREEN_AD_ENABLED 0

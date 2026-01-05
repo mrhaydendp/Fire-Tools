@@ -7,7 +7,7 @@ adb shell pm list packages -3 | Out-File packagelist
 Write-Host "Installing: $app"
 if ("$app" -like '*.apk'){
     adb install -g "$app" *> $null
-} elseif ("$app" -like '*.apk*'){
+} elseif ("$app" -like '*.apkm'){
     Copy-Item "$app" -Destination "$app.zip"
     Expand-Archive "$app.zip" -DestinationPath .\Split
     adb install-multiple -r -g (Get-ChildItem .\Split\*apk) *> $null
