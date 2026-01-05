@@ -54,9 +54,6 @@ elif [ -n "$option" ]; then
         adb shell settings put global window_animation_scale 0.50
         adb shell settings put global transition_animation_scale 0.50
         adb shell settings put global animator_duration_scale 0.50
-        printf "%s\n" "Setting Background Process Limit to 4"
-        adb shell /system/bin/device_config set_sync_disabled_for_tests persistent
-        adb shell /system/bin/device_config put activity_manager max_cached_processes 4
         printf "%s\n\n" "Successfully Debloated Fire OS"
     fi
 fi

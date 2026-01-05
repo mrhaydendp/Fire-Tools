@@ -53,9 +53,6 @@ if ("$app"){
         adb shell settings put global window_animation_scale 0.50
         adb shell settings put global transition_animation_scale 0.50
         adb shell settings put global animator_duration_scale 0.50
-        Write-Host "Setting Background Process Limit to 4"
-        adb shell /system/bin/device_config set_sync_disabled_for_tests persistent
-        adb shell /system/bin/device_config put activity_manager max_cached_processes 4
         Write-Host "Successfully Debloated Fire OS`n"
     }
 }
