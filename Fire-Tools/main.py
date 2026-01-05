@@ -133,6 +133,7 @@ def set_launcher():
     if customlauncher.get() == "Custom":
         launcher = ctk.filedialog.askopenfilename(title="Select Launcher .apk(m) File", filetypes=(("APK/Split", "*.apk*"), ("All Files", "*.*")))
         if launcher:
+            customlauncher.set(launcher.rsplit("/", 1)[1])
             run(shlex.split(f"{default_path}appinstaller{extension} '{launcher}' Launcher"))
     elif customlauncher.get() != "Select Launcher":
         for launcher in iglob(f"{getcwd()}/{customlauncher.get()}*.apk"):
