@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=mrhaydendp&project=Fire-Tools&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 # <p align="center">Fire Tools</p>
 
 [![GitHub Download Stats)](https://img.shields.io/github/downloads/mrhaydendp/Fire-Tools/total?style=for-the-badge)](https://github.com/mrhaydendp/fire-tools/releases/latest/download/Fire-Tools.zip) [![Latest Release](https://img.shields.io/github/v/release/mrhaydendp/Fire-Tools?style=for-the-badge
