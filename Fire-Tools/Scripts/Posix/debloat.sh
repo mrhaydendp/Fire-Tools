@@ -24,8 +24,9 @@ if [ -n "$app" ]; then
 elif [ -n "$option" ]; then
     # Loop & Check if Package from Debloat.txt is Present in 'packagelist' if so, Send to the Debloat Function with Enable/Disable Option
     for app in ${packages}; do
-        grep -q "$package" < packagelist && debloat "$option" "$app"
+        grep -q "$app" < packagelist && debloat "$option" "$app"
     done
+    rm -f packagelist
     if [ "$option" = "Enable" ]; then
         printf "%s\n" "Disabling Private DNS"
         adb shell settings put global private_dns_mode off
