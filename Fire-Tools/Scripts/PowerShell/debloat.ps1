@@ -1,7 +1,18 @@
 # Set Variables & Export Package List
 $option = $args[0]
 $app = $args[1]
-$packages = Get-Content .\Debloat.txt | % { $_.Split(" #")[0] }
+$list = if ($args[2]) { $args[2] } else { ".\Debloat.txt" }
+
+# If a list file or preset name is passed as an argument
+if ($app -like "*.txt") {
+    $list = $app
+    $app = $null
+} elseif ($app -eq "Reader" -or $app -eq "reader" -or $app -eq "Kindle-Safe" -or $app -eq "kindle-safe") {
+    $list = ".\Debloat-Reader.txt"
+    $app = $null
+}
+
+$packages = Get-Content $list | % { $_.Split(" #")[0] } | Where-Object { $_ -and -not $_.StartsWith("#") }
 adb shell pm list packages | Out-File packagelist
 
 # Enable or Disable Specified Package and Provide Clean Output

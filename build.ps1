@@ -12,4 +12,5 @@ python -m nuitka $path\main.py --output-filename=fire-tools --mode=standalone --
 --include-data-dir="$path\Gapps"=.\Gapps `
 --include-data-dir="$path\Scripts\PowerShell"=.\Scripts\PowerShell `
 --include-data-files="$path\Debloat.txt"=.\ `
+--include-data-files="$path\Debloat-Reader.txt"=.\ `
 --include-data-files="$path\*.apk"=.\

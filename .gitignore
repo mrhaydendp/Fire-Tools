@@ -5,3 +5,5 @@ Fire-Tools/Gapps/
 Fire-Tools/packagelist
 main.build
 main.dist
+__pycache__/
+*.pyc

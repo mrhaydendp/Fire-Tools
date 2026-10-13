@@ -3,7 +3,25 @@
 # Set Variables & Export Package List
 option="$1"
 app="$2"
-packages=$(awk '{print $1}' < Debloat.txt)
+list="Debloat.txt"
+
+# If a list file or preset name is passed as an argument
+if [ -n "$3" ]; then
+    list="$3"
+elif [ -n "$app" ]; then
+    case "$app" in
+        *.txt)
+            list="$app"
+            app=""
+            ;;
+        Reader|reader|Kindle-Safe|kindle-safe)
+            list="Debloat-Reader.txt"
+            app=""
+            ;;
+    esac
+fi
+
+packages=$(awk '{print $1}' < "$list" | grep -v '^#')
 adb shell pm list packages -s > packagelist
 
 # Change ADB Shell Arguments Based on Selection

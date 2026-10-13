@@ -9,7 +9,7 @@ Fire Tools is a powerful collection of tools that helps debloat and install Goog
 
 **Features:**
 * Cross Platform (Linux, macOS, & Windows)
-* Powerful Debloat Tool
+* Powerful Debloat Tool (Standard and Kindle-Safe presets)
 * Limits Amazon Tracking & Ads
 * Google Play Installer (Android 8+/Fire OS 7+)
 * Custom Launcher Support (LauncherHijack on Newer Fire OS Versions)
@@ -51,6 +51,7 @@ python main.py
 * Some features of the Fire Tools may break due to Fire OS updates but I'll try my best to keep them working.
 * Set timezone settings before debloat! (re-enable `com.amazon.kindle.otter.oobe` to change date & time settings)
 * Google Apps are downloaded from [ApkMirror](https://www.apkmirror.com/) and are included in releases for convienence see [terms](https://github.com/mrhaydendp/Fire-Tools/blob/main/Fire-Tools/Gapps/README.md). APK names and corresponding URLs can be found in Fire-Tools/Gapps/README.md
+* Debloat Presets: The "Standard" preset disables all non-essential Amazon apps and telemetry. The "Kindle-Safe" preset preserves Amazon account login, Whispersync, book downloading, and the Kindle app, while safely debloating all other background bloatware, Alexa, ads, and telemetry.
 * Debloat will disable most amazon apps with the exception of: `Calculator`, `Camera`, `Clock`, `Files`, `Fire Launcher`, `Silk Browser`, and `Settings`
 * Warranty and Reset: Using Fire Tools doesn't void your warranty and all changes can be reversed with a factory reset.
 * Disclaimer: While I developed this tool, I am not responsible for any issues arising from its use.
