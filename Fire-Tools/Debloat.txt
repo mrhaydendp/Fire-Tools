@@ -140,4 +140,3 @@ com.kingsoft.office.amz                          # WPS Office for Amazon
 jp.co.omronsoft.iwnnime.languagepack.kokr_az     # iWnn IME Korean
 jp.co.omronsoft.iwnnime.languagepack.zhcn_az     # iWnn IME Simplified Chinese
 jp.co.omronsoft.iwnnime.languagepack.zhtw_az     # iWnn IME Traditional Chinese
-jp.co.omronsoft.iwnnime.mlaz                     # iWnn IME Asian Keyboard
