@@ -3,7 +3,25 @@
 # Set Variables & Export Package List
 option="$1"
 app="$2"
-packages=$(awk '{print $1}' < Debloat.txt)
+list="Debloat.txt"
+
+# If a list file or preset name is passed as an argument
+if [ -n "$3" ]; then
+    list="$3"
+elif [ -n "$app" ]; then
+    case "$app" in
+        *.txt)
+            list="$app"
+            app=""
+            ;;
+        Reader|reader|Kindle-Safe|kindle-safe)
+            list="Debloat-Reader.txt"
+            app=""
+            ;;
+    esac
+fi
+
+packages=$(awk '{print $1}' < "$list" | grep -v '^#')
 adb shell pm list packages -s > packagelist
 
 # Change ADB Shell Arguments Based on Selection
@@ -24,8 +42,9 @@ if [ -n "$app" ]; then
 elif [ -n "$option" ]; then
     # Loop & Check if Package from Debloat.txt is Present in 'packagelist' if so, Send to the Debloat Function with Enable/Disable Option
     for app in ${packages}; do
-        grep -q "$package" < packagelist && debloat "$option" "$app"
+        grep -q "$app" < packagelist && debloat "$option" "$app"
     done
+    rm -f packagelist
     if [ "$option" = "Enable" ]; then
         printf "%s\n" "Disabling Private DNS"
         adb shell settings put global private_dns_mode off

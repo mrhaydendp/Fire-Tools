@@ -17,4 +17,5 @@ python3 -m nuitka ./Fire-Tools/main.py --output-filename=fire-tools --mode=stand
 --include-data-dir="$path/Gapps"=./Gapps \
 --include-data-dir="$path/Scripts/Posix"=./Scripts/Posix \
 --include-data-files="$path/Debloat.txt"=./ \
+--include-data-files="$path/Debloat-Reader.txt"=./ \
 --include-data-files="$path/*.apk"=./

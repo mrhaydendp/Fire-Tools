@@ -37,6 +37,9 @@ def debloat(option, package=""):
     cmdlist = shlex.split(f"{default_path}debloat{extension} {option}")
     if package:
         cmdlist.append(package)
+    else:
+        preset_file = "Debloat.txt" if debloat_preset.get() == "Standard" else "Debloat-Reader.txt"
+        cmdlist.append(preset_file)
     run(cmdlist)
 
 # Pass Folder or .apk(m) File to Appinstaller Script for Installation
@@ -69,7 +72,7 @@ def update_tool():
         print("Latest Changelog:\n", get("https://github.com/mrhaydendp/Fire-Tools/raw/main/Changelog.md", timeout=10).text)
         for identify_cache in glob("*ft-identify-tablet-devices.html*"):
             remove(identify_cache)
-        modules = ["Debloat.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
+        modules = ["Debloat.txt", "Debloat-Reader.txt", f"Scripts/{shell}/appinstaller{extension}", f"Scripts/{shell}/debloat{extension}", f"Scripts/{shell}/identify{extension}", f"Scripts/{shell}/install{extension}"]
         # Check if User is Running in Python or Binary Mode
         if not glob("fire-tools*"):
             # Grab Latest requirements.txt and Install with Pip
@@ -91,15 +94,16 @@ def update_tool():
     else:
         print("No Update Needed\n")
 
-# Open Debloat.txt in Preferred Text Editor
+# Open Debloat.txt or Debloat-Reader.txt in Preferred Text Editor
 def editfile():
+    target = "Debloat.txt" if debloat_preset.get() == "Standard" else "Debloat-Reader.txt"
     if platform != "Windows":
         try:
-            run(["xdg-open", "Debloat.txt"], check=True, stderr=PIPE)
+            run(["xdg-open", target], check=True, stderr=PIPE)
         except CalledProcessError:
-            run(["open", "-e", "Debloat.txt"], check=True, stderr=PIPE)
+            run(["open", "-e", target], check=True, stderr=PIPE)
     else:
-        run(["notepad.exe", "Debloat.txt"])
+        run(["notepad.exe", target])
 
 # Set DNS Mode to Hostname, then Set Selected Provider as Private DNS
 def set_dns():
@@ -220,8 +224,15 @@ update.place(x=15, y=15)
 label = ctk.CTkLabel(window, text="Debloat", font=("default",25))
 label.grid(row=0, column=0, padx=60, pady=15)
 
-disable = ctk.CTkButton(window, text="Debloat", width=200, height=50, command=lambda: debloat("Disable"))
-disable.grid(row=1, column=0, padx=60, pady=15)
+debloat_frame = ctk.CTkFrame(window, fg_color="transparent")
+debloat_frame.grid(row=1, column=0, padx=60, pady=10)
+
+debloat_preset = ctk.CTkSegmentedButton(debloat_frame, values=["Standard", "Kindle-Safe"], width=200, height=28)
+debloat_preset.set("Standard")
+debloat_preset.pack(pady=(0, 6))
+
+disable = ctk.CTkButton(debloat_frame, text="Debloat", width=200, height=40, command=lambda: debloat("Disable"))
+disable.pack()
 
 undo = ctk.CTkButton(window, text="Undo", width=200, height=50, command=lambda: debloat("Enable"))
 undo.grid(row=2, column=0, padx=60, pady=15)

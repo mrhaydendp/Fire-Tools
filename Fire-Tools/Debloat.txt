@@ -1,12 +1,16 @@
 amazon.jackson19                                 # Jackson19
+amazon.speech.davs.davcservice                   # Alexa Speech Daemon
 amazon.speech.sim                                # Alexa Speech
 com.amazon.aca                                   # ACA Application
+com.amazon.accessorynotifier                     # Accessory Notifier
 com.amazon.advertisingidsettings                 # Advertising ID
 com.amazon.afe.app                               # Tap to Alexa
 com.amazon.ags.app                               # Amazon GameCircle
 com.amazon.alexa.multimodal.gemini               # Alexa Cards
 com.amazon.alexa.youtube.app                     # Alexa YouTube Player
 com.amazon.alta.h2clientservice                  # H2Application
+com.amazon.android.marketplace                   # Marketplace Service Receiver
+com.amazon.appaccesskeyprovider                  # App Access Key Provider
 com.amazon.application.compatibility.enforcer    # Application Compatibility Enforcer
 com.amazon.appverification                       # Amazon App Verification
 com.amazon.avod                                  # Prime Video
@@ -25,9 +29,13 @@ com.amazon.csapp                                 # Help App
 com.amazon.dcp                                   # Amazon Device Middleware Debugging Tool
 com.amazon.dcp.contracts.framework.library       # DCP Contracts Framework
 com.amazon.dcp.contracts.library                 # DCP Platform Contracts
+com.amazon.dcpms.client                          # DCPMS Client
 com.amazon.dcpms.fos.service                     # DCPMSFOSService
 com.amazon.dee.alexaonandroidos                  # Alexa on Android OS
 com.amazon.dee.app                               # Alexa
+com.amazon.device.backup                         # Amazon Cloud Backup
+com.amazon.device.crashmanager                   # Amazon Crash Manager
+com.amazon.device.logmanager                     # Amazon Device Log Manager
 com.amazon.device.messaging                      # Amazon Device Messaging (ADM)
 com.amazon.device.metrics                        # Amazon Device Metrics
 com.amazon.device.sale.service                   # Amazon Sale Service
@@ -38,14 +46,15 @@ com.amazon.dp.contacts                           # Contact Sync Adapter
 com.amazon.dp.fbcontacts                         # Facebook Sync Adapter
 com.amazon.dp.logger                             # Amazon DP Logger
 com.amazon.dpcclient                             # Amazon DCPCClient Application
+com.amazon.drive                                 # Amazon Drive
 com.amazon.fireos.cirruscloud                    # Cirrus Cloud
 com.amazon.firespotlight                         # Amazon Appstore Spotlight
 com.amazon.geo.client.maps                       # Amazon Maps App
 com.amazon.geo.mapsv2                            # Map API v2
 com.amazon.geo.mapsv3.resources                  # Map API v3 Resources
 com.amazon.geo.mapsv3.services                   # Map API v3 Services
-com.amazon.hedwig                                # Fire TV Channels
 com.amazon.h2settingsfortablet                   # Profile Settings (Amazon Profiles & Family Library)
+com.amazon.hedwig                                # Fire TV Channels
 com.amazon.hybridadidservice                     # Hybrid AD ID Service
 com.amazon.identity.auth.device.authorization    # Mobile Authentication Platform
 com.amazon.imdb.tv.mobile.app                    # Freevee (IMDb)
@@ -56,7 +65,9 @@ com.amazon.kindle.kso                            # Special Offers
 com.amazon.kindle.otter.oobe                     # Device Setup
 com.amazon.kindle.personal_video                 # My Videos
 com.amazon.kindle.rdmdeviceadmin                 # Remote Device Management Application
+com.amazon.kindle.starsight                      # Starsight Telemetry
 com.amazon.kindle.unifiedSearch                  # Unified Search
+com.amazon.kindleautomatictimezone               # Automatic Timezone Daemon
 com.amazon.kor.demo                              # Retail Demo
 com.amazon.legalsettings                         # Legal Notices
 com.amazon.logan                                 # Voice View
@@ -70,19 +81,27 @@ com.amazon.photos                                # Amazon Photos
 com.amazon.photos.importer                       # Amazon Photos Importer
 com.amazon.platform                              # Amazon Metrics Service Application
 com.amazon.platform.fdra                         # Factory Data Reset Allowlist Manager
+com.amazon.platform.fdrw                         # Factory Data Reset Whitelist Manager
 com.amazon.pm                                    # Parental Monitoring Service
 com.amazon.providers.contentsupport              # Content Support Manager
 com.amazon.readynowcore                          # On Deck
 com.amazon.recess                                # Amazon Recess
+com.amazon.redstone                              # Alexa Smart Home / Ambient
 com.amazon.securitysyncclient                    # Security Sync Client
 com.amazon.sharingservice.android.client.proxy   # Amazon Sharing Proxy Service
 com.amazon.shpm                                  # Ship Mode
 com.amazon.smartgenie                            # Alexa Device Dashboard
+com.amazon.sneakpeek                             # Amazon Sneak Peek
 com.amazon.speakscreen                           # Speak Selection
+com.amazon.spiderpork                            # Amazon Discover Feed
+com.amazon.ssmsys                                # SSM System Service
+com.amazon.storagemanager                        # Amazon Storage Manager
+com.amazon.switchaccess.root                     # Switch Access Root
 com.amazon.sync.provider.ipc                     # Sync Provider Executor
 com.amazon.sync.service                          # Amazon Sync Service
 com.amazon.tablet.voiceassistant                 # Alexa Voice Assistant
 com.amazon.tahoe                                 # Amazon Kids+ (Kids Space)
+com.amazon.tails                                 # Amazon Tails Recommendations
 com.amazon.tcomm                                 # Amazon Communication Services
 com.amazon.tcomm.client                          # Amazon Communication Services Client Library
 com.amazon.tcomm.jackson                         # Amazon Communication Service (Jackson19)
@@ -95,14 +114,18 @@ com.amazon.webapp                                # Kindle Store
 com.amazon.whisperlink.core.android              # Whisperplay Daemon
 com.amazon.whisperplay.contracts                 # Whisperlink SDK
 com.amazon.whisperplay.service.install           # Whisperlink Installer
+com.amazon.wifilocker                            # Cloud Wi-Fi Locker
 com.amazon.windowshop                            # Amazon App
 com.amazon.wirelessmetrics.service               # Amazon Wireless Metrics Service
 com.amazon.zico                                  # Documents
 com.android.bookmarkprovider                     # Bookmarks Provider
+com.android.calendar                             # AOSP Calendar
 com.android.carrierconfig                        # Carrier Network Configuration
 com.android.dreams.basic                         # Screensaver
 com.android.email                                # AOSP Mail
+com.android.onetimeinitializer                   # One Time Initializer
 com.android.protips                              # Home Screen Tips
+com.android.providers.calendar                   # Calendar Storage Provider
 com.android.providers.downloads.ui               # Downloads App
 com.android.providers.partnerbookmarks           # Provider Bookmarks
 com.android.quicksearchbox                       # Search
@@ -111,4 +134,9 @@ com.fireos.arcus.proxy                           # Arcus Proxy
 com.fireos.usagestats.proxy                      # Amazon Usage Stats Map Proxy
 com.goodreads.kindle                             # Goodreads
 com.here.odnp.service                            # HERE Positioning
+com.ivona.orchestrator                           # Ivona TTS Orchestrator
+com.ivona.tts.oem                                # Ivona Text-to-Speech
 com.kingsoft.office.amz                          # WPS Office for Amazon
+jp.co.omronsoft.iwnnime.languagepack.kokr_az     # iWnn IME Korean
+jp.co.omronsoft.iwnnime.languagepack.zhcn_az     # iWnn IME Simplified Chinese
+jp.co.omronsoft.iwnnime.languagepack.zhtw_az     # iWnn IME Traditional Chinese
